@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320" class="w-full h-full drop-shadow-[0_2px_10px_rgba(245,158,11,0.45)]" fill="none">
+  <defs>
+    <!-- High-Contrast Metallic Gold Gradient -->
+    <linearGradient id="royalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB" />
+      <stop offset="18%" stop-color="#FDE047" />
+      <stop offset="45%" stop-color="#F59E0B" />
+      <stop offset="75%" stop-color="#D97706" />
+      <stop offset="100%" stop-color="#78350F" />
+    </linearGradient>
+    <!-- Bright Highlight Gold for Sharp Edges & Head -->
+    <linearGradient id="edgeGold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="30%" stop-color="#FEF08A" />
+      <stop offset="70%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#B45309" />
+    </linearGradient>
+    <!-- Deep Obsidian Shield Gradient -->
+    <linearGradient id="shieldDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="50%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <filter id="sharpGlow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#F59E0B" flood-opacity="0.45" />
+    </filter>
+  </defs>
+
+  <g filter="url(#sharpGlow)">
+    <!-- Background Crest / Royal Shield -->
+    <path d="M320 14 L395 42 L380 175 L320 235 L260 175 L245 42 Z" fill="url(#shieldDark)" stroke="url(#edgeGold)" stroke-width="3.5" />
+    <path d="M320 24 L383 48 L370 168 L320 220 L270 168 L257 48 Z" fill="none" stroke="#FDE047" stroke-width="1" stroke-opacity="0.4" />
+
+    <!-- ================= LEFT WING (SHARP GEOMETRIC FEATHERS) ================= -->
+    <!-- Top Primary Sweeping Blade Feather -->
+    <path d="M268 78 C 205 32, 115 18, 12 34 C 28 52, 58 62, 95 64 C 155 67, 212 78, 258 102 Z" fill="url(#edgeGold)" />
+    <!-- Second Sharp Feather -->
+    <path d="M256 98 C 195 66, 110 58, 24 74 C 42 90, 74 96, 115 96 C 168 96, 215 106, 250 122 Z" fill="url(#royalGold)" />
+    <!-- Third Sharp Feather -->
+    <path d="M248 118 C 192 94, 118 92, 44 110 C 64 124, 96 126, 136 124 C 180 122, 216 130, 244 142 Z" fill="url(#edgeGold)" />
+    <!-- Fourth Sharp Feather -->
+    <path d="M244 138 C 196 122, 134 124, 72 142 C 92 153, 122 153, 158 149 C 195 145, 222 151, 242 160 Z" fill="url(#royalGold)" />
+    <!-- Fifth Inner Feather -->
+    <path d="M246 156 C 206 146, 156 150, 108 168 C 130 176, 158 174, 188 168 C 214 163, 232 168, 246 175 Z" fill="url(#edgeGold)" />
+    <!-- Sixth Base Covert -->
+    <path d="M254 172 C 222 168, 184 174, 148 190 C 172 195, 198 190, 224 184 C 240 180, 250 184, 258 190 Z" fill="url(#royalGold)" />
+
+    <!-- ================= RIGHT WING (SHARP GEOMETRIC FEATHERS) ================= -->
+    <!-- Top Primary Sweeping Blade Feather -->
+    <path d="M372 78 C 435 32, 525 18, 628 34 C 612 52, 582 62, 545 64 C 485 67, 428 78, 382 102 Z" fill="url(#edgeGold)" />
+    <!-- Second Sharp Feather -->
+    <path d="M384 98 C 445 66, 530 58, 616 74 C 598 90, 566 96, 525 96 C 472 96, 425 106, 390 122 Z" fill="url(#royalGold)" />
+    <!-- Third Sharp Feather -->
+    <path d="M392 118 C 448 94, 522 92, 596 110 C 576 124, 544 126, 504 124 C 460 122, 424 130, 396 142 Z" fill="url(#edgeGold)" />
+    <!-- Fourth Sharp Feather -->
+    <path d="M396 138 C 444 122, 506 124, 568 142 C 548 153, 518 153, 482 149 C 445 145, 418 151, 398 160 Z" fill="url(#royalGold)" />
+    <!-- Fifth Inner Feather -->
+    <path d="M394 156 C 434 146, 484 150, 532 168 C 510 176, 482 174, 452 168 C 426 163, 408 168, 394 175 Z" fill="url(#edgeGold)" />
+    <!-- Sixth Base Covert -->
+    <path d="M386 172 C 418 168, 456 174, 492 190 C 468 195, 442 190, 416 184 C 400 180, 390 184, 382 190 Z" fill="url(#royalGold)" />
+
+    <!-- ================= FIERCE EAGLE HEAD & HOOKED BEAK ================= -->
+    <!-- Neck & Crown Hackles -->
+    <path d="M272 135
+             L 262 110
+             L 276 104
+             L 268 82
+             C 278 52, 298 30, 326 28
+             L 342 22
+             L 338 32
+             L 356 28
+             L 350 38
+             C 366 42, 378 52, 382 66
+             C 374 63, 365 63, 356 66
+             C 365 78, 364 96, 352 112
+             L 368 135
+             L 344 132
+             L 334 152
+             L 320 140
+             L 306 152
+             L 296 132 Z"
+          fill="url(#edgeGold)" stroke="#78350F" stroke-width="1.2" />
+
+    <!-- Razor-Sharp Hooked Eagle Beak (Facing Right) -->
+    <path d="M362 56
+             C 385 54, 408 64, 416 84
+             C 418 90, 414 98, 408 102
+             C 405 90, 395 82, 382 80
+             C 372 79, 364 82, 358 88
+             L 354 72 Z"
+          fill="#FFFBEB" stroke="#B45309" stroke-width="1.5" />
+    <!-- Lower Jaw -->
+    <path d="M360 86 C 374 84, 388 88, 396 96 C 384 100, 370 100, 356 95 Z" fill="url(#royalGold)" />
+
+    <!-- Fierce Brow & Glowing Eye -->
+    <path d="M332 54 L 364 60 L 356 67 L 330 62 Z" fill="#020617" />
+    <polygon points="340,62 354,64 349,71 337,69" fill="#FEF08A" />
+    <circle cx="346" cy="66" r="2.3" fill="#020617" />
+    <circle cx="347" cy="65" r="1" fill="#FFFFFF" />
+
+    <!-- ================= TAIL FEATHERS & ROYAL CREST BASE ================= -->
+    <path d="M292 215 L 268 268 L 298 252 L 320 282 L 342 252 L 372 268 L 348 215 Z" fill="url(#royalGold)" />
+
+    <!-- ================= HIGH-CONTRAST ROYAL BANNER ================= -->
+    <path d="M125 198 C 215 184, 425 184, 515 198 L 502 242 C 415 228, 225 228, 138 242 Z" fill="#020617" stroke="url(#edgeGold)" stroke-width="3.5" />
+    <path d="M134 204 C 220 191, 420 191, 506 204" stroke="#FEF08A" stroke-width="1" stroke-opacity="0.5" fill="none" />
+  </g>
+
+  <!-- ================= CRISP TYPOGRAPHY: AL-NESER ================= -->
+  <text x="320" y="229"
+        text-anchor="middle"
+        font-family="'Cairo', 'Cinzel', 'Playfair Display', serif"
+        font-size="38"
+        font-weight="900"
+        letter-spacing="7"
+        fill="url(#edgeGold)"
+        filter="url(#sharpGlow)">AL-NESER</text>
+</svg>
