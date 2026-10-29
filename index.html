@@ -150,29 +150,24 @@
 </head>
 <body class="bg-[#fdfaf7] text-[#45260a] min-h-screen flex flex-col antialiased visitor-mode selection:bg-orange-600 selection:text-white">
 
-    <!-- Top Sticky Omnifood Navbar -->
+    <!-- Top Sticky Navbar -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#fae5d3] shadow-sm w-full transition-all">
         <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full py-3.5 flex items-center justify-between gap-3">
-            
             <div class="flex items-center gap-3">
                 <button type="button" onclick="toggleAdminDrawer()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-[#fdf2e9] border border-[#fae5d3]" title="قائمة الأقسام">
                     <i data-lucide="menu" class="w-5 h-5 text-[#e67e22]"></i>
                 </button>
 
-                <!-- Eagle Shield Crest Badge -->
                 <div class="h-11 w-16 sm:h-12 sm:w-20 bg-gradient-to-b from-slate-900 via-slate-950 to-black p-1 rounded-xl border-2 border-amber-400/70 flex items-center justify-center shadow-md shadow-orange-500/10 shrink-0 cursor-pointer" onclick="switchTab('dashboard')" title="شركة النسر التجارية - الرئيسية">
                     <img src="al_neser_logo.png" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'40\' viewBox=\'0 0 60 40\'><rect width=\'60\' height=\'40\' fill=\'%23e67e22\'/><text x=\'50%25\' y=\'55%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23ffffff\' font-family=\'sans-serif\' font-size=\'10\' font-weight=\'bold\'>النسر</text></svg>';" alt="شعار شركة النسر التجارية" class="w-full h-full object-contain rounded-lg drop-shadow-md">
                 </div>
 
                 <div class="flex flex-col">
-                    <div class="flex items-center gap-2">
-                        <h1 class="text-base sm:text-lg font-black text-[#45260a] tracking-tight">شركة النسر التجارية</h1>
-                    </div>
+                    <h1 class="text-base sm:text-lg font-black text-[#45260a] tracking-tight">شركة النسر التجارية</h1>
                     <span class="text-[11px] sm:text-xs text-[#888] font-medium hidden sm:block">إدارة المخزون وتخمير الموز — مستودع نجها</span>
                 </div>
             </div>
 
-            <!-- Left: Stats & Login -->
             <div class="flex items-center gap-2 sm:gap-3 shrink-0">
                 <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#fdf2e9] border border-[#fae5d3] text-xs">
                     <span class="text-[#6f6f6f] font-semibold">رصيد المستودع الفعلي:</span>
@@ -204,31 +199,26 @@
                         <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
                         <span>الرئيسية والمؤشرات</span>
                     </button>
-
                     <button type="button" id="nav-inbound" onclick="switchTab('inbound')" class="omni-nav-pill">
                         <i data-lucide="arrow-down-left" class="w-4 h-4 text-blue-600"></i>
                         <span>استلام الحاويات</span>
                         <span id="badgeInboundCount" class="bg-blue-100 text-blue-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">143</span>
                     </button>
-
                     <button type="button" id="nav-dispatch" onclick="switchTab('dispatch')" class="omni-nav-pill">
                         <i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-600"></i>
                         <span>التوزيع والشحن</span>
                         <span id="badgeDispatchCount" class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">761</span>
                     </button>
-
                     <button type="button" id="nav-movement" onclick="switchTab('movement')" class="omni-nav-pill">
                         <i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i>
                         <span>حركة المستودع والأرصدة</span>
                         <span id="badgeMovementCount" class="bg-cyan-100 text-cyan-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">59 يوماً</span>
                     </button>
-
                     <button type="button" id="nav-rooms" onclick="switchTab('rooms')" class="omni-nav-pill">
                         <i data-lucide="boxes" class="w-4 h-4 text-amber-600"></i>
                         <span>قاعات التخمير</span>
                         <span id="badgeRoomsStock" class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">15,220</span>
                     </button>
-
                     <button type="button" id="nav-inspection" onclick="switchTab('inspection')" class="omni-nav-pill">
                         <i data-lucide="camera" class="w-4 h-4 text-purple-600"></i>
                         <span>معرض وتقارير الفحص</span>
@@ -252,78 +242,30 @@
 
     <!-- Mobile Drawer -->
     <div id="adminDrawerBackdrop" onclick="closeAdminDrawer()" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm lg:hidden transition-opacity duration-300 opacity-0"></div>
-
     <aside id="adminSideDrawer" class="drawer-closed fixed top-0 right-0 z-50 flex h-screen w-72 flex-col bg-white border-l border-[#fae5d3] duration-300 ease-linear lg:hidden shadow-2xl">
         <div class="p-4 border-b border-[#fae5d3] flex items-center justify-between bg-[#fdf2e9]">
             <h2 class="font-extrabold text-[#45260a] text-sm">مستودع نجها - شركة النسر</h2>
-            <button type="button" onclick="closeAdminDrawer()" class="p-1.5 rounded-xl text-slate-500 hover:text-slate-900" title="إغلاق">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
+            <button type="button" onclick="closeAdminDrawer()" class="p-1.5 rounded-xl text-slate-500 hover:text-slate-900"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <div class="flex-1 overflow-y-auto p-4 space-y-2">
-            <button type="button" onclick="switchTab('dashboard')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5">
-                <i data-lucide="layout-dashboard" class="w-4 h-4 text-[#e67e22]"></i>
-                <span>الرئيسية والمؤشرات</span>
-            </button>
-            <button type="button" onclick="switchTab('inbound')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5">
-                <i data-lucide="arrow-down-left" class="w-4 h-4 text-blue-600"></i>
-                <span class="flex-1">استلام الحاويات</span>
-                <span class="bg-blue-100 text-blue-800 text-[10px] px-2 py-0.5 rounded-full font-num font-bold">143</span>
-            </button>
-            <button type="button" onclick="switchTab('dispatch')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5">
-                <i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-600"></i>
-                <span class="flex-1">التوزيع والشحن</span>
-                <span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-num font-bold">761</span>
-            </button>
-            <button type="button" onclick="switchTab('movement')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5">
-                <i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i>
-                <span class="flex-1">حركة المستودع والأرصدة</span>
-                <span class="bg-cyan-100 text-cyan-800 text-[10px] px-2 py-0.5 rounded-full font-num font-bold">59 يوماً</span>
-            </button>
-            <button type="button" onclick="switchTab('rooms')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5">
-                <i data-lucide="boxes" class="w-4 h-4 text-amber-600"></i>
-                <span class="flex-1">قاعات التخمير</span>
-                <span class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded-full font-num font-bold">15,220</span>
-            </button>
-            <button type="button" onclick="switchTab('inspection')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5">
-                <i data-lucide="camera" class="w-4 h-4 text-purple-600"></i>
-                <span class="flex-1">معرض وتقارير الفحص</span>
-                <span class="bg-purple-100 text-purple-800 text-[10px] px-2 py-0.5 rounded-full font-num font-bold">143</span>
-            </button>
-            <div class="pt-3 border-t border-[#fae5d3] space-y-1">
-                <button type="button" onclick="openDriverModal(); closeAdminDrawer();" class="w-full text-right px-3 py-2 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] text-[#6f6f6f] flex items-center gap-2.5">
-                    <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                    <span>دليل أسطول السائقين</span>
-                </button>
-                <button type="button" onclick="openBrandsModal(); closeAdminDrawer();" class="w-full text-right px-3 py-2 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] text-[#6f6f6f] flex items-center gap-2.5">
-                    <i data-lucide="tags" class="w-4 h-4 text-amber-600"></i>
-                    <span>دليل الماركات المعتمدة</span>
-                </button>
-            </div>
-            <!-- Admin Actions -->
-            <div class="admin-only pt-3 border-t border-[#fae5d3] space-y-2">
-                <button type="button" onclick="drawerActionInbound()" class="w-full p-2.5 rounded-xl bg-[#fdf2e9] hover:bg-[#fae5d3] text-right flex items-center gap-2.5">
-                    <i data-lucide="plus-circle" class="w-4 h-4 text-blue-600"></i>
-                    <span class="text-xs font-bold text-[#45260a]">إضافة حاوية استلام</span>
-                </button>
-                <button type="button" onclick="drawerActionDispatch()" class="w-full p-2.5 rounded-xl bg-[#fdf2e9] hover:bg-[#fae5d3] text-right flex items-center gap-2.5">
-                    <i data-lucide="truck" class="w-4 h-4 text-emerald-600"></i>
-                    <span class="text-xs font-bold text-[#45260a]">تسجيل إرسالية توزيع</span>
-                </button>
-            </div>
+            <button type="button" onclick="switchTab('dashboard')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="layout-dashboard" class="w-4 h-4 text-[#e67e22]"></i><span>الرئيسية والمؤشرات</span></button>
+            <button type="button" onclick="switchTab('inbound')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="arrow-down-left" class="w-4 h-4 text-blue-600"></i><span class="flex-1">استلام الحاويات</span></button>
+            <button type="button" onclick="switchTab('dispatch')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-600"></i><span class="flex-1">التوزيع والشحن</span></button>
+            <button type="button" onclick="switchTab('movement')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i><span class="flex-1">حركة المستودع والأرصدة</span></button>
+            <button type="button" onclick="switchTab('rooms')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="boxes" class="w-4 h-4 text-amber-600"></i><span class="flex-1">قاعات التخمير</span></button>
+            <button type="button" onclick="switchTab('inspection')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="camera" class="w-4 h-4 text-purple-600"></i><span class="flex-1">معرض وتقارير الفحص</span></button>
         </div>
     </aside>
 
     <!-- Main Workspace Container -->
     <main class="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-        <!-- Notification Toast Box -->
         <div id="toastNotification" class="fixed bottom-5 left-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 glass-panel border border-slate-300 p-4 rounded-2xl shadow-2xl flex items-center gap-3">
             <div id="toastIcon" class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">✓</div>
             <div id="toastMsg" class="text-sm font-bold text-[#45260a]">تمت العملية بنجاح</div>
         </div>
 
-        <!-- ================= PAGE 1: DASHBOARD ================= -->
+        <!-- 1. DASHBOARD -->
         <section id="tab-dashboard" class="space-y-6">
             <div class="glass-panel p-3.5 sm:p-4 rounded-2xl border border-blue-500/30 bg-white/90 shadow-xl space-y-3">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
@@ -341,17 +283,13 @@
                     </div>
 
                     <div class="flex items-center gap-1.5 sm:gap-2 self-end sm:self-auto">
-                        <button type="button" onclick="navigateCalendarDay(-1)" class="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-all text-xs font-bold flex items-center gap-1" title="اليوم السابق">
-                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            <span class="hidden sm:inline">السابق</span>
+                        <button type="button" onclick="navigateCalendarDay(-1)" class="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-all text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i><span class="hidden sm:inline">السابق</span>
                         </button>
                         <input type="date" id="globalCalendarPicker" onchange="onGlobalDatePicked(this.value)" class="bg-white border border-blue-500/40 rounded-xl px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:border-blue-400 cursor-pointer">
-                        <button type="button" onclick="setCalendarToToday()" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-md">
-                            اليوم
-                        </button>
-                        <button type="button" onclick="navigateCalendarDay(1)" class="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-all text-xs font-bold flex items-center gap-1" title="اليوم التالي">
-                            <span class="hidden sm:inline">التالي</span>
-                            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        <button type="button" onclick="setCalendarToToday()" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-md">اليوم</button>
+                        <button type="button" onclick="navigateCalendarDay(1)" class="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-all text-xs font-bold flex items-center gap-1">
+                            <span class="hidden sm:inline">التالي</span><i data-lucide="chevron-left" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
@@ -389,68 +327,52 @@
             </div>
 
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="glass-panel p-5 rounded-2xl border border-slate-200 hover:border-slate-300 transition-all">
+                <div class="glass-panel p-5 rounded-2xl border border-slate-200/80 hover:border-slate-300 transition-all">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-semibold text-slate-500">العدد الفعلي الحالي للمستودع</span>
-                        <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center">
-                            <i data-lucide="box" class="w-5 h-5"></i>
-                        </div>
+                        <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center"><i data-lucide="box" class="w-5 h-5"></i></div>
                     </div>
                     <div class="flex items-baseline gap-2">
-                        <span id="kpiCurrentStock" class="text-2xl sm:text-3xl font-black text-slate-800 font-num">15,220</span>
+                        <span id="kpiCurrentStock" class="text-2xl sm:text-3xl font-black text-slate-800">15,220</span>
                         <span class="text-xs font-bold text-slate-500">كرتونة</span>
                     </div>
-                    <p class="text-[11px] text-emerald-600 mt-2 flex items-center gap-1 font-medium">
-                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> مطابق بدقة 100% لمجموع القاعات
-                    </p>
+                    <p class="text-[11px] text-emerald-600 mt-2 flex items-center gap-1 font-medium"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> مطابق بدقة 100% لمجموع القاعات</p>
                 </div>
 
-                <div class="glass-panel p-5 rounded-2xl border border-slate-200 hover:border-slate-300 transition-all">
+                <div class="glass-panel p-5 rounded-2xl border border-slate-200/80 hover:border-slate-300 transition-all">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-semibold text-slate-500">إجمالي الحاويات الواردة</span>
-                        <div class="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center">
-                            <i data-lucide="ship" class="w-5 h-5"></i>
-                        </div>
+                        <div class="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center"><i data-lucide="ship" class="w-5 h-5"></i></div>
                     </div>
                     <div class="flex items-baseline gap-2">
-                        <span id="kpiTotalContainers" class="text-2xl sm:text-3xl font-black text-slate-800 font-num">143</span>
+                        <span id="kpiTotalContainers" class="text-2xl sm:text-3xl font-black text-slate-800">143</span>
                         <span class="text-xs font-bold text-slate-500">حاوية</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-2 font-medium">
-                        إجمالي <span id="kpiTotalReceived" class="text-cyan-700 font-bold font-num">161,189</span> كرتونة واردة
-                    </p>
+                    <p class="text-[11px] text-slate-500 mt-2 font-medium">إجمالي <span id="kpiTotalReceived" class="text-cyan-700 font-bold font-mono">161,189</span> كرتونة واردة</p>
                 </div>
 
-                <div class="glass-panel p-5 rounded-2xl border border-slate-200 hover:border-slate-300 transition-all">
+                <div class="glass-panel p-5 rounded-2xl border border-slate-200/80 hover:border-slate-300 transition-all">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-semibold text-slate-500">إجمالي الصادر والتوزيع</span>
-                        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
-                            <i data-lucide="truck" class="w-5 h-5"></i>
-                        </div>
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center"><i data-lucide="truck" class="w-5 h-5"></i></div>
                     </div>
                     <div class="flex items-baseline gap-2">
-                        <span id="kpiTotalDispatched" class="text-2xl sm:text-3xl font-black text-slate-800 font-num">156,243</span>
+                        <span id="kpiTotalDispatched" class="text-2xl sm:text-3xl font-black text-slate-800">156,243</span>
                         <span class="text-xs font-bold text-slate-500">كرتونة</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-2 font-medium">
-                        <span id="kpiTotalDispatchedTrans" class="text-emerald-700 font-bold font-num">761</span> إرسالية
-                    </p>
+                    <p class="text-[11px] text-slate-500 mt-2 font-medium"><span id="kpiTotalDispatchedTrans" class="text-emerald-700 font-bold font-mono">761</span> إرسالية (دمشق ولبنان)</p>
                 </div>
 
-                <div class="glass-panel p-5 rounded-2xl border border-slate-200 hover:border-slate-300 transition-all">
+                <div class="glass-panel p-5 rounded-2xl border border-slate-200/80 hover:border-slate-300 transition-all">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-semibold text-slate-500">القاعات العاملة</span>
-                        <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
-                            <i data-lucide="flame" class="w-5 h-5"></i>
-                        </div>
+                        <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center"><i data-lucide="flame" class="w-5 h-5"></i></div>
                     </div>
                     <div class="flex items-baseline gap-2">
                         <span id="kpiActiveRooms" class="text-2xl sm:text-3xl font-black text-amber-600 font-num">6 / 6</span>
                         <span class="text-xs font-bold text-slate-500">قاعات</span>
                     </div>
-                    <p id="kpiActiveRoomsSub" class="text-[11px] text-amber-700 mt-2 font-medium">
-                        جميع القاعات (7 إلى 12) مشغولة بالكامل
-                    </p>
+                    <p id="kpiActiveRoomsSub" class="text-[11px] text-amber-700 mt-2 font-medium">جميع القاعات (7 إلى 12) مشغولة بالكامل</p>
                 </div>
             </div>
 
@@ -459,95 +381,44 @@
                     <div class="flex items-center justify-between mb-4">
                         <div>
                             <h3 id="chartTitleText" class="font-bold text-slate-900 text-base">مسار رصيد المستودع والتدفق اليومي</h3>
-                            <p id="chartSubTitleText" class="text-xs text-slate-500">مقارنة الوارد والصادر وتطور رصيد نجها الفعلي (افتتاحي: 10,274 ← إغلاق: 15,220 طرد)</p>
+                            <p id="chartSubTitleText" class="text-xs text-slate-500">مقارنة الوارد والصادر وتطور رصيد نجها الفعلي</p>
                         </div>
                         <span class="px-2.5 py-1 text-xs rounded-lg bg-blue-500/10 text-blue-600 font-semibold border border-blue-500/20">بيانات فعلية</span>
                     </div>
-                    <div class="h-72 w-full">
-                        <canvas id="movementChart"></canvas>
-                    </div>
+                    <div class="h-72 w-full"><canvas id="movementChart"></canvas></div>
                 </div>
 
                 <div class="glass-panel p-6 rounded-2xl border border-slate-200 flex flex-col justify-between">
                     <div>
                         <h3 class="font-bold text-slate-900 text-base mb-1">توزيع الكراتين وحصص التجار</h3>
-                        <p class="text-xs text-slate-500 mb-5">توزيع الأصناف وحصص الأسواق من إجمالي الصادر (<span id="dynMarketTotalBoxes" class="font-num font-bold text-slate-800">156,243</span> طرد)</p>
-                        
+                        <p class="text-xs text-slate-500 mb-5">توزيع الأصناف وحصص الأسواق (<span id="dynMarketTotalBoxes" class="font-num font-bold text-slate-800">156,243</span> طرد)</p>
                         <div class="space-y-4">
                             <div>
-                                <div class="flex justify-between text-xs font-semibold mb-1.5">
-                                    <span class="text-slate-700">سوق دمشق</span>
-                                    <span id="dynMarketDamascusText" class="text-blue-600 font-num">99.3%</span>
-                                </div>
-                                <div class="w-full bg-slate-100 rounded-full h-2">
-                                    <div id="dynMarketDamascusBar" class="bg-blue-500 h-2 rounded-full transition-all duration-500" style="width: 99.3%"></div>
-                                </div>
+                                <div class="flex justify-between text-xs font-semibold mb-1.5"><span class="text-slate-700">سوق دمشق</span><span id="dynMarketDamascusText" class="text-blue-600 font-num">99.3%</span></div>
+                                <div class="w-full bg-slate-100 rounded-full h-2"><div id="dynMarketDamascusBar" class="bg-blue-500 h-2 rounded-full transition-all duration-500" style="width: 99.3%"></div></div>
                             </div>
                             <div>
-                                <div class="flex justify-between text-xs font-semibold mb-1.5">
-                                    <span class="text-slate-700">تصدير لبنان والأسواق الأخرى</span>
-                                    <span id="dynMarketExportText" class="text-amber-600 font-num">0.7%</span>
-                                </div>
-                                <div class="w-full bg-slate-100 rounded-full h-2">
-                                    <div id="dynMarketExportBar" class="bg-amber-500 h-2 rounded-full transition-all duration-500" style="width: 0.7%"></div>
-                                </div>
+                                <div class="flex justify-between text-xs font-semibold mb-1.5"><span class="text-slate-700">تصدير وأسواق أخرى</span><span id="dynMarketExportText" class="text-amber-600 font-num">0.7%</span></div>
+                                <div class="w-full bg-slate-100 rounded-full h-2"><div id="dynMarketExportBar" class="bg-amber-500 h-2 rounded-full transition-all duration-500" style="width: 0.7%"></div></div>
                             </div>
-                            
                             <div class="pt-3 border-t border-[#fae5d3] space-y-3">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-extrabold text-[#45260a] flex items-center gap-1.5">
-                                        <i data-lucide="pie-chart" class="w-4 h-4 text-[#e67e22]"></i>
-                                        مقارنة التوزيع: عمر العقاد × أحمد الطالب
-                                    </span>
+                                    <span class="text-xs font-extrabold text-[#45260a] flex items-center gap-1.5"><i data-lucide="pie-chart" class="w-4 h-4 text-[#e67e22]"></i> مقارنة التوزيع</span>
                                     <span id="merchantsCombinedBadge" class="px-2 py-0.5 rounded-lg bg-[#fdf2e9] text-[#cf711f] border border-[#fae5d3] text-[10px] font-bold font-num">72,175 طرد</span>
                                 </div>
-
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center bg-[#fdfaf7] p-3 rounded-2xl border border-[#fae5d3]">
-                                    <div class="h-36 w-full relative flex items-center justify-center">
-                                        <canvas id="merchantsSplitChart"></canvas>
-                                    </div>
+                                    <div class="h-36 w-full relative flex items-center justify-center"><canvas id="merchantsSplitChart"></canvas></div>
                                     <div class="space-y-2.5 text-xs">
-                                        <div onclick="switchTab('dispatch');" class="p-2.5 rounded-xl bg-white border border-[#fae5d3] hover:border-[#e67e22] cursor-pointer transition-all shadow-sm">
-                                            <div class="flex items-center justify-between mb-1">
-                                                <span class="font-bold text-[#45260a] flex items-center gap-1.5">
-                                                    <span class="w-2.5 h-2.5 rounded-full bg-[#e67e22]"></span>
-                                                    عمر العقاد
-                                                </span>
-                                                <span id="statOmarPct" class="text-[11px] font-black text-[#e67e22] font-num">50.4%</span>
-                                            </div>
-                                            <div class="flex items-baseline justify-between text-[11px]">
-                                                <span id="statOmarBoxes" class="font-black text-slate-800 font-num">36,366 طرد</span>
-                                                <span id="statOmarTrips" class="text-[10px] text-slate-500 font-num">(149 إرسالية)</span>
-                                            </div>
+                                        <div class="p-2.5 rounded-xl bg-white border border-[#fae5d3]">
+                                            <div class="flex items-center justify-between mb-1"><span class="font-bold text-[#45260a]">عمر العقاد</span><span id="statOmarPct" class="text-[11px] font-black text-[#e67e22] font-num">50.4%</span></div>
+                                            <div class="flex items-baseline justify-between text-[11px]"><span id="statOmarBoxes" class="font-black text-slate-800 font-num">36,366 طرد</span></div>
                                         </div>
-
-                                        <div onclick="switchTab('dispatch');" class="p-2.5 rounded-xl bg-white border border-blue-200/80 hover:border-blue-500 cursor-pointer transition-all shadow-sm">
-                                            <div class="flex items-center justify-between mb-1">
-                                                <span class="font-bold text-[#45260a] flex items-center gap-1.5">
-                                                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-                                                    أحمد الطالب
-                                                </span>
-                                                <span id="statAhmadPct" class="text-[11px] font-black text-blue-600 font-num">49.6%</span>
-                                            </div>
-                                            <div class="flex items-baseline justify-between text-[11px]">
-                                                <span id="statAhmadBoxes" class="font-black text-slate-800 font-num">35,809 طرد</span>
-                                                <span id="statAhmadTrips" class="text-[10px] text-slate-500 font-num">(131 إرسالية)</span>
-                                            </div>
+                                        <div class="p-2.5 rounded-xl bg-white border border-blue-200">
+                                            <div class="flex items-center justify-between mb-1"><span class="font-bold text-[#45260a]">أحمد الطالب</span><span id="statAhmadPct" class="text-[11px] font-black text-blue-600 font-num">49.6%</span></div>
+                                            <div class="flex items-baseline justify-between text-[11px]"><span id="statAhmadBoxes" class="font-black text-slate-800 font-num">35,809 طرد</span></div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 pt-4 border-t border-slate-200/80 bg-white/40 -mx-6 -mb-6 p-5 rounded-b-2xl">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
-                                <i data-lucide="shield-check" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-800">حماية المعاملات الذرية (Transactions) مفعلة</div>
-                                <div class="text-[11px] text-slate-500">حفظ مؤمن يمنع التضارب بين الأجهزة المتعددة</div>
                             </div>
                         </div>
                     </div>
@@ -555,48 +426,21 @@
             </div>
         </section>
 
-        <!-- ================= PAGE 2: INBOUND ================= -->
+        <!-- 2. INBOUND -->
         <section id="tab-inbound" class="hidden space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
                 <div>
-                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                        <i data-lucide="arrow-down-left" class="w-5 h-5 text-blue-500"></i>
-                        سجل استلام الحاويات وشحنات الموز
-                    </h2>
-                    <p id="inboundDescText" class="text-xs text-slate-500 mt-1">
-                        إجمالي <span id="dynInboundContCount" class="font-bold text-blue-600 font-num">143</span> حاوية مستلمة (<span id="dynInboundBoxesCount" class="font-bold text-slate-800 font-num">161,189</span> كرتونة)
-                    </p>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="arrow-down-left" class="w-5 h-5 text-blue-500"></i> سجل استلام الحاويات</h2>
+                    <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynInboundContCount" class="font-bold text-blue-600 font-num">143</span> حاوية (<span id="dynInboundBoxesCount" class="font-bold text-slate-800 font-num">161,189</span> كرتونة)</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button type="button" onclick="openBrandsModal()" class="px-3.5 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 border border-amber-500/30 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all">
-                        <i data-lucide="tags" class="w-4 h-4 text-amber-600"></i> دليل الماركات
-                    </button>
-                    <button type="button" onclick="toggleInboundForm()" class="admin-only px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all">
-                        <i data-lucide="plus-circle" class="w-4 h-4"></i> إضافة حاوية واردة
-                    </button>
-                </div>
+                <button type="button" onclick="openBrandsModal()" class="px-3.5 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 border border-amber-500/30 rounded-xl text-xs font-bold">دليل الماركات</button>
             </div>
-
-            <!-- Inbound Data Table -->
             <div class="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
                 <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
                     <table class="w-full min-w-[1150px] text-right text-xs">
-                        <thead class="bg-white/95 text-slate-600 font-bold border-b border-slate-200 sticky top-0 backdrop-blur-md z-10">
+                        <thead class="bg-white/95 text-slate-600 font-bold border-b border-slate-200 sticky top-0">
                             <tr>
-                                <th class="p-3">#</th>
-                                <th class="p-3">رقم الحاوية</th>
-                                <th class="p-3">تاريخ الوصول</th>
-                                <th class="p-3">المنفذ</th>
-                                <th class="p-3">الماركة</th>
-                                <th class="p-3">المنشأ</th>
-                                <th class="p-3">العدد (كرتونة)</th>
-                                <th class="p-3">رقم السيارة</th>
-                                <th class="p-3">السائق الناقل</th>
-                                <th class="p-3 text-center">الحرارة</th>
-                                <th class="p-3 text-center">أصفر</th>
-                                <th class="p-3 text-center">ثاني</th>
-                                <th class="p-3 text-center">لين</th>
-                                <th class="p-3 text-center">تالف</th>
+                                <th class="p-3">#</th><th class="p-3">رقم الحاوية</th><th class="p-3">تاريخ الوصول</th><th class="p-3">المنفذ</th><th class="p-3">الماركة</th><th class="p-3">المنشأ</th><th class="p-3">العدد (كرتونة)</th><th class="p-3">رقم السيارة</th><th class="p-3">السائق الناقل</th><th class="p-3 text-center">الحرارة</th><th class="p-3 text-center">أصفر</th><th class="p-3 text-center">ثاني</th><th class="p-3 text-center">لين</th><th class="p-3 text-center">تالف</th>
                             </tr>
                         </thead>
                         <tbody id="inboundTableBody" class="divide-y divide-slate-100"></tbody>
@@ -605,94 +449,47 @@
             </div>
         </section>
 
-        <!-- ================= PAGE 3: DISPATCH ================= -->
+        <!-- 3. DISPATCH -->
         <section id="tab-dispatch" class="hidden space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
                 <div>
-                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                        <i data-lucide="arrow-up-right" class="w-5 h-5 text-emerald-500"></i>
-                        أذونات التوزيع وأسطول الشحن لدمشق (<span id="dynDispatchTransCount" class="font-num">761</span> إرسالية)
-                    </h2>
-                    <p id="dispatchDescText" class="text-xs text-slate-500 mt-1">إجمالي <span id="dynDispatchBoxesCount" class="font-bold text-slate-800 font-num">156,243</span> كرتونة موز</p>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="arrow-up-right" class="w-5 h-5 text-emerald-500"></i> أذونات التوزيع وأسطول الشحن</h2>
+                    <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynDispatchTransCount" class="font-num">761</span> إرسالية (<span id="dynDispatchBoxesCount" class="font-bold text-slate-800 font-num">156,243</span> كرتونة)</p>
                 </div>
             </div>
-
             <div class="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
                 <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
                     <table class="w-full text-right text-xs">
                         <thead class="bg-white text-slate-500 sticky top-0 font-bold border-b border-slate-200">
                             <tr>
-                                <th class="p-3">#</th>
-                                <th class="p-3">التاريخ</th>
-                                <th class="p-3">اليوم</th>
-                                <th class="p-3">السائق</th>
-                                <th class="p-3 text-amber-700 font-bold">التاجر / الزبون</th>
-                                <th class="p-3">رقم السيارة</th>
-                                <th class="p-3">الوجهة</th>
-                                <th class="p-3">الماركة</th>
-                                <th class="p-3">العدد (طرد)</th>
-                                <th class="p-3">رقم الإيصال</th>
-                                <th class="p-3">المنشأ</th>
+                                <th class="p-3">#</th><th class="p-3">التاريخ</th><th class="p-3">اليوم</th><th class="p-3">السائق</th><th class="p-3 text-amber-700 font-bold">التاجر</th><th class="p-3">رقم السيارة</th><th class="p-3">الوجهة</th><th class="p-3">الماركة</th><th class="p-3">العدد (طرد)</th><th class="p-3">الإيصال</th><th class="p-3">المنشأ</th>
                             </tr>
                         </thead>
                         <tbody id="dispatchTableBody" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
-                <div class="p-3 bg-white/80 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
-                    <div id="dispatchPaginationInfo"></div>
-                    <div class="flex items-center gap-1.5" id="dispatchPaginationControls"></div>
-                </div>
             </div>
         </section>
 
-        <!-- ================= PAGE 4: MOVEMENT ================= -->
+        <!-- 4. MOVEMENT -->
         <section id="tab-movement" class="hidden space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
                 <div>
-                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                        <i data-lucide="activity" class="w-5 h-5 text-cyan-500"></i>
-                        حركة مستودع نجها الشاملة ومطابقة الأرصدة (59 يوماً)
-                    </h2>
-                    <p id="movementDescText" class="text-xs text-slate-500 mt-1">سجل التدفق اليومي الكامل من 01/09/2026 إلى 29/10/2026</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs flex items-center gap-2">
-                        <span class="text-slate-500">رصيد 31/8:</span>
-                        <span class="font-bold text-slate-800 font-mono">10,274 طرد</span>
-                    </div>
-                    <div class="px-3 py-1.5 bg-cyan-50 border border-cyan-200 rounded-xl text-xs flex items-center gap-2">
-                        <span class="text-cyan-800">العدد الفعلي الحالي:</span>
-                        <span id="movementFinalBadge" class="font-bold text-cyan-600 font-mono">15,220 طرد</span>
-                    </div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-cyan-500"></i> حركة مستودع نجها الشاملة (59 يوماً)</h2>
                 </div>
             </div>
-
             <div class="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
                 <div class="overflow-x-auto">
                     <table class="w-full text-right text-xs">
                         <thead class="bg-white/90 text-slate-500 font-bold border-b border-slate-200">
                             <tr>
-                                <th class="p-3">التاريخ</th>
-                                <th class="p-3">اليوم</th>
-                                <th class="p-3">رصيد بداية اليوم</th>
-                                <th class="p-3 text-cyan-600">الوارد اليومي</th>
-                                <th class="p-3 text-emerald-600">الصادر اليومي</th>
-                                <th class="p-3 text-amber-600">صافي الحركة</th>
-                                <th class="p-3 font-black text-[#45260a]">رصيد نهاية اليوم</th>
-                                <th class="p-3">البيان وملاحظات الحركة</th>
+                                <th class="p-3">التاريخ</th><th class="p-3">اليوم</th><th class="p-3">رصيد البداية</th><th class="p-3 text-cyan-600">الوارد</th><th class="p-3 text-emerald-600">الصادر</th><th class="p-3 text-amber-600">الصافي</th><th class="p-3 font-black text-[#45260a]">رصيد النهاية</th><th class="p-3">البيان</th>
                             </tr>
                         </thead>
                         <tbody id="movementTableBody" class="divide-y divide-slate-100"></tbody>
                         <tfoot class="bg-[#fdf2e9] font-bold text-xs border-t-2 border-[#fae5d3]">
                             <tr>
-                                <td class="p-3 text-[#45260a] font-black">المجموع الإجمالي</td>
-                                <td id="tfootDaysCount" class="p-3 text-slate-600 font-num">59 يوماً</td>
-                                <td class="p-3 font-mono text-slate-700">10,274</td>
-                                <td id="tfootInTotal" class="p-3 font-mono text-cyan-700 font-black">+161,189</td>
-                                <td id="tfootOutTotal" class="p-3 font-mono text-emerald-700 font-black">-156,243</td>
-                                <td id="tfootNetTotal" class="p-3 font-mono text-cyan-700 font-bold">+4,946</td>
-                                <td id="movementTfootClose" class="p-3 font-mono text-[#cf711f] text-sm font-black bg-amber-50">15,220</td>
-                                <td class="p-3 text-emerald-700 font-bold">رصيد مطابق 100% لجرد القاعات (15,220 طرد)</td>
+                                <td class="p-3 text-[#45260a] font-black">المجموع</td><td id="tfootDaysCount" class="font-num">59 يوماً</td><td class="font-mono">10,274</td><td id="tfootInTotal" class="font-mono text-cyan-700 font-black">+161,189</td><td id="tfootOutTotal" class="font-mono text-emerald-700 font-black">-156,243</td><td id="tfootNetTotal" class="font-mono text-cyan-700 font-bold">+4,946</td><td id="movementTfootClose" class="font-mono text-[#cf711f] text-sm font-black bg-amber-50">15,220</td><td class="text-emerald-700">مطابق 100%</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -700,22 +497,19 @@
             </div>
         </section>
 
-        <!-- ================= PAGE 5: ROOMS ================= -->
+        <!-- 5. ROOMS -->
         <section id="tab-rooms" class="hidden space-y-6">
             <div id="roomsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
         </section>
 
-        <!-- ================= PAGE 6: INSPECTIONS ================= -->
+        <!-- 6. INSPECTION -->
         <section id="tab-inspection" class="hidden space-y-6">
             <div id="inspectionCardsContainer" class="space-y-6"></div>
         </section>
     </main>
 
-    <!-- Footer Attribution -->
     <footer class="bg-white border-t border-[#fae5d3] py-5 text-center mt-12">
-        <p dir="ltr" class="text-xs text-[#767676] font-mono tracking-wider">
-            Developed by <span class="text-[#e67e22] font-black">Mohamad Harba</span>
-        </p>
+        <p dir="ltr" class="text-xs text-[#767676] font-mono tracking-wider">Developed by <span class="text-[#e67e22] font-black">Mohamad Harba</span></p>
     </footer>
 
     <!-- Modals -->
@@ -728,11 +522,7 @@
             <div class="flex-1 overflow-y-auto max-h-72">
                 <table class="w-full text-right text-xs">
                     <thead class="bg-white text-slate-500 sticky top-0 font-bold border-b border-slate-200">
-                        <tr>
-                            <th class="p-2.5">#</th>
-                            <th class="p-2.5">اسم الماركة</th>
-                            <th class="p-2.5">المنشأ والتعبئة</th>
-                        </tr>
+                        <tr><th class="p-2.5">#</th><th class="p-2.5">اسم الماركة</th><th class="p-2.5">المنشأ والتعبئة</th></tr>
                     </thead>
                     <tbody id="brandsListTableBody" class="divide-y divide-slate-100"></tbody>
                 </table>
@@ -749,13 +539,7 @@
             <div class="flex-1 overflow-y-auto max-h-80">
                 <table class="w-full text-right text-xs">
                     <thead class="bg-white text-slate-500 sticky top-0 font-bold border-b border-slate-200">
-                        <tr>
-                            <th class="p-2.5">اسم السائق</th>
-                            <th class="p-2.5">رقم السيارة</th>
-                            <th class="p-2.5">الوجهة</th>
-                            <th class="p-2.5 text-center">الرحلات</th>
-                            <th class="p-2.5 text-center">إجمالي الكراتين</th>
-                        </tr>
+                        <tr><th class="p-2.5">اسم السائق</th><th class="p-2.5">رقم السيارة</th><th class="p-2.5">الوجهة</th><th class="p-2.5 text-center">الرحلات</th><th class="p-2.5 text-center">إجمالي الكراتين</th></tr>
                     </thead>
                     <tbody id="driverListTableBody" class="divide-y divide-slate-100"></tbody>
                 </table>
@@ -763,33 +547,22 @@
         </div>
     </div>
 
-    <!-- Login Modal -->
     <div id="loginModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md bg-white border border-blue-500/40 rounded-3xl p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-600 flex items-center justify-center">
-                        <i data-lucide="shield-check" class="w-5 h-5"></i>
-                    </div>
+                    <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-600 flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
                     <h3 class="font-bold text-slate-900 text-base">تسجيل دخول المسؤولين</h3>
                 </div>
                 <button type="button" onclick="closeLoginModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
             </div>
             <form onsubmit="handleLoginSubmit(event)" class="space-y-3 text-xs">
                 <div id="loginErrorMsg" class="hidden p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 text-xs font-medium"></div>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">البريد الإلكتروني *</label>
-                    <input type="email" id="loginEmailInput" required placeholder="admin@najha.com" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                </div>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">كلمة المرور *</label>
-                    <input type="password" id="loginPasswordInput" required placeholder="••••••••" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                </div>
+                <div><label class="block text-slate-700 font-semibold mb-1">البريد الإلكتروني *</label><input type="email" id="loginEmailInput" required placeholder="admin@najha.com" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold"></div>
+                <div><label class="block text-slate-700 font-semibold mb-1">كلمة المرور *</label><input type="password" id="loginPasswordInput" required placeholder="••••••••" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold"></div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-200">
                     <button type="button" onclick="closeLoginModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl">إلغاء</button>
-                    <button type="submit" id="btnLoginSubmit" class="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-md">
-                        دخول
-                    </button>
+                    <button type="submit" id="btnLoginSubmit" class="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-md">دخول</button>
                 </div>
             </form>
         </div>
@@ -797,27 +570,16 @@
 
     <!-- JavaScript Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-10-30-v47-atomic-transactions";
+        const APP_DATA_VERSION = "2026-10-30-v48-restored-complete";
 
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
         function normalizeArabic(text) {
             if (!text) return '';
-            return String(text)
-                .toLowerCase()
-                .replace(/[إأآا]/g, 'ا')
-                .replace(/ة/g, 'ه')
-                .replace(/ى/g, 'ي')
-                .replace(/[\u064B-\u065F]/g, '')
-                .trim();
+            return String(text).toLowerCase().replace(/[إأآا]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/[\u064B-\u065F]/g, '').trim();
         }
 
         const firebaseConfig = {
@@ -836,19 +598,18 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // تفعيل المزامنة المزدوجة المتعددة الأجهزة والتبويبات
         try {
-            db.enablePersistence({ synchronizeTabs: true }).catch(err => {
-                console.warn("Firestore Persistence Notice:", err.code);
-            });
+            db.enablePersistence({ synchronizeTabs: true }).catch(err => {});
         } catch (e) {}
 
         const WAREHOUSE_DOC_REF = db.collection("warehouse_data").doc("current_state");
 
-        // Verified Complete Datasets
+        // Complete verified data datasets
         let inboundData = [{"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "yellow": 56, "second": 38, "soft": 31, "damage": 40, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "126764", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1740, "car": "8352", "driver": "محمد إسماعيل", "country": "الإكوادور", "temp": 17.1, "yellow": 21, "second": 11, "soft": 2, "damage": 15, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "126656", "date": "2026-09-01", "port": "باب الهوى", "brand": "اكسترا", "qty": 1098, "car": "8289112", "driver": "عبدالقادرخاروف", "country": "كوستاريكا", "temp": 15.5, "yellow": 30, "second": 17, "soft": 44, "damage": 29, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "127478", "date": "2026-09-02", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8157930", "driver": "رامي زينو", "country": "الإكوادور", "temp": 12.4, "yellow": 23, "second": 50, "soft": 54, "damage": 28, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "127540", "date": "2026-09-02", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبدالرحمن نوادي", "country": "الإكوادور", "temp": 13.7, "yellow": 258, "second": 33, "soft": 190, "damage": 13, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "127692", "date": "2026-09-02", "port": "باب الهوى", "brand": "اكسترا", "qty": 1098, "car": "5512279", "driver": "موفق قاسم", "country": "كوستاريكا", "temp": 13.7, "yellow": 28, "second": 9, "soft": 29, "damage": 21, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "128061", "date": "2026-09-04", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "3684", "driver": "مهند ناصر", "country": "الإكوادور", "temp": 13.0, "yellow": 155, "second": 59, "soft": 200, "damage": 22, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "130028", "date": "2026-09-05", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "5512279", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 13.0, "yellow": 5, "second": 7, "soft": 0, "damage": 8, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "130770", "date": "2026-09-07", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبدالرحمن نوادي", "country": "الإكوادور", "temp": 12.0, "yellow": 22, "second": 1, "soft": 16, "damage": 1, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "130716", "date": "2026-09-07", "port": "باب الهوى", "brand": "ديلمونتي", "qty": 1080, "car": "3684", "driver": "مهند ناصر", "country": "كوستاريكا", "temp": 11.3, "yellow": 0, "second": 0, "soft": 9, "damage": 2, "notes": "تخزين", "pack": "كوستريكا-19كغ"}, {"id": "130765", "date": "2026-09-07", "port": "باب الهوى", "brand": "اكسلبان", "qty": 1098, "car": "5512279", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 12.9, "yellow": 68, "second": 59, "soft": 212, "damage": 109, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "131451", "date": "2026-09-08", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "5157930", "driver": "رامي زينو", "country": "الإكوادور", "temp": 13.0, "yellow": 9, "second": 3, "soft": 8, "damage": 0, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "5740893", "date": "2026-09-11", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8189493", "driver": "أحمد الخطيب", "country": "كوستاريكا", "temp": 18.0, "yellow": 2, "second": 4, "soft": 0, "damage": 6, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "1314758", "date": "2026-09-11", "port": "المرفأ", "brand": "كرين تروبيك", "qty": 1098, "car": "8141772", "driver": "عامر خدام", "country": "كوستاريكا", "temp": 18.0, "yellow": 1, "second": 1, "soft": 0, "damage": 2, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "6597513", "date": "2026-09-11", "port": "المرفأ", "brand": "كرين تروبيك", "qty": 1098, "car": "8236774", "driver": "محمد الجمعه", "country": "كوستاريكا", "temp": 17.2, "yellow": 0, "second": 3, "soft": 0, "damage": 3, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "9047960", "date": "2026-09-11", "port": "المرفأ", "brand": "كرين تروبيك", "qty": 1098, "car": "8218207", "driver": "خالد الشويخ", "country": "كوستاريكا", "temp": 19.0, "yellow": 4, "second": 2, "soft": 7, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "8738989", "date": "2026-09-11", "port": "المرفأ", "brand": "كرين تروبيك", "qty": 1098, "car": "8172846", "driver": "حسيب حسنو", "country": "كوستاريكا", "temp": 17.6, "yellow": 0, "second": 0, "soft": 0, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "9402683", "date": "2026-09-11", "port": "المرفأ", "brand": "كرين تروبيك", "qty": 1098, "car": "8125107", "driver": "مهران إبراهيم", "country": "كوستاريكا", "temp": 19.0, "yellow": 1, "second": 0, "soft": 0, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5776237", "date": "2026-09-11", "port": "المرفأ", "brand": "كرين تروبيك", "qty": 1098, "car": "32303", "driver": "حيان مكارية", "country": "كوستاريكا", "temp": 19.2, "yellow": 0, "second": 0, "soft": 0, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5574133", "date": "2026-09-11", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8157669", "driver": "عبد الله نجار", "country": "كوستاريكا", "temp": 19.8, "yellow": 3, "second": 10, "soft": 7, "damage": 3, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5616075", "date": "2026-09-11", "port": "المرفأ", "brand": "كرين تروبيك", "qty": 1098, "car": "705396", "driver": "زكريا بزماوي", "country": "كوستاريكا", "temp": 18.3, "yellow": 10, "second": 10, "soft": 7, "damage": 9, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "6557608", "date": "2026-09-11", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "22225", "driver": "أحمد الأحمد", "country": "كوستاريكا", "temp": 19.3, "yellow": 13, "second": 15, "soft": 25, "damage": 10, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5824705", "date": "2026-09-11", "port": "المرفأ", "brand": "كرين تروبيك", "qty": 1098, "car": "8141932", "driver": "حسن غراب", "country": "كوستاريكا", "temp": 18.6, "yellow": 21, "second": 9, "soft": 22, "damage": 6, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "6556751", "date": "2026-09-11", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8130915", "driver": "مصطفى حسنو", "country": "كوستاريكا", "temp": 17.6, "yellow": 15, "second": 12, "soft": 22, "damage": 9, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "9288421", "date": "2026-09-12", "port": "المرفأ", "brand": "كرين تروبيك", "qty": 1098, "car": "8221548", "driver": "صهيب خضر", "country": "كوستاريكا", "temp": 15.7, "yellow": 1, "second": 6, "soft": 2, "damage": 6, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5765823", "date": "2026-09-12", "port": "المرفأ", "brand": "كرين تروبيك", "qty": 1098, "car": "8236765", "driver": "محمد عليو", "country": "كوستاريكا", "temp": 16.5, "yellow": 6, "second": 1, "soft": 0, "damage": 2, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "9492178", "date": "2026-09-12", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8293566", "driver": "عبد الهادي الحسن", "country": "كوستاريكا", "temp": 17.0, "yellow": 6, "second": 5, "soft": 0, "damage": 1, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "134208", "date": "2026-09-12", "port": "باب الهوى", "brand": "مستر بنانا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 12.9, "yellow": 0, "second": 1, "soft": 0, "damage": 0, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "13024", "date": "2026-09-14", "port": "باب الهوى", "brand": "نيستا بان", "qty": 1080, "car": "5512279", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 14.9, "yellow": 10, "second": 15, "soft": 12, "damage": 4, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "5788449", "date": "2026-09-17", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "623830", "driver": "احمد ناصيف", "country": "كوستاريكا", "temp": 18.7, "yellow": 10, "second": 23, "soft": 31, "damage": 9, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "9125260", "date": "2026-09-17", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8141932", "driver": "حسن غراب", "country": "كوستاريكا", "temp": 18.2, "yellow": 0, "second": 0, "soft": 0, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5727546", "date": "2026-09-17", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "8147538", "driver": "فهد بطال", "country": "كوستاريكا", "temp": 19.0, "yellow": 12, "second": 7, "soft": 33, "damage": 8, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "9007268", "date": "2026-09-17", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "31917", "driver": "هيثم خليل", "country": "كوستاريكا", "temp": 17.5, "yellow": 6, "second": 17, "soft": 27, "damage": 7, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5801427", "date": "2026-09-17", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "8125436", "driver": "اورانس دياب", "country": "كوستاريكا", "temp": 19.0, "yellow": 77, "second": 55, "soft": 52, "damage": 36, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "8079690", "date": "2026-09-17", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8123758", "driver": "محمد موسى", "country": "كوستاريكا", "temp": 19.5, "yellow": 0, "second": 7, "soft": 11, "damage": 10, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5777188", "date": "2026-09-18", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "8122954", "driver": "محمد فريدو", "country": "كوستاريكا", "temp": 18.7, "yellow": 9, "second": 2, "soft": 3, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5787442", "date": "2026-09-18", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "8190285", "driver": "محمد طويل", "country": "كوستاريكا", "temp": 17.8, "yellow": 4, "second": 2, "soft": 11, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "4251981", "date": "2026-09-18", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "8141773", "driver": "تركي عجمية", "country": "كوستاريكا", "temp": 17.4, "yellow": 6, "second": 2, "soft": 3, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5220844", "date": "2026-09-18", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "8126403", "driver": "احمد رومية", "country": "كوستاريكا", "temp": 17.0, "yellow": 1, "second": 1, "soft": 4, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5695726", "date": "2026-09-18", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "784627", "driver": "محمد فالح", "country": "كوستاريكا", "temp": 17.9, "yellow": 3, "second": 4, "soft": 0, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5753416", "date": "2026-09-18", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "3243", "driver": "صلاح المحمد", "country": "كوستاريكا", "temp": 19.1, "yellow": 6, "second": 5, "soft": 0, "damage": 2, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5529896", "date": "2026-09-21", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "706413", "driver": "محمد قاسم", "country": "كوستاريكا", "temp": 19.0, "yellow": 0, "second": 3, "soft": 2, "damage": 1, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "9377929", "date": "2026-09-21", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "8149143", "driver": "ادهم رامي", "country": "كوستاريكا", "temp": 19.2, "yellow": 2, "second": 8, "soft": 6, "damage": 3, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5268508", "date": "2026-09-21", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "8193847", "driver": "منذر اسعد", "country": "كوستاريكا", "temp": 19.0, "yellow": 1, "second": 6, "soft": 4, "damage": 1, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "139705", "date": "2026-09-21", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8157930", "driver": "رامي زينو", "country": "الإكوادور", "temp": 13.7, "yellow": 14, "second": 17, "soft": 6, "damage": 1, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "6588390", "date": "2026-09-22", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "442938", "driver": "احمد منزلجي", "country": "كوستاريكا", "temp": 18.4, "yellow": 0, "second": 0, "soft": 0, "damage": 0, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "5294214", "date": "2026-09-22", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1098, "car": "8236678", "driver": "عدنان بكاري", "country": "كوستاريكا", "temp": 18.4, "yellow": 0, "second": 2, "soft": 5, "damage": 1, "notes": "", "pack": "كوستريكا-19كغ"}, {"id": "137491", "date": "2026-09-22", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 12.7, "yellow": 70, "second": 35, "soft": 167, "damage": 46, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "137740", "date": "2026-09-23", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8289112", "driver": "عبد القادر خاروف", "country": "الإكوادور", "temp": 15.1, "yellow": 30, "second": 11, "soft": 78, "damage": 9, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "141414", "date": "2026-09-23", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8157930", "driver": "رامي زينو", "country": "الإكوادور", "temp": 14.0, "yellow": 73, "second": 31, "soft": 63, "damage": 27, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "141405", "date": "2026-09-23", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8352", "driver": "محمد إسماعيل", "country": "الإكوادور", "temp": 14.0, "yellow": 15, "second": 6, "soft": 8, "damage": 9, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "141989", "date": "2026-09-24", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "5512279", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 13.5, "yellow": 25, "second": 9, "soft": 40, "damage": 6, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "142000", "date": "2026-09-24", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 13.3, "yellow": 38, "second": 43, "soft": 70, "damage": 38, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "142757", "date": "2026-09-25", "port": "باب الهوى", "brand": "روزيتا", "qty": 1420, "car": "8157930", "driver": "رامي زينو", "country": "الإكوادور", "temp": 14.3, "yellow": 1, "second": 2, "soft": 0, "damage": 3, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "143668", "date": "2026-09-26", "port": "باب الهوى", "brand": "بانا غولد", "qty": 1080, "car": "5512279", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 15.7, "yellow": 106, "second": 63, "soft": 156, "damage": 48, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "143740", "date": "2026-09-26", "port": "باب الهوى", "brand": "بانا غولد", "qty": 1080, "car": "8289112", "driver": "عبد القادر خاروف", "country": "الإكوادور", "temp": 12.9, "yellow": 6, "second": 7, "soft": 17, "damage": 4, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "144552", "date": "2026-09-27", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 13.5, "yellow": 49, "second": 33, "soft": 130, "damage": 33, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "144245", "date": "2026-09-27", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8157930", "driver": "رامي زينو", "country": "الإكوادور", "temp": 14.0, "yellow": 128, "second": 57, "soft": 134, "damage": 59, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "145276", "date": "2026-09-28", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "5512279", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 13.8, "yellow": 0, "second": 0, "soft": 0, "damage": 0, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "145486", "date": "2026-09-28", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8352", "driver": "محمد إسماعيل", "country": "الإكوادور", "temp": 14.0, "yellow": 0, "second": 0, "soft": 0, "damage": 0, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "144668", "date": "2026-09-28", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8289112", "driver": "عبد القادر خاروف", "country": "الإكوادور", "temp": 12.5, "yellow": 0, "second": 0, "soft": 0, "damage": 0, "notes": "", "pack": "اكوادور-20كغ"}, {"id": "141596", "date": "2026-09-29", "car": "8157930", "driver": "رامي زينو", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-13.5كغ", "country": "الإكوادور", "qty": 1420, "yellow": 0, "second": 0, "soft": 0, "damage": 0, "temp": 14.3, "notes": "استلام باب الهوى"}, {"id": "146347", "date": "2026-09-30", "car": "5512279", "driver": "موفق قاسم", "port": "باب الهوى", "brand": "روزيتا", "country": "الإكوادور", "qty": 1098, "yellow": 50, "second": 63, "soft": 225, "damage": 63, "temp": 13.7, "notes": "استلام باب الهوى", "pack": "اكوادور-20كغ"}, {"id": "146349", "date": "2026-09-30", "car": "8192776", "driver": "عبد الرحمن نوادي", "port": "باب الهوى", "brand": "روزيتا", "country": "الإكوادور", "qty": 1098, "yellow": 3, "second": 8, "soft": 5, "damage": 1, "temp": 13.5, "notes": "استلام باب الهوى", "pack": "اكوادور-20كغ"}, {"id": "146348", "date": "2026-09-30", "car": "008352", "driver": "محمد إسماعيل", "port": "باب الهوى", "brand": "روزيتا", "country": "الإكوادور", "qty": 1098, "yellow": 11, "second": 21, "soft": 21, "damage": 10, "temp": 14.2, "notes": "استلام باب الهوى", "pack": "اكوادور-20كغ"}, {"id": "147210", "date": "2026-10-01", "day": "الخميس", "car": "8289112", "driver": "عبد القادر خارووف", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 7, "second": 6, "sour": 0, "soft": 5, "damage": 3, "temp": 14.5, "notes": ""}, {"id": "147207", "date": "2026-10-01", "day": "الخميس", "car": "8157930", "driver": "رامي زينو", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 16, "second": 5, "sour": 0, "soft": 24, "damage": 1, "temp": 13.4, "notes": ""}, {"id": "147326", "date": "2026-10-02", "day": "الجمعة", "car": "003684", "driver": "مهند حاج ناصر", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 3, "second": 2, "sour": 0, "soft": 1, "damage": 0, "temp": 13.3, "notes": ""}, {"id": "147220", "date": "2026-10-02", "day": "الجمعة", "car": "5512279", "driver": "عبد القادر خارووف", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 3, "second": 0, "sour": 1, "soft": 5, "damage": 1, "temp": 13.3, "notes": ""}, {"id": "148622", "date": "2026-10-03", "day": "السبت", "car": "8157930", "driver": "رامي زينو", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1044, "yellow": 43, "second": 30, "sour": 0, "soft": 11, "damage": 16, "temp": 14.5, "notes": ""}, {"id": "148608", "date": "2026-10-03", "day": "السبت", "car": "008352", "driver": "محمد إسماعيل", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 29, "second": 27, "sour": 0, "soft": 78, "damage": 27, "temp": 11.4, "notes": ""}, {"id": "148609", "date": "2026-10-03", "day": "السبت", "car": "8192776", "driver": "عبد الرحمن نوادي", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 13, "second": 11, "sour": 0, "soft": 31, "damage": 3, "temp": 13.5, "notes": ""}, {"id": "148650", "date": "2026-10-04", "day": "الأحد", "car": "003684", "driver": "مهند حاج ناصر", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 5, "second": 11, "sour": 0, "soft": 17, "damage": 6, "temp": 11.2, "notes": ""}, {"id": "149424", "date": "2026-10-04", "day": "الأحد", "car": "5512279", "driver": "موفق قاسم", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 18, "second": 25, "sour": 0, "soft": 46, "damage": 24, "temp": 13.8, "notes": ""}, {"id": "148618", "date": "2026-10-04", "day": "الأحد", "car": "8289112", "driver": "عبد القادر خارووف", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 29, "second": 15, "sour": 0, "soft": 32, "damage": 17, "temp": 13.5, "notes": ""}, {"id": "149882", "date": "2026-10-05", "day": "الاثنين", "car": "003684", "driver": "مهند حاج ناصر", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 40, "second": 25, "sour": 0, "soft": 120, "damage": 48, "temp": 11.3, "notes": ""}, {"id": "150272", "date": "2026-10-05", "day": "الاثنين", "car": "8289112", "driver": "عبد القادر خارووف", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 53, "second": 23, "sour": 0, "soft": 37, "damage": 11, "temp": 15.0, "notes": ""}, {"id": "5406886", "date": "2026-10-06", "day": "الثلاثاء", "car": "8157217", "driver": "خالد العيسى", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 9, "second": 3, "sour": 0, "soft": 11, "damage": 2, "temp": 16.1, "notes": ""}, {"id": "9878190", "date": "2026-10-06", "day": "الثلاثاء", "car": "8124961", "driver": "فراس شعار", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 5, "second": 13, "sour": 0, "soft": 4, "damage": 2, "temp": 16.9, "notes": ""}, {"id": "5455427", "date": "2026-10-06", "day": "الثلاثاء", "car": "8195023", "driver": "فواز المصطفى", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 1, "second": 6, "sour": 0, "soft": 0, "damage": 2, "temp": 17.0, "notes": ""}, {"id": "5412467", "date": "2026-10-06", "day": "الثلاثاء", "car": "8125434", "driver": "عمار جنادرو", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 1, "second": 1, "sour": 0, "soft": 5, "damage": 0, "temp": 16.4, "notes": ""}, {"id": "5248501", "date": "2026-10-06", "day": "الثلاثاء", "car": "8125107", "driver": "منذر اسعد", "port": "المرفأ", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 10, "second": 2, "sour": 0, "soft": 12, "damage": 1, "temp": 16.8, "notes": ""}, {"id": "8875270", "date": "2026-10-06", "day": "الثلاثاء", "car": "8123745", "driver": "بارع سلوم", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 1, "second": 7, "sour": 0, "soft": 4, "damage": 1, "temp": 16.6, "notes": ""}, {"id": "5471182", "date": "2026-10-06", "day": "الثلاثاء", "car": "8194133", "driver": "ميلاد أباظلي", "port": "المرفأ", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 7, "second": 2, "sour": 0, "soft": 8, "damage": 2, "temp": 16.5, "notes": ""}, {"id": "6563257", "date": "2026-10-07", "day": "الأربعاء", "car": "8126508", "driver": "زكريا العلي", "port": "المرفأ", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 25, "second": 28, "sour": 0, "soft": 35, "damage": 21, "temp": 17.4, "notes": "لجنة فحص"}, {"id": "5540072", "date": "2026-10-07", "day": "الأربعاء", "car": "8218199", "driver": "رضوان رمضان", "port": "المرفأ", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 6, "second": 6, "sour": 0, "soft": 5, "damage": 3, "temp": 17.5, "notes": ""}, {"id": "9269444", "date": "2026-10-07", "day": "الأربعاء", "car": "705213", "driver": "بشار عروس", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 15, "second": 3, "sour": 0, "soft": 12, "damage": 3, "temp": 16.4, "notes": ""}, {"id": "9123015", "date": "2026-10-07", "day": "الأربعاء", "car": "8141932", "driver": "بشار بلوط", "port": "المرفأ", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 13, "second": 7, "sour": 0, "soft": 8, "damage": 3, "temp": 16.8, "notes": ""}, {"id": "152410", "date": "2026-10-08", "day": "الخميس", "car": "8157930", "driver": "رامي زينو", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 37, "second": 32, "sour": 0, "soft": 93, "damage": 26, "temp": 13.5, "notes": ""}, {"id": "8515572", "date": "2026-10-09", "day": "الجمعة", "car": "8173259", "driver": "جمال بركات", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 16, "second": 10, "sour": 60, "soft": 25, "damage": 45, "temp": 16.9, "notes": "لجنة فحص"}, {"id": "153137", "date": "2026-10-09", "day": "الجمعة", "car": "003684", "driver": "مهند حاج ناصر", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 2, "second": 1, "sour": 0, "soft": 3, "damage": 0, "temp": 11.0, "notes": ""}, {"id": "153121", "date": "2026-10-09", "day": "الجمعة", "car": "8192776", "driver": "عبد الرحمن نوادي", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 2, "second": 2, "sour": 0, "soft": 4, "damage": 0, "temp": 13.7, "notes": ""}, {"id": "8885514", "date": "2026-10-11", "day": "الأحد", "car": "8143171", "driver": "محمد داوود", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 15.9, "notes": ""}, {"id": "9453209", "date": "2026-10-11", "day": "الأحد", "car": "8190416", "driver": "محمد الشيخ", "port": "المرفأ", "brand": "اكسترا بان", "pack": "هندي-14كغ", "country": "الهند", "qty": 1260, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 16.5, "notes": ""}, {"id": "6334644", "date": "2026-10-11", "day": "الأحد", "car": "8124918", "driver": "رامي اصلان", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 2, "temp": 15.4, "notes": ""}, {"id": "9901366", "date": "2026-10-11", "day": "الأحد", "car": "8121415", "driver": "فراس نداف", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 16.2, "notes": ""}, {"id": "9048377", "date": "2026-10-11", "day": "الأحد", "car": "8176459", "driver": "عبد السلام سالوقة", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 2, "second": 0, "sour": 0, "soft": 2, "damage": 3, "temp": 15.0, "notes": ""}, {"id": "9873343", "date": "2026-10-11", "day": "الأحد", "car": "8192825", "driver": "ايمن الشيخ", "port": "المرفأ", "brand": "اكسترا بان", "pack": "هندي-14كغ", "country": "الهند", "qty": 1260, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 16.5, "notes": "10كراتين وزن ناقص"}, {"id": "8658850", "date": "2026-10-11", "day": "الأحد", "car": "8142496", "driver": "احمد عبيد", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 1, "second": 0, "sour": 1, "soft": 1, "damage": 1, "temp": 15.9, "notes": ""}, {"id": "9379182", "date": "2026-10-11", "day": "الأحد", "car": "8128769", "driver": "علاء كريمو", "port": "المرفأ", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 0, "second": 0, "sour": 5, "soft": 0, "damage": 0, "temp": 16.7, "notes": ""}, {"id": "9193048", "date": "2026-10-12", "day": "الاثنين", "car": "011352", "driver": "عابدين عابدين", "port": "المرفأ", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 0, "second": 0, "sour": 4, "soft": 0, "damage": 0, "temp": 16.1, "notes": ""}, {"id": "9313919", "date": "2026-10-12", "day": "الاثنين", "car": "8141932", "driver": "عيد موسى", "port": "المرفأ", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 1, "second": 0, "sour": 2, "soft": 0, "damage": 2, "temp": 17.0, "notes": ""}, {"id": "7003220", "date": "2026-10-12", "day": "الاثنين", "car": "8125727", "driver": "عيسى قرطيش", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 46, "second": 19, "sour": 80, "soft": 29, "damage": 16, "temp": 18.1, "notes": "لجنة فحص"}, {"id": "157732", "date": "2026-10-15", "day": "الخميس", "car": "829605", "driver": "موفق قاسم", "port": "باب الهوى", "brand": "بانا كولد", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1080, "yellow": 15, "second": 18, "sour": 54, "soft": 0, "damage": 15, "temp": 14.0, "notes": ""}, {"id": "157744", "date": "2026-10-15", "day": "الخميس", "car": "008352", "driver": "محمد إسماعيل", "port": "باب الهوى", "brand": "بانا كولد", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1080, "yellow": 0, "second": 0, "sour": 3, "soft": 0, "damage": 0, "temp": 13.8, "notes": ""}, {"id": "158206", "date": "2026-10-16", "day": "الجمعة", "car": "8289112", "driver": "عبد القادر خارووف", "port": "باب الهوى", "brand": "بانا كولد", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1080, "yellow": 2, "second": 0, "sour": 2, "soft": 0, "damage": 0, "temp": 14.1, "notes": ""}, {"id": "9873153", "date": "2026-10-16", "day": "الجمعة", "car": "8141932", "driver": "عيد موسى", "port": "المرفأ", "brand": "اكسترا بان", "pack": "هندي-14كغ", "country": "الهند", "qty": 1333, "yellow": 4, "second": 0, "sour": 2, "soft": 3, "damage": 2, "temp": 15.9, "notes": ""}, {"id": "8374073", "date": "2026-10-16", "day": "الجمعة", "car": "8172846", "driver": "حسيب حسنو", "port": "المرفأ", "brand": "اكسترا بان", "pack": "هندي-14كغ", "country": "الهند", "qty": 1333, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 15.6, "notes": ""}, {"id": "5677384", "date": "2026-10-16", "day": "الجمعة", "car": "8172867", "driver": "اورهان قره جه", "port": "المرفأ", "brand": "اكسترا بان", "pack": "هندي-14كغ", "country": "الهند", "qty": 1333, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 15.3, "notes": ""}, {"id": "158719", "date": "2026-10-17", "day": "السبت", "car": "8157930", "driver": "رامي زينو", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 22, "second": 9, "sour": 27, "soft": 0, "damage": 3, "temp": 13.5, "notes": ""}, {"id": "158720", "date": "2026-10-17", "day": "السبت", "car": "003684", "driver": "مهند حاج ناصر", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 12.0, "notes": "تخزين"}, {"id": "158998", "date": "2026-10-17", "day": "السبت", "car": "008352", "driver": "محمد إسماعيل", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 13.7, "notes": "تخزين"}, {"id": "158724", "date": "2026-10-17", "day": "السبت", "car": "8219605", "driver": "موفق قاسم", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 11, "second": 5, "sour": 18, "soft": 0, "damage": 0, "temp": 13.9, "notes": ""}, {"id": "158722", "date": "2026-10-17", "day": "السبت", "car": "8192776", "driver": "عبد الرحمن نوادي", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 13.5, "notes": "تخزين"}, {"id": "159815", "date": "2026-10-18", "day": "الأحد", "car": "8157930", "driver": "رامي زينو", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 95, "second": 31, "sour": 130, "soft": 0, "damage": 34, "temp": 14.9, "notes": ""}, {"id": "161963", "date": "2026-10-19", "day": "الاثنين", "car": "8219605", "driver": "موفق قاسم", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 145, "second": 94, "sour": 0, "soft": 75, "damage": 51, "temp": 15.0, "notes": ""}, {"id": "159815", "date": "2026-10-19", "day": "الاثنين", "car": "8157930", "driver": "رامي زينو", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 15.0, "notes": "تخزين"}, {"id": "161704", "date": "2026-10-19", "day": "الاثنين", "car": "003684", "driver": "مهند حاج ناصر", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 72, "second": 18, "sour": 0, "soft": 45, "damage": 14, "temp": 14.7, "notes": ""}, {"id": "161923", "date": "2026-10-20", "day": "الثلاثاء", "car": "008352", "driver": "محمد إسماعيل", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 13.6, "notes": ""}, {"id": "161927", "date": "2026-10-20", "day": "الثلاثاء", "car": "8192776", "driver": "عبد الرحمن نوادي", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 45, "second": 24, "sour": 0, "soft": 78, "damage": 17, "temp": 13.5, "notes": ""}, {"id": "161915", "date": "2026-10-20", "day": "الثلاثاء", "car": "8289112", "driver": "عبد القادر خارووف", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 13.9, "notes": "تخزين"}, {"id": "162453", "date": "2026-10-21", "day": "الأربعاء", "car": "8157930", "driver": "رامي زينو", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 24, "second": 9, "sour": 0, "soft": 25, "damage": 5, "temp": 13.6, "notes": ""}, {"id": "162464", "date": "2026-10-21", "day": "الأربعاء", "car": "8219605", "driver": "موفق قاسم", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 14.2, "notes": "تخزين"}, {"id": "163936", "date": "2026-10-22", "day": "الخميس", "car": "5559717", "driver": "زهير عربية", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 10, "second": 8, "sour": 0, "soft": 26, "damage": 5, "temp": 13.9, "notes": ""}, {"id": "163923", "date": "2026-10-23", "day": "الجمعة", "car": "003684", "driver": "مهند حاج ناصر", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 14, "second": 7, "sour": 0, "soft": 15, "damage": 1, "temp": 15.1, "notes": ""}, {"id": "165206", "date": "2026-10-24", "day": "السبت", "car": "003684", "driver": "مهند حاج ناصر", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 0, "second": 0, "sour": 0, "soft": 0, "damage": 0, "temp": 15.0, "notes": ""}, {"id": "165197", "date": "2026-10-24", "day": "السبت", "car": "8219605", "driver": "موفق قاسم", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 36, "second": 15, "sour": 0, "soft": 45, "damage": 11, "temp": 14.5, "notes": ""}, {"id": "165231", "date": "2026-10-24", "day": "السبت", "car": "8156884", "driver": "احمد القش", "port": "باب الهوى", "brand": "اكسترا بان", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 5, "second": 0, "sour": 0, "soft": 10, "damage": 0, "temp": 15.4, "notes": ""}, {"id": "5589940", "date": "2026-10-25", "day": "الأحد", "car": "8124801", "driver": "مصطفى عيسى", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 2, "second": 1, "sour": 0, "soft": 3, "damage": 0, "temp": 15.5, "notes": ""}, {"id": "9209015", "date": "2026-10-25", "day": "الأحد", "car": "8125436", "driver": "اورانس إبراهيم", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 4, "second": 3, "sour": 0, "soft": 5, "damage": 0, "temp": 15.0, "notes": ""}, {"id": "5422845", "date": "2026-10-25", "day": "الأحد", "car": "8141932", "driver": "عيد موسى", "port": "المرفأ", "brand": "كوستا سول", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 1, "second": 3, "sour": 0, "soft": 5, "damage": 4, "temp": 15.5, "notes": ""}, {"id": "9407330", "date": "2026-10-25", "day": "الأحد", "car": "8142487", "driver": "علاءفطومة", "port": "المرفأ", "brand": "كوستا سول", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 1, "second": 2, "sour": 0, "soft": 8, "damage": 1, "temp": 14.7, "notes": ""}, {"id": "8208150", "date": "2026-10-25", "day": "الأحد", "car": "8132734", "driver": "علاء بيريش", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 1, "second": 1, "sour": 0, "soft": 2, "damage": 2, "temp": 15.4, "notes": ""}, {"id": "7702953", "date": "2026-10-25", "day": "الأحد", "car": "022225", "driver": "احمد الأحمد", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 2, "second": 0, "sour": 0, "soft": 4, "damage": 0, "temp": 16.6, "notes": ""}, {"id": "6524688", "date": "2026-10-25", "day": "الأحد", "car": "8179692", "driver": "سنان شرشي", "port": "المرفأ", "brand": "كوستا سول", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 2, "second": 0, "sour": 2, "soft": 4, "damage": 3, "temp": 15.2, "notes": ""}, {"id": "5183669", "date": "2026-10-25", "day": "الأحد", "car": "8159689", "driver": "حمصي الحمد", "port": "المرفأ", "brand": "كوستا سول", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 3, "second": 6, "sour": 0, "soft": 7, "damage": 2, "temp": 16.5, "notes": ""}, {"id": "9121220", "date": "2026-10-26", "day": "الاثنين", "car": "8123825", "driver": "محمد طلوش", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 0, "second": 0, "sour": 0, "soft": 3, "damage": 0, "temp": 15.1, "notes": ""}, {"id": "9373749", "date": "2026-10-26", "day": "الاثنين", "car": "8180427", "driver": "أحمد جولاق", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 2, "second": 0, "sour": 0, "soft": 4, "damage": 0, "temp": 15.8, "notes": ""}, {"id": "5238329", "date": "2026-10-26", "day": "الاثنين", "car": "8121632", "driver": "غياث عليو", "port": "المرفأ", "brand": "ديلمونتي", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1200, "yellow": 25, "second": 21, "sour": 16, "soft": 75, "damage": 25, "temp": 15.9, "notes": "لجنة فحص"}, {"id": "5235382", "date": "2026-10-26", "day": "الاثنين", "car": "8159241", "driver": "محيميد المحيميد", "port": "المرفأ", "brand": "كوستا سول", "pack": "كوستريكا-19كغ", "country": "كوستاريكا", "qty": 1098, "yellow": 1, "second": 0, "sour": 8, "soft": 6, "damage": 1, "temp": 16.9, "notes": ""}, {"id": "168975", "date": "2026-10-29", "day": "الخميس", "car": "8192776", "driver": "عبد الرحمن نوادي", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 5, "second": 2, "sour": 0, "soft": 15, "damage": 2, "temp": 14.0, "notes": ""}, {"id": "168969", "date": "2026-10-29", "day": "الخميس", "car": "8156884", "driver": "أحمد القش", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 12, "second": 3, "sour": 0, "soft": 10, "damage": 4, "temp": 14.5, "notes": ""}, {"id": "168964", "date": "2026-10-29", "day": "الخميس", "car": "8219605", "driver": "موفق قاسم", "port": "باب الهوى", "brand": "روزيتا", "pack": "اكوادور-20كغ", "country": "الإكوادور", "qty": 1098, "yellow": 2, "second": 1, "sour": 8, "soft": 15, "damage": 1, "temp": 14.3, "notes": ""}];
 
-        let movementData = [{"date": "2026-09-01", "date_short": "1/9", "day": "الثلاثاء", "open": 10274, "inQty": 3936, "outQty": 2940, "net": 996, "close": 11270, "notes": "استلام 3 حاويات وتوزيع 2,940 طرد"}, {"date": "2026-09-02", "date_short": "2/9", "day": "الأربعاء", "open": 11270, "inQty": 3294, "outQty": 2081, "net": 1213, "close": 12483, "notes": "استلام 3 حاويات وتوزيع 2,081 طرد"}, {"date": "2026-09-03", "date_short": "3/9", "day": "الخميس", "open": 12483, "inQty": 0, "outQty": 1859, "net": -1859, "close": 10624, "notes": "توزيع 1,859 طرد من رصيد المستودع"}, {"date": "2026-09-04", "date_short": "4/9", "day": "الجمعة", "open": 10624, "inQty": 1098, "outQty": 2591, "net": -1493, "close": 9131, "notes": "استلام حاوية روزيتا وتوزيع 2,591 طرد"}, {"date": "2026-09-05", "date_short": "5/9", "day": "السبت", "open": 9131, "inQty": 1098, "outQty": 3386, "net": -2288, "close": 6843, "notes": "استلام حاوية روزيتا وتوزيع 3,386 طرد"}, {"date": "2026-09-06", "date_short": "6/9", "day": "الأحد", "open": 6843, "inQty": 0, "outQty": 2338, "net": -2338, "close": 4505, "notes": "توزيع 2,338 طرد من رصيد المستودع"}, {"date": "2026-09-07", "date_short": "7/9", "day": "الاثنين", "open": 4505, "inQty": 3276, "outQty": 1431, "net": 1845, "close": 6350, "notes": "استلام 3 حاويات وتوزيع 1,431 طرد"}, {"date": "2026-09-08", "date_short": "8/9", "day": "الثلاثاء", "open": 6350, "inQty": 1098, "outQty": 1395, "net": -297, "close": 6053, "notes": "استلام حاوية روزيتا وتوزيع 1,395 طرد"}, {"date": "2026-09-09", "date_short": "9/9", "day": "الأربعاء", "open": 6053, "inQty": 0, "outQty": 902, "net": -902, "close": 5151, "notes": "توزيع 902 طرد من رصيد روزيتا"}, {"date": "2026-09-10", "date_short": "10/9", "day": "الخميس", "open": 5151, "inQty": 0, "outQty": 1061, "net": -1061, "close": 4090, "notes": "توزيع 1,061 طرد من رصيد روزيتا"}, {"date": "2026-09-11", "date_short": "11/9", "day": "الجمعة", "open": 4090, "inQty": 13176, "outQty": 1423, "net": 11753, "close": 15843, "notes": "استلام 12 حاوية براد العقاد وتوزيع 1,423 طرد"}, {"date": "2026-09-12", "date_short": "12/9", "day": "السبت", "open": 15843, "inQty": 4392, "outQty": 1826, "net": 2566, "close": 18409, "notes": "استلام 4 حاويات وتوزيع 1,826 طرد"}, {"date": "2026-09-13", "date_short": "13/9", "day": "الأحد", "open": 18409, "inQty": 0, "outQty": 1076, "net": -1076, "close": 17333, "notes": "توزيع 1,076 طرد من رصيد المستودع"}, {"date": "2026-09-14", "date_short": "14/9", "day": "الاثنين", "open": 17333, "inQty": 1080, "outQty": 526, "net": 554, "close": 17887, "notes": "استلام حاوية نيستا بان وتوزيع 526 طرد"}, {"date": "2026-09-15", "date_short": "15/9", "day": "الثلاثاء", "open": 17887, "inQty": 0, "outQty": 3070, "net": -3070, "close": 14817, "notes": "توزيع 3,070 طرد من رصيد كرين تروبيك وكوستا سول"}, {"date": "2026-09-16", "date_short": "16/9", "day": "الأربعاء", "open": 14817, "inQty": 0, "outQty": 2778, "net": -2778, "close": 12039, "notes": "توزيع 2,778 طرد من رصيد المستودع"}, {"date": "2026-09-17", "date_short": "17/9", "day": "الخميس", "open": 12039, "inQty": 6588, "outQty": 1885, "net": 4703, "close": 16742, "notes": "استلام 6 حاويات وتوزيع 1,885 طرد"}, {"date": "2026-09-18", "date_short": "18/9", "day": "الجمعة", "open": 16742, "inQty": 6588, "outQty": 3808, "net": 2780, "close": 19522, "notes": "استلام 6 حاويات وتوزيع 3,808 طرد"}, {"date": "2026-09-19", "date_short": "19/9", "day": "السبت", "open": 19522, "inQty": 0, "outQty": 3464, "net": -3464, "close": 16058, "notes": "توزيع 3,464 طرد من رصيد المستودع"}, {"date": "2026-09-20", "date_short": "20/9", "day": "الأحد", "open": 16058, "inQty": 0, "outQty": 3238, "net": -3238, "close": 12820, "notes": "توزيع 3,238 طرد من رصيد المستودع"}, {"date": "2026-09-21", "date_short": "21/9", "day": "الاثنين", "open": 12820, "inQty": 4392, "outQty": 3635, "net": 757, "close": 13577, "notes": "استلام 4 حاويات وتوزيع 3,635 طرد"}, {"date": "2026-09-22", "date_short": "22/9", "day": "الثلاثاء", "open": 13577, "inQty": 3294, "outQty": 3394, "net": -100, "close": 13477, "notes": "استلام 3 حاويات وتوزيع 3,394 طرد"}, {"date": "2026-09-23", "date_short": "23/9", "day": "الأربعاء", "open": 13477, "inQty": 3294, "outQty": 3265, "net": 29, "close": 13506, "notes": "استلام 3 حاويات وتوزيع 3,265 طرد"}, {"date": "2026-09-24", "date_short": "24/9", "day": "الخميس", "open": 13506, "inQty": 2196, "outQty": 1970, "net": 226, "close": 13732, "notes": "استلام حاويتين وتوزيع 1,970 طرد"}, {"date": "2026-09-25", "date_short": "25/9", "day": "الجمعة", "open": 13732, "inQty": 1420, "outQty": 3296, "net": -1876, "close": 11856, "notes": "استلام حاوية روزيتا وتوزيع 3,296 طرد"}, {"date": "2026-09-26", "date_short": "26/9", "day": "السبت", "open": 11856, "inQty": 2160, "outQty": 3244, "net": -1084, "close": 10772, "notes": "استلام حاويتين بانا كولد وتوزيع 3,244 طرد"}, {"date": "2026-09-27", "date_short": "27/9", "day": "الأحد", "open": 10772, "inQty": 2196, "outQty": 3729, "net": -1533, "close": 9239, "notes": "استلام حاويتين روزيتا وتوزيع 3,729 طرد"}, {"date": "2026-09-28", "date_short": "28/9", "day": "الاثنين", "open": 9239, "inQty": 3294, "outQty": 2383, "net": 911, "close": 10150, "notes": "استلام 3 حاويات روزيتا وتوزيع 2,383 طرد"}, {"date": "2026-09-29", "date_short": "29/9", "day": "الثلاثاء", "open": 10150, "inQty": 1420, "outQty": 3514, "net": -2094, "close": 8056, "notes": "استلام حاوية وتوزيع 3,514 طرد"}, {"date": "2026-09-30", "date_short": "30/9", "day": "الأربعاء", "open": 8056, "inQty": 3294, "outQty": 2224, "net": 1070, "close": 9126, "notes": "استلام 3 حاويات وتوزيع 2,224 طرد"}, {"date": "2026-10-01", "date_short": "1/10", "day": "الخميس", "open": 9126, "inQty": 2196, "outQty": 1699, "net": 497, "close": 9623, "notes": "استلام حاويتين وتوزيع 1,699 طرد"}, {"date": "2026-10-02", "date_short": "2/10", "day": "الجمعة", "open": 9623, "inQty": 2196, "outQty": 3253, "net": -1057, "close": 8566, "notes": "استلام حاويتين وتوزيع 3,253 طرد"}, {"date": "2026-10-03", "date_short": "3/10", "day": "السبت", "open": 8566, "inQty": 3240, "outQty": 2146, "net": 1094, "close": 9660, "notes": "استلام 3 حاويات وتوزيع 2,146 طرد"}, {"date": "2026-10-04", "date_short": "4/10", "day": "الأحد", "open": 9660, "inQty": 3294, "outQty": 2330, "net": 964, "close": 10624, "notes": "استلام 3 حاويات وتوزيع 2,330 طرد"}, {"date": "2026-10-05", "day": "الإثنين", "open": 10624, "inQty": 2196, "outQty": 2400, "net": -204, "close": 10420, "notes": "استلام حاويتين وتوزيع 2,400 طرد"}, {"date": "2026-10-06", "date_short": "6/10", "day": "الثلاثاء", "open": 10420, "inQty": 8196, "outQty": 2252, "net": 5944, "close": 16364, "notes": "استلام 7 حاويات وتوزيع 2,252 طرد"}, {"date": "2026-10-07", "date_short": "7/10", "day": "الأربعاء", "open": 16364, "inQty": 4494, "outQty": 3242, "net": 1252, "close": 17616, "notes": "استلام 4 حاويات وتوزيع 3,242 طرد"}, {"date": "2026-10-08", "date_short": "8/10", "day": "الخميس", "open": 17616, "inQty": 1098, "outQty": 2417, "net": -1319, "close": 16297, "notes": "استلام حاوية وتوزيع 2,417 طرد"}, {"date": "2026-10-09", "date_short": "9/10", "day": "الجمعة", "open": 16297, "inQty": 3396, "outQty": 2883, "net": 513, "close": 16810, "notes": "استلام 3 حاويات وتوزيع 2,883 طرد"}, {"date": "2026-10-10", "date_short": "10/10", "day": "السبت", "open": 16810, "inQty": 0, "outQty": 3218, "net": -3218, "close": 13592, "notes": "توزيع 3,218 طرد من رصيد المستودع"}, {"date": "2026-10-11", "date_short": "11/10", "day": "الأحد", "open": 13592, "inQty": 9618, "outQty": 3761, "net": 5857, "close": 19449, "notes": "استلام 8 حاويات وتوزيع 3,761 طرد"}, {"date": "2026-10-12", "date_short": "12/10", "day": "الإثنين", "open": 19449, "inQty": 3396, "outQty": 3481, "net": -85, "close": 19364, "notes": "استلام 3 حاويات وتوزيع 3,481 طرد"}, {"date": "2026-10-13", "date_short": "13/10", "day": "الثلاثاء", "open": 19364, "inQty": 0, "outQty": 3364, "net": -3364, "close": 16000, "notes": "توزيع 3,364 طرد من رصيد المستودع"}, {"date": "2026-10-14", "date_short": "14/10", "day": "الأربعاء", "open": 16000, "inQty": 0, "outQty": 4235, "net": -4235, "close": 11765, "notes": "توزيع 4,235 طرد من رصيد المستودع"}, {"date": "2026-10-15", "date_short": "15/10", "day": "الخميس", "open": 11765, "inQty": 2160, "outQty": 2286, "net": -126, "close": 11639, "notes": "استلام حاويتين وتوزيع 2,286 طرد"}, {"date": "2026-10-16", "date_short": "16/10", "day": "الجمعة", "open": 11639, "inQty": 5079, "outQty": 3488, "net": 1591, "close": 13230, "notes": "استلام 4 حاويات وتوزيع 3,488 طرد"}, {"date": "2026-10-17", "date_short": "17/10", "day": "السبت", "open": 13230, "inQty": 5490, "outQty": 1942, "net": 3548, "close": 16778, "notes": "استلام 5 حاويات وتوزيع 1,942 طرد"}, {"date": "2026-10-18", "date_short": "18/10", "day": "الأحد", "open": 16778, "inQty": 1098, "outQty": 2005, "net": -907, "close": 15871, "notes": "استلام حاوية وتوزيع 2,005 طرد"}, {"date": "2026-10-19", "date_short": "19/10", "day": "الإثنين", "open": 15871, "inQty": 3294, "outQty": 3020, "net": 274, "close": 16145, "notes": "استلام 3 حاويات وتوزيع 3,020 طرد"}, {"date": "2026-10-20", "date_short": "20/10", "day": "الثلاثاء", "open": 16145, "inQty": 3294, "outQty": 3712, "net": -418, "close": 15727, "notes": "استلام 3 حاويات وتوزيع 3,712 طرد"}, {"date": "2026-10-21", "date_short": "21/10", "day": "الأربعاء", "open": 15727, "inQty": 2196, "outQty": 2779, "net": -583, "close": 15144, "notes": "استلام حاويتين وتوزيع 2,779 طرد"}, {"date": "2026-10-22", "date_short": "22/10", "day": "الخميس", "open": 15144, "inQty": 1098, "outQty": 2819, "net": -1721, "close": 13423, "notes": "استلام حاوية وتوزيع 2,819 طرد"}, {"date": "2026-10-23", "date_short": "23/10", "day": "الجمعة", "open": 13423, "inQty": 1098, "outQty": 4281, "net": -3183, "close": 10240, "notes": "استلام حاوية وتوزيع 4,281 طرد"}, {"date": "2026-10-24", "date_short": "24/10", "day": "السبت", "open": 10240, "inQty": 3294, "outQty": 3057, "net": 237, "close": 10477, "notes": "استلام 3 حاويات وتوزيع 3,057 طرد"}, {"date": "2026-10-25", "date_short": "25/10", "day": "الأحد", "open": 10477, "inQty": 9192, "outQty": 3058, "net": 6134, "close": 16611, "notes": "استلام 8 حاويات وتوزيع 3,058 طرد"}, {"date": "2026-10-26", "date_short": "26/10", "day": "الاثنين", "open": 16611, "inQty": 4698, "outQty": 2208, "net": 2490, "close": 19101, "notes": "استلام 4 حاويات وتوزيع 2,208 طرد"}, {"date": "2026-10-27", "date_short": "27/10", "day": "الثلاثاء", "open": 19101, "inQty": 0, "outQty": 2113, "net": -2113, "close": 16988, "notes": "توزيع 2,113 طرد موز لدمشق"}, {"date": "2026-10-28", "date_short": "28/10", "day": "الأربعاء", "open": 16988, "inQty": 0, "outQty": 3209, "net": -3209, "close": 13779, "notes": "توزيع 3,209 طرد موز لدمشق"}, {"date": "2026-10-29", "date_short": "29/10", "day": "الخميس", "open": 13779, "inQty": 3294, "outQty": 1853, "net": 1441, "close": 15220, "notes": "استلام 3 حاويات وتوزيع 1,853 طرد"}];
+        let dispatchData = [{"id": 1, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1016", "driver": "أبو رمضان", "car": "349681", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 477, "pack": "اكوادور-20كغ"}, {"id": 2, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1017", "driver": "أبو بلال", "car": "51971", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 255, "pack": "اكوادور-20كغ"}, {"id": 3, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1017", "driver": "أبو بلال", "car": "51971", "dest": "دمشق", "customer": "سوق دمشق", "brand": "ديلمونتي", "qty": 240, "pack": "كوستريكا-19كغ"}, {"id": 4, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1018", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 81, "pack": "اكوادور-20كغ"}, {"id": 5, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1018", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "سوق دمشق", "brand": "ديلمونتي", "qty": 298, "pack": "كوستريكا-19كغ"}, {"id": 6, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1018", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "سوق دمشق", "brand": "ديلمونتي", "qty": 53, "pack": "كوستريكا-19كغ"}, {"id": 7, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1019", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "سوق دمشق", "brand": "ديلمونتي", "qty": 266, "pack": "كوستريكا-19كغ"}, {"id": 8, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1020", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 234, "pack": "اكوادور-20كغ"}, {"id": 9, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1020", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "سوق دمشق", "brand": "روزيتا", "qty": 5, "pack": "اكوادور-20كغ"}, {"id": 10, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1021", "driver": "", "car": "", "dest": "دمشق", "customer": "سوق دمشق", "brand": "روزيتا", "qty": 42, "pack": "اكوادور-20كغ"}, {"id": 749, "date": "2026-10-28", "time": "16:30:00", "day": "الأربعاء", "driver": "علي حمود", "customer": "عمر العقاد", "car": "83581", "dest": "دمشق", "brand": "اكسترا بان", "qty": 260, "receipt": "1499", "pack": "كوستريكا-19كغ"}, {"id": 750, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "driver": "عدي", "customer": "أحمد الطالب", "car": "623423", "dest": "دمشق", "brand": "كوستا سول", "qty": 430, "receipt": "1501", "pack": "كوستريكا-19كغ"}, {"id": 751, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "driver": "عدي", "customer": "أحمد الطالب", "car": "623423", "dest": "دمشق", "brand": "اكسترا بان", "qty": 20, "receipt": "1501", "pack": "كوستريكا-19كغ"}, {"id": 752, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "driver": "شادي السبع", "customer": "عمر العقاد", "car": "768082", "dest": "دمشق", "brand": "كوستا سول", "qty": 503, "receipt": "1502", "pack": "كوستريكا-19كغ"}, {"id": 753, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "driver": "شادي السبع", "customer": "عمر العقاد", "car": "768082", "dest": "دمشق", "brand": "اكسترا بان", "qty": 17, "receipt": "1502", "pack": "كوستريكا-19كغ"}, {"id": 754, "date": "2026-10-29", "time": "13:00:00", "day": "الخميس", "driver": "رائد", "customer": "أحمد الطالب", "car": "63898", "dest": "دمشق", "brand": "ديلمونتي", "qty": 404, "receipt": "1503", "pack": "كوستريكا-19كغ"}, {"id": 755, "date": "2026-10-29", "time": "13:00:00", "day": "الخميس", "driver": "رائد", "customer": "أحمد الطالب", "car": "63898", "dest": "دمشق", "brand": "روزيتا", "qty": 20, "receipt": "1503", "pack": "اكوادور-20كغ"}, {"id": 756, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "driver": "بلال", "customer": "عمر العقاد", "car": "624013", "dest": "دمشق", "brand": "ديلمونتي", "qty": 437, "receipt": "1504", "pack": "كوستريكا-19كغ"}, {"id": 757, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "driver": "بلال", "customer": "عمر العقاد", "car": "624013", "dest": "دمشق", "brand": "كوستا سول", "qty": 5, "receipt": "1505", "pack": "كوستريكا-19كغ"}, {"id": 758, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "driver": "بلال", "customer": "عمر العقاد", "car": "624013", "dest": "دمشق", "brand": "اكسترا بان", "qty": 1, "receipt": "1505", "pack": "كوستريكا-19كغ"}, {"id": 759, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "driver": "بلال", "customer": "عمر العقاد", "car": "624013", "dest": "دمشق", "brand": "روزيتا", "qty": 8, "receipt": "1505", "pack": "اكوادور-20كغ"}, {"id": 760, "date": "2026-10-29", "time": "", "day": "الخميس", "driver": "إتلاف مستودع", "customer": "تلف", "car": "-", "dest": "دمشق", "brand": "روزيتا", "qty": 7, "receipt": "1506", "pack": "اكوادور-20كغ"}, {"id": 761, "date": "2026-10-29", "time": "", "day": "الخميس", "driver": "إتلاف مستودع", "customer": "تلف", "car": "-", "dest": "دمشق", "brand": "كوستا سول", "qty": 1, "receipt": "1506", "pack": "كوستريكا-19كغ"}];
+
+        let movementData = [{"date": "2026-09-01", "date_short": "1/9", "day": "الثلاثاء", "open": 10274, "inQty": 3936, "outQty": 2940, "net": 996, "close": 11270, "notes": "استلام 3 حاويات وتوزيع 2,940 طرد"}, {"date": "2026-09-02", "date_short": "2/9", "day": "الأربعاء", "open": 11270, "inQty": 3294, "outQty": 2081, "net": 1213, "close": 12483, "notes": "استلام 3 حاويات وتوزيع 2,081 طرد"}, {"date": "2026-09-03", "date_short": "3/9", "day": "الخميس", "open": 12483, "inQty": 0, "outQty": 1859, "net": -1859, "close": 10624, "notes": "توزيع 1,859 طرد من رصيد المستودع"}, {"date": "2026-09-04", "date_short": "4/9", "day": "الجمعة", "open": 10624, "inQty": 1098, "outQty": 2591, "net": -1493, "close": 9131, "notes": "استلام حاوية روزيتا وتوزيع 2,591 طرد"}, {"date": "2026-09-05", "date_short": "5/9", "day": "السبت", "open": 9131, "inQty": 1098, "outQty": 3386, "net": -2288, "close": 6843, "notes": "استلام حاوية روزيتا وتوزيع 3,386 طرد"}, {"date": "2026-09-06", "date_short": "6/9", "day": "الأحد", "open": 6843, "inQty": 0, "outQty": 2338, "net": -2338, "close": 4505, "notes": "توزيع 2,338 طرد من رصيد المستودع"}, {"date": "2026-09-07", "date_short": "7/9", "day": "الاثنين", "open": 4505, "inQty": 3276, "outQty": 1431, "net": 1845, "close": 6350, "notes": "استلام 3 حاويات وتوزيع 1,431 طرد"}, {"date": "2026-09-08", "date_short": "8/9", "day": "الثلاثاء", "open": 6350, "inQty": 1098, "outQty": 1395, "net": -297, "close": 6053, "notes": "استلام حاوية روزيتا وتوزيع 1,395 طرد"}, {"date": "2026-09-09", "date_short": "9/9", "day": "الأربعاء", "open": 6053, "inQty": 0, "outQty": 902, "net": -902, "close": 5151, "notes": "توزيع 902 طرد من رصيد روزيتا"}, {"date": "2026-09-10", "date_short": "10/9", "day": "الخميس", "open": 5151, "inQty": 0, "outQty": 1061, "net": -1061, "close": 4090, "notes": "توزيع 1,061 طرد من رصيد روزيتا"}, {"date": "2026-09-11", "date_short": "11/9", "day": "الجمعة", "open": 4090, "inQty": 13176, "outQty": 1423, "net": 11753, "close": 15843, "notes": "استلام 12 حاوية براد العقاد وتوزيع 1,423 طرد"}, {"date": "2026-09-12", "date_short": "12/9", "day": "السبت", "open": 15843, "inQty": 4392, "outQty": 1826, "net": 2566, "close": 18409, "notes": "استلام 4 حاويات وتوزيع 1,826 طرد"}, {"date": "2026-09-13", "date_short": "13/9", "day": "الأحد", "open": 18409, "inQty": 0, "outQty": 1076, "net": -1076, "close": 17333, "notes": "توزيع 1,076 طرد من رصيد المستودع"}, {"date": "2026-09-14", "date_short": "14/9", "day": "الاثنين", "open": 17333, "inQty": 1080, "outQty": 526, "net": 554, "close": 17887, "notes": "استلام حاوية نيستا بان وتوزيع 526 طرد"}, {"date": "2026-09-15", "date_short": "15/9", "day": "الثلاثاء", "open": 17887, "inQty": 0, "outQty": 3070, "net": -3070, "close": 14817, "notes": "توزيع 3,070 طرد من رصيد كرين تروبيك وكوستا سول"}, {"date": "2026-09-16", "date_short": "16/9", "day": "الأربعاء", "open": 14817, "inQty": 0, "outQty": 2778, "net": -2778, "close": 12039, "notes": "توزيع 2,778 طرد من رصيد المستودع"}, {"date": "2026-09-17", "date_short": "17/9", "day": "الخميس", "open": 12039, "inQty": 6588, "outQty": 1885, "net": 4703, "close": 16742, "notes": "استلام 6 حاويات وتوزيع 1,885 طرد"}, {"date": "2026-09-18", "date_short": "18/9", "day": "الجمعة", "open": 16742, "inQty": 6588, "outQty": 3808, "net": 2780, "close": 19522, "notes": "استلام 6 حاويات وتوزيع 3,808 طرد"}, {"date": "2026-09-19", "date_short": "19/9", "day": "السبت", "open": 19522, "inQty": 0, "outQty": 3464, "net": -3464, "close": 16058, "notes": "توزيع 3,464 طرد من رصيد المستودع"}, {"date": "2026-09-20", "date_short": "20/9", "day": "الأحد", "open": 16058, "inQty": 0, "outQty": 3238, "net": -3238, "close": 12820, "notes": "توزيع 3,238 طرد من رصيد المستودع"}, {"date": "2026-09-21", "date_short": "21/9", "day": "الاثنين", "open": 12820, "inQty": 4392, "outQty": 3635, "net": 757, "close": 13577, "notes": "استلام 4 حاويات وتوزيع 3,635 طرد"}, {"date": "2026-09-22", "date_short": "22/9", "day": "الثلاثاء", "open": 13577, "inQty": 3294, "outQty": 3394, "net": -100, "close": 13477, "notes": "استلام 3 حاويات وتوزيع 3,394 طرد"}, {"date": "2026-09-23", "date_short": "23/9", "day": "الأربعاء", "open": 13477, "inQty": 3294, "outQty": 3265, "net": 29, "close": 13506, "notes": "استلام 3 حاويات وتوزيع 3,265 طرد"}, {"date": "2026-09-24", "date_short": "24/9", "day": "الخميس", "open": 13506, "inQty": 2196, "outQty": 1970, "net": 226, "close": 13732, "notes": "استلام حاويتين وتوزيع 1,970 طرد"}, {"date": "2026-09-25", "date_short": "25/9", "day": "الجمعة", "open": 13732, "inQty": 1420, "outQty": 3296, "net": -1876, "close": 11856, "notes": "استلام حاوية روزيتا وتوزيع 3,296 طرد"}, {"date": "2026-09-26", "date_short": "26/9", "day": "السبت", "open": 11856, "inQty": 2160, "outQty": 3244, "net": -1084, "close": 10772, "notes": "استلام حاويتين بانا كولد وتوزيع 3,244 طرد"}, {"date": "2026-09-27", "date_short": "27/9", "day": "الأحد", "open": 10772, "inQty": 2196, "outQty": 3729, "net": -1533, "close": 9239, "notes": "استلام حاويتين روزيتا وتوزيع 3,729 طرد"}, {"date": "2026-09-28", "date_short": "28/9", "day": "الاثنين", "open": 9239, "inQty": 3294, "outQty": 2383, "net": 911, "close": 10150, "notes": "استلام 3 حاويات روزيتا وتوزيع 2,383 طرد"}, {"date": "2026-09-29", "date_short": "29/9", "day": "الثلاثاء", "open": 10150, "inQty": 1420, "outQty": 3514, "net": -2094, "close": 8056, "notes": "استلام حاوية وتوزيع 3,514 طرد"}, {"date": "2026-09-30", "date_short": "30/9", "day": "الأربعاء", "open": 8056, "inQty": 3294, "outQty": 2224, "net": 1070, "close": 9126, "notes": "استلام 3 حاويات وتوزيع 2,224 طرد"}, {"date": "2026-10-01", "date_short": "1/10", "day": "الخميس", "open": 9126, "inQty": 2196, "outQty": 1699, "net": 497, "close": 9623, "notes": "استلام حاويتين وتوزيع 1,699 طرد"}, {"date": "2026-10-02", "date_short": "2/10", "day": "الجمعة", "open": 9623, "inQty": 2196, "outQty": 3253, "net": -1057, "close": 8566, "notes": "استلام حاويتين وتوزيع 3,253 طرد"}, {"date": "2026-10-03", "date_short": "3/10", "day": "السبت", "open": 8566, "inQty": 3240, "outQty": 2146, "net": 1094, "close": 9660, "notes": "استلام 3 حاويات وتوزيع 2,146 طرد"}, {"date": "2026-10-04", "date_short": "4/10", "day": "الأحد", "open": 9660, "inQty": 3294, "outQty": 2330, "net": 964, "close": 10624, "notes": "استلام 3 حاويات وتوزيع 2,330 طرد"}, {"date": "2026-10-05", "date_short": "5/10", "day": "الإثنين", "open": 10624, "inQty": 2196, "outQty": 2400, "net": -204, "close": 10420, "notes": "استلام حاويتين وتوزيع 2,400 طرد"}, {"date": "2026-10-06", "date_short": "6/10", "day": "الثلاثاء", "open": 10420, "inQty": 8196, "outQty": 2252, "net": 5944, "close": 16364, "notes": "استلام 7 حاويات وتوزيع 2,252 طرد"}, {"date": "2026-10-07", "date_short": "7/10", "day": "الأربعاء", "open": 16364, "inQty": 4494, "outQty": 3242, "net": 1252, "close": 17616, "notes": "استلام 4 حاويات وتوزيع 3,242 طرد"}, {"date": "2026-10-08", "date_short": "8/10", "day": "الخميس", "open": 17616, "inQty": 1098, "outQty": 2417, "net": -1319, "close": 16297, "notes": "استلام حاوية وتوزيع 2,417 طرد"}, {"date": "2026-10-09", "date_short": "9/10", "day": "الجمعة", "open": 16297, "inQty": 3396, "outQty": 2883, "net": 513, "close": 16810, "notes": "استلام 3 حاويات وتوزيع 2,883 طرد"}, {"date": "2026-10-10", "date_short": "10/10", "day": "السبت", "open": 16810, "inQty": 0, "outQty": 3218, "net": -3218, "close": 13592, "notes": "توزيع 3,218 طرد من رصيد المستودع"}, {"date": "2026-10-11", "date_short": "11/10", "day": "الأحد", "open": 13592, "inQty": 9618, "outQty": 3761, "net": 5857, "close": 19449, "notes": "استلام 8 حاويات وتوزيع 3,761 طرد"}, {"date": "2026-10-12", "date_short": "12/10", "day": "الإثنين", "open": 19449, "inQty": 3396, "outQty": 3481, "net": -85, "close": 19364, "notes": "استلام 3 حاويات وتوزيع 3,481 طرد"}, {"date": "2026-10-13", "date_short": "13/10", "day": "الثلاثاء", "open": 19364, "inQty": 0, "outQty": 3364, "net": -3364, "close": 16000, "notes": "توزيع 3,364 طرد من رصيد المستودع"}, {"date": "2026-10-14", "date_short": "14/10", "day": "الأربعاء", "open": 16000, "inQty": 0, "outQty": 4235, "net": -4235, "close": 11765, "notes": "توزيع 4,235 طرد من رصيد المستودع"}, {"date": "2026-10-15", "date_short": "15/10", "day": "الخميس", "open": 11765, "inQty": 2160, "outQty": 2286, "net": -126, "close": 11639, "notes": "استلام حاويتين وتوزيع 2,286 طرد"}, {"date": "2026-10-16", "date_short": "16/10", "day": "الجمعة", "open": 11639, "inQty": 5079, "outQty": 3488, "net": 1591, "close": 13230, "notes": "استلام 4 حاويات وتوزيع 3,488 طرد"}, {"date": "2026-10-17", "date_short": "17/10", "day": "السبت", "open": 13230, "inQty": 5490, "outQty": 1942, "net": 3548, "close": 16778, "notes": "استلام 5 حاويات وتوزيع 1,942 طرد"}, {"date": "2026-10-18", "date_short": "18/10", "day": "الأحد", "open": 16778, "inQty": 1098, "outQty": 2005, "net": -907, "close": 15871, "notes": "استلام حاوية وتوزيع 2,005 طرد"}, {"date": "2026-10-19", "date_short": "19/10", "day": "الإثنين", "open": 15871, "inQty": 3294, "outQty": 3020, "net": 274, "close": 16145, "notes": "استلام 3 حاويات وتوزيع 3,020 طرد"}, {"date": "2026-10-20", "date_short": "20/10", "day": "الثلاثاء", "open": 16145, "inQty": 3294, "outQty": 3712, "net": -418, "close": 15727, "notes": "استلام 3 حاويات وتوزيع 3,712 طرد"}, {"date": "2026-10-21", "date_short": "21/10", "day": "الأربعاء", "open": 15727, "inQty": 2196, "outQty": 2779, "net": -583, "close": 15144, "notes": "استلام حاويتين وتوزيع 2,779 طرد"}, {"date": "2026-10-22", "date_short": "22/10", "day": "الخميس", "open": 15144, "inQty": 1098, "outQty": 2819, "net": -1721, "close": 13423, "notes": "استلام حاوية وتوزيع 2,819 طرد"}, {"date": "2026-10-23", "date_short": "23/10", "day": "الجمعة", "open": 13423, "inQty": 1098, "outQty": 4281, "net": -3183, "close": 10240, "notes": "استلام حاوية وتوزيع 4,281 طرد"}, {"date": "2026-10-24", "date_short": "24/10", "day": "السبت", "open": 10240, "inQty": 3294, "outQty": 3057, "net": 237, "close": 10477, "notes": "استلام 3 حاويات وتوزيع 3,057 طرد"}, {"date": "2026-10-25", "date_short": "25/10", "day": "الأحد", "open": 10477, "inQty": 9192, "outQty": 3058, "net": 6134, "close": 16611, "notes": "استلام 8 حاويات وتوزيع 3,058 طرد"}, {"date": "2026-10-26", "date_short": "26/10", "day": "الاثنين", "open": 16611, "inQty": 4698, "outQty": 2208, "net": 2490, "close": 19101, "notes": "استلام 4 حاويات وتوزيع 2,208 طرد"}, {"date": "2026-10-27", "date_short": "27/10", "day": "الثلاثاء", "open": 19101, "inQty": 0, "outQty": 2113, "net": -2113, "close": 16988, "notes": "توزيع 2,113 طرد موز لدمشق"}, {"date": "2026-10-28", "date_short": "28/10", "day": "الأربعاء", "open": 16988, "inQty": 0, "outQty": 3209, "net": -3209, "close": 13779, "notes": "توزيع 3,209 طرد موز لدمشق"}, {"date": "2026-10-29", "date_short": "29/10", "day": "الخميس", "open": 13779, "inQty": 3294, "outQty": 1853, "net": 1441, "close": 15220, "notes": "استلام 3 حاويات وتوزيع 1,853 طرد"}];
 
         let dispatchData = [{"id": 1, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1016", "driver": "أبو رمضان", "car": "349681", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 477, "pack": "اكوادور-20كغ"}, {"id": 2, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1017", "driver": "أبو بلال", "car": "51971", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 255, "pack": "اكوادور-20كغ"}, {"id": 3, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1017", "driver": "أبو بلال", "car": "51971", "dest": "دمشق", "customer": "سوق دمشق", "brand": "ديلمونتي", "qty": 240, "pack": "كوستريكا-19كغ"}, {"id": 4, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1018", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 81, "pack": "اكوادور-20كغ"}, {"id": 5, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1018", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "سوق دمشق", "brand": "ديلمونتي", "qty": 298, "pack": "كوستريكا-19كغ"}, {"id": 6, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1018", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "سوق دمشق", "brand": "ديلمونتي", "qty": 53, "pack": "كوستريكا-19كغ"}, {"id": 7, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1019", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "سوق دمشق", "brand": "ديلمونتي", "qty": 266, "pack": "كوستريكا-19كغ"}, {"id": 8, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1020", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 234, "pack": "اكوادور-20كغ"}, {"id": 9, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1020", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "سوق دمشق", "brand": "روزيتا", "qty": 5, "pack": "اكوادور-20كغ"}, {"id": 10, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1021", "driver": "", "car": "", "dest": "دمشق", "customer": "سوق دمشق", "brand": "روزيتا", "qty": 42, "pack": "اكوادور-20كغ"}, {"id": 749, "date": "2026-10-28", "time": "16:30:00", "day": "الأربعاء", "driver": "علي حمود", "customer": "عمر العقاد", "car": "83581", "dest": "دمشق", "brand": "اكسترا بان", "qty": 260, "receipt": "1499", "pack": "كوستريكا-19كغ"}, {"id": 750, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "driver": "عدي", "customer": "أحمد الطالب", "car": "623423", "dest": "دمشق", "brand": "كوستا سول", "qty": 430, "receipt": "1501", "pack": "كوستريكا-19كغ"}, {"id": 751, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "driver": "عدي", "customer": "أحمد الطالب", "car": "623423", "dest": "دمشق", "brand": "اكسترا بان", "qty": 20, "receipt": "1501", "pack": "كوستريكا-19كغ"}, {"id": 752, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "driver": "شادي السبع", "customer": "عمر العقاد", "car": "768082", "dest": "دمشق", "brand": "كوستا سول", "qty": 503, "receipt": "1502", "pack": "كوستريكا-19كغ"}, {"id": 753, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "driver": "شادي السبع", "customer": "عمر العقاد", "car": "768082", "dest": "دمشق", "brand": "اكسترا بان", "qty": 17, "receipt": "1502", "pack": "كوستريكا-19كغ"}, {"id": 754, "date": "2026-10-29", "time": "13:00:00", "day": "الخميس", "driver": "رائد", "customer": "أحمد الطالب", "car": "63898", "dest": "دمشق", "brand": "ديلمونتي", "qty": 404, "receipt": "1503", "pack": "كوستريكا-19كغ"}, {"id": 755, "date": "2026-10-29", "time": "13:00:00", "day": "الخميس", "driver": "رائد", "customer": "أحمد الطالب", "car": "63898", "dest": "دمشق", "brand": "روزيتا", "qty": 20, "receipt": "1503", "pack": "اكوادور-20كغ"}, {"id": 756, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "driver": "بلال", "customer": "عمر العقاد", "car": "624013", "dest": "دمشق", "brand": "ديلمونتي", "qty": 437, "receipt": "1504", "pack": "كوستريكا-19كغ"}, {"id": 757, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "driver": "بلال", "customer": "عمر العقاد", "car": "624013", "dest": "دمشق", "brand": "كوستا سول", "qty": 5, "receipt": "1505", "pack": "كوستريكا-19كغ"}, {"id": 758, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "driver": "بلال", "customer": "عمر العقاد", "car": "624013", "dest": "دمشق", "brand": "اكسترا بان", "qty": 1, "receipt": "1505", "pack": "كوستريكا-19كغ"}, {"id": 759, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "driver": "بلال", "customer": "عمر العقاد", "car": "624013", "dest": "دمشق", "brand": "روزيتا", "qty": 8, "receipt": "1505", "pack": "اكوادور-20كغ"}, {"id": 760, "date": "2026-10-29", "time": "", "day": "الخميس", "driver": "إتلاف مستودع", "customer": "تلف", "car": "-", "dest": "دمشق", "brand": "روزيتا", "qty": 7, "receipt": "1506", "pack": "اكوادور-20كغ"}, {"id": 761, "date": "2026-10-29", "time": "", "day": "الخميس", "driver": "إتلاف مستودع", "customer": "تلف", "car": "-", "dest": "دمشق", "brand": "كوستا سول", "qty": 1, "receipt": "1506", "pack": "كوستريكا-19كغ"}];
 
@@ -873,120 +634,389 @@
         const DISPATCH_PER_PAGE = 35;
         let activeCalendarDate = '2026-10-29';
 
-        // دالة مركزية لتنفيذ المعاملات الذرية لمنع التضارب (Atomic Transactions)
-        async function runAtomicWarehouseUpdate(mutatorCallback) {
-            if (!currentUser) {
-                showToast("يجب تسجيل الدخول كمسؤول لإجراء هذا التعديل", false);
-                return false;
-            }
-
+        function safeCreateIcons() {
             try {
-                await db.runTransaction(async (transaction) => {
-                    const doc = await transaction.get(WAREHOUSE_DOC_REF);
-                    let remoteState = {};
+                if (typeof window !== 'undefined' && window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
+                }
+            } catch (e) {}
+        }
 
-                    if (doc.exists) {
-                        remoteState = doc.data();
-                    } else {
-                        remoteState = {
-                            version: APP_DATA_VERSION,
-                            inboundData,
-                            dispatchData,
-                            roomsData,
-                            movementData,
-                            driversData,
-                            brandsData,
-                            originsData,
-                            merchantsData,
-                            inspectionsData
-                        };
-                    }
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toastNotification');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMsg');
+            if (!toast) return;
 
-                    // تطبيق التعديل الذري بناءً على أحدث نسخة في السيرفر
-                    const modifiedState = mutatorCallback(remoteState);
-                    modifiedState.lastUpdated = firebase.firestore.FieldValue.serverTimestamp();
-                    modifiedState.updatedBy = currentUser.email;
+            msg.textContent = message;
+            if (isSuccess) {
+                icon.className = "w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold";
+                icon.textContent = "✓";
+            } else {
+                icon.className = "w-8 h-8 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center font-bold";
+                icon.textContent = "✕";
+            }
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
 
-                    transaction.set(WAREHOUSE_DOC_REF, modifiedState);
-                });
+        function switchTab(tabId) {
+            activeTab = tabId;
+            const sections = ['dashboard', 'inbound', 'dispatch', 'movement', 'rooms', 'inspection'];
+            sections.forEach(s => {
+                const el = document.getElementById(`tab-${s}`);
+                const btn = document.getElementById(`nav-${s}`);
+                if (el) el.classList.toggle('hidden', s !== tabId);
+                if (btn) btn.classList.toggle('active', s === tabId);
+            });
+            closeAdminDrawer();
+            if (tabId === 'dashboard') {
+                setTimeout(() => {
+                    initMovementChart();
+                    initMerchantsSplitChart();
+                }, 50);
+            }
+            safeCreateIcons();
+        }
 
-                showToast("تم الحفظ والمزامنة السحابية بنجاح عبر معاملة ذرية مؤمنة");
-                return true;
-            } catch (error) {
-                console.error("خطأ في المعاملة الذرية:", error);
-                showToast("تعذر إتمام العملية بسبب تضارب لحظي، يرجى المحاولة ثانية", false);
-                return false;
+        function toggleAdminDrawer() {
+            const drawer = document.getElementById('adminSideDrawer');
+            const backdrop = document.getElementById('adminDrawerBackdrop');
+            if (!drawer) return;
+            const isClosed = drawer.classList.contains('drawer-closed');
+            if (isClosed) {
+                drawer.classList.remove('drawer-closed');
+                drawer.classList.add('drawer-open');
+                backdrop?.classList.remove('hidden');
+                setTimeout(() => backdrop?.classList.remove('opacity-0'), 10);
+            } else {
+                drawer.classList.remove('drawer-open');
+                drawer.classList.add('drawer-closed');
+                backdrop?.classList.add('opacity-0');
+                setTimeout(() => backdrop?.classList.add('hidden'), 300);
             }
         }
 
-        // استماع فوري لأحدث البيانات السحابية وتحديث الواجهة مباشرة
-        WAREHOUSE_DOC_REF.onSnapshot((doc) => {
-            if (doc.exists) {
-                const data = doc.data();
-                if (Array.isArray(data.inboundData)) inboundData = data.inboundData;
-                if (Array.isArray(data.dispatchData)) dispatchData = data.dispatchData;
-                if (Array.isArray(data.roomsData)) roomsData = data.roomsData;
-                if (Array.isArray(data.movementData)) movementData = data.movementData;
-                if (Array.isArray(data.driversData)) driversData = data.driversData;
-                if (Array.isArray(data.brandsData)) brandsData = data.brandsData;
-
-                renderInboundTable();
-                renderDispatchTable();
-                renderMovementTable();
-                renderRipeningRooms();
-                renderBrandsListTable();
-                renderDriverListTable();
-                updateGlobalStats();
+        function closeAdminDrawer() {
+            const drawer = document.getElementById('adminSideDrawer');
+            const backdrop = document.getElementById('adminDrawerBackdrop');
+            if (drawer) {
+                drawer.classList.remove('drawer-open');
+                drawer.classList.add('drawer-closed');
             }
+            if (backdrop) {
+                backdrop.classList.add('opacity-0');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
+            }
+        }
+
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            const body = document.body;
+            const loginBtn = document.getElementById('btnLoginOpen');
+            const adminBadge = document.getElementById('adminBadgeWrapper');
+            const adminEmailSpan = document.getElementById('adminUserEmail');
+
+            if (user) {
+                body.classList.remove('visitor-mode');
+                loginBtn?.classList.add('hidden');
+                adminBadge?.classList.remove('hidden');
+                if (adminEmailSpan) adminEmailSpan.textContent = user.email.split('@')[0];
+            } else {
+                body.classList.add('visitor-mode');
+                loginBtn?.classList.remove('hidden');
+                adminBadge?.classList.add('hidden');
+            }
+            safeCreateIcons();
         });
 
-        // دوال المودال والعرض
-        function openBrandsModal() {
-            renderBrandsListTable();
-            document.getElementById('brandsModal')?.classList.remove('hidden');
-            safeCreateIcons();
+        function openLoginModal() {
+            document.getElementById('loginErrorMsg')?.classList.add('hidden');
+            document.getElementById('loginModal')?.classList.remove('hidden');
         }
-        function closeBrandsModal() {
-            document.getElementById('brandsModal')?.classList.add('hidden');
+
+        function closeLoginModal() {
+            document.getElementById('loginModal')?.classList.add('hidden');
         }
-        function renderBrandsListTable() {
-            const tbody = document.getElementById('brandsListTableBody');
+
+        async function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmailInput').value.trim();
+            const pass = document.getElementById('loginPasswordInput').value;
+            const errDiv = document.getElementById('loginErrorMsg');
+            const submitBtn = document.getElementById('btnLoginSubmit');
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'جارٍ التحقق...';
+                await auth.signInWithEmailAndPassword(email, pass);
+                closeLoginModal();
+                showToast('تم تسجيل الدخول بنجاح كمسؤول');
+            } catch (error) {
+                errDiv.textContent = 'بيانات الاعتماد غير صالحة، يرجى المحاولة ثانية.';
+                errDiv.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'دخول';
+            }
+        }
+
+        async function handleLogout() {
+            await auth.signOut();
+            showToast('تم تسجيل الخروج والعودة لوضع الزائر');
+        }
+
+        function onGlobalDatePicked(dateStr) {
+            if (!dateStr) return;
+            activeCalendarDate = dateStr;
+            const d = new Date(dateStr + 'T00:00:00');
+            const dayNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const formatted = `${dayNames[d.getDay()]}، ${d.getDate()} / ${d.getMonth() + 1} / ${d.getFullYear()}`;
+            
+            const label = document.getElementById('calendarDayLabel');
+            if (label) label.textContent = formatted;
+            
+            const picker = document.getElementById('globalCalendarPicker');
+            if (picker) picker.value = dateStr;
+
+            updateCalendarMetrics(dateStr);
+        }
+
+        function navigateCalendarDay(offset) {
+            const current = new Date(activeCalendarDate + 'T00:00:00');
+            current.setDate(current.getDate() + offset);
+            const yyyy = current.getFullYear();
+            const mm = String(current.getMonth() + 1).padStart(2, '0');
+            const dd = String(current.getDate()).padStart(2, '0');
+            onGlobalDatePicked(`${yyyy}-${mm}-${dd}`);
+        }
+
+        function setCalendarToToday() {
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            onGlobalDatePicked(`${yyyy}-${mm}-${dd}`);
+        }
+
+        function updateCalendarMetrics(dateStr) {
+            const inMatches = inboundData.filter(c => c.date === dateStr);
+            const inTotal = inMatches.reduce((acc, c) => acc + (parseInt(c.qty, 10) || 0), 0);
+            
+            const dispMatches = dispatchData.filter(d => d.date === dateStr);
+            const dispTotal = dispMatches.reduce((acc, d) => acc + (parseInt(d.qty, 10) || 0), 0);
+
+            const moveEntry = movementData.find(m => m.date === dateStr);
+            let openStock = 0;
+            let closeStock = 0;
+
+            if (moveEntry) {
+                openStock = moveEntry.open;
+                closeStock = moveEntry.close;
+            } else {
+                openStock = 15220;
+                closeStock = openStock + inTotal - dispTotal;
+            }
+
+            document.getElementById('calOpenStock').textContent = openStock.toLocaleString();
+            document.getElementById('calInboundQty').textContent = inTotal > 0 ? `+${inTotal.toLocaleString()}` : '0';
+            document.getElementById('calInboundCount').textContent = `(${inMatches.length} حاوية)`;
+            document.getElementById('calDispatchQty').textContent = dispTotal > 0 ? `-${dispTotal.toLocaleString()}` : '0';
+            document.getElementById('calDispatchCount').textContent = `(${dispMatches.length} إرسالية)`;
+            document.getElementById('calCloseStock').textContent = closeStock.toLocaleString();
+        }
+
+        let movementChartInstance = null;
+        function initMovementChart() {
+            const canvas = document.getElementById('movementChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            if (movementChartInstance) movementChartInstance.destroy();
+
+            movementChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: movementData.map(m => m.date_short || m.date),
+                    datasets: [{
+                        label: 'رصيد المستودع (طرد)',
+                        data: movementData.map(m => m.close),
+                        borderColor: '#e67e22',
+                        backgroundColor: 'rgba(230, 126, 34, 0.12)',
+                        fill: true,
+                        tension: 0.35,
+                        borderWidth: 3,
+                        pointRadius: 2.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#fae5d3' }, ticks: { font: { family: 'Rubik' }, color: '#888' } },
+                        x: { grid: { display: false }, ticks: { font: { family: 'Rubik' }, color: '#888', maxTicksLimit: 12 } }
+                    }
+                }
+            });
+        }
+
+        let merchantsSplitChartInstance = null;
+        function initMerchantsSplitChart() {
+            const canvas = document.getElementById('merchantsSplitChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            let omarQty = 0, ahmadQty = 0;
+            dispatchData.forEach(d => {
+                const c = normalizeArabic(d.customer || '');
+                const q = parseInt(d.qty, 10) || 0;
+                if (c.includes('عمر العقاد')) omarQty += q;
+                else if (c.includes('احمد الطالب')) ahmadQty += q;
+            });
+
+            if (merchantsSplitChartInstance) merchantsSplitChartInstance.destroy();
+
+            merchantsSplitChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['عمر العقاد', 'أحمد الطالب'],
+                    datasets: [{
+                        data: [omarQty, ahmadQty],
+                        backgroundColor: ['#e67e22', '#2563eb'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderInboundTable(data = inboundData) {
+            const tbody = document.getElementById('inboundTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
-            brandsData.forEach((b, idx) => {
+
+            data.forEach((row, idx) => {
                 const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
                 tr.innerHTML = `
-                    <td class="p-2.5 font-mono">${idx + 1}</td>
-                    <td class="p-2.5 font-bold">${escapeHtml(b.name)}</td>
-                    <td class="p-2.5 font-mono">${escapeHtml(b.origin)}</td>
+                    <td class="p-3 text-slate-500 font-mono">${idx + 1}</td>
+                    <td class="p-3 font-mono font-bold text-[#45260a]">${escapeHtml(row.id)}</td>
+                    <td class="p-3 text-slate-700 font-mono">${escapeHtml(row.date)}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-blue-50 text-blue-700">${escapeHtml(row.port)}</span></td>
+                    <td class="p-3 font-bold text-slate-800">${escapeHtml(row.brand)}</td>
+                    <td class="p-3 text-slate-600 font-mono">${escapeHtml(row.pack || '')}</td>
+                    <td class="p-3 font-bold text-[#45260a] font-mono">${(row.qty || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono text-emerald-600">${escapeHtml(row.car || '-')}</td>
+                    <td class="p-3 text-slate-700">${escapeHtml(row.driver || 'غير محدد')}</td>
+                    <td class="p-3 text-center font-mono font-bold">${escapeHtml(row.temp)}°C</td>
+                    <td class="p-3 text-center font-mono">${row.yellow || 0}</td>
+                    <td class="p-3 text-center font-mono">${row.second || 0}</td>
+                    <td class="p-3 text-center font-mono">${row.soft || 0}</td>
+                    <td class="p-3 text-center font-mono">${row.damage || 0}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            safeCreateIcons();
+        }
+
+        function renderDispatchTable() {
+            const tbody = document.getElementById('dispatchTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const start = (currentDispatchPage - 1) * DISPATCH_PER_PAGE;
+            const end = start + DISPATCH_PER_PAGE;
+            const pageData = dispatchData.slice(start, end);
+
+            pageData.forEach((row, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-3 text-slate-500 font-mono">${start + idx + 1}</td>
+                    <td class="p-3 font-mono">${escapeHtml(row.date)}</td>
+                    <td class="p-3">${escapeHtml(row.day || '-')}</td>
+                    <td class="p-3 font-bold text-[#45260a]">${escapeHtml(row.driver || 'غير محدد')}</td>
+                    <td class="p-3 font-bold text-slate-800">${escapeHtml(row.customer || '-')}</td>
+                    <td class="p-3 font-mono text-emerald-600">${escapeHtml(row.car || '-')}</td>
+                    <td class="p-3">${escapeHtml(row.dest || 'دمشق')}</td>
+                    <td class="p-3 font-bold">${escapeHtml(row.brand)}</td>
+                    <td class="p-3 font-mono font-bold">${(row.qty || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono">${escapeHtml(row.receipt || '-')}</td>
+                    <td class="p-3">${escapeHtml(row.pack || '-')}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            safeCreateIcons();
+        }
+
+        function renderMovementTable() {
+            const tbody = document.getElementById('movementTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            movementData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-3 font-mono font-bold">${escapeHtml(row.date_short || row.date)}</td>
+                    <td class="p-3 text-slate-500">${escapeHtml(row.day)}</td>
+                    <td class="p-3 font-mono">${(row.open || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono font-bold text-cyan-600">${row.inQty > 0 ? '+' + row.inQty.toLocaleString() : '-'}</td>
+                    <td class="p-3 font-mono font-bold text-emerald-600">${row.outQty > 0 ? '-' + row.outQty.toLocaleString() : '-'}</td>
+                    <td class="p-3 font-mono font-bold text-amber-600">${(row.net || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono font-black text-[#cf711f]">${(row.close || 0).toLocaleString()}</td>
+                    <td class="p-3 text-slate-500 text-[11px]">${escapeHtml(row.notes || '')}</td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        function openDriverModal() {
-            renderDriverListTable();
-            document.getElementById('driverModal')?.classList.remove('hidden');
-            safeCreateIcons();
-        }
-        function closeDriverModal() {
-            document.getElementById('driverModal')?.classList.add('hidden');
-        }
-        function renderDriverListTable() {
-            const tbody = document.getElementById('driverListTableBody');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            driversData.forEach((d, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-2.5 font-bold">${escapeHtml(d.name)}</td>
-                    <td class="p-2.5 font-mono text-emerald-600">${escapeHtml(d.car)}</td>
-                    <td class="p-2.5">${escapeHtml(d.dest)}</td>
-                    <td class="p-2.5 text-center font-mono">${d.trips || 0}</td>
-                    <td class="p-2.5 text-center font-mono">${(d.total_qty || 0).toLocaleString()}</td>
+        function renderRipeningRooms() {
+            const container = document.getElementById('roomsGridContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            roomsData.forEach(r => {
+                const totalInRoom = (r.items || []).reduce((s, it) => s + (parseInt(it.qty, 10) || 0), 0);
+                const card = document.createElement('div');
+                card.className = "glass-panel p-4 rounded-2xl border border-slate-200 flex flex-col justify-between";
+                
+                let itemsList = (r.items || []).map(it => `
+                    <div class="flex justify-between items-center text-xs py-1 border-b border-slate-100">
+                        <span class="font-bold text-slate-800">${escapeHtml(it.brand)} (${escapeHtml(it.origin)})</span>
+                        <span class="font-mono text-[#45260a]">${(it.qty || 0).toLocaleString()} طرد</span>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                            <span class="font-black text-sm text-[#45260a]">قاعة ${r.room}</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+                                ${escapeHtml(r.hours || r.status)}
+                            </span>
+                        </div>
+                        <div class="py-2">${itemsList}</div>
+                    </div>
+                    <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <span class="font-semibold text-slate-500">المجموع:</span>
+                        <span class="font-mono font-bold text-amber-700">${totalInRoom.toLocaleString()} كرتونة</span>
+                    </div>
                 `;
-                tbody.appendChild(tr);
+                container.appendChild(card);
             });
+            safeCreateIcons();
         }
 
         function updateGlobalStats() {
@@ -1003,7 +1033,6 @@
 
             const occupiedRooms = roomsData.filter(r => r.items && r.items.length > 0).length;
             document.getElementById('kpiActiveRooms').textContent = `${occupiedRooms} / ${roomsData.length}`;
-            document.getElementById('kpiActiveRoomsSub').textContent = `جميع القاعات (7 إلى 12) مشغولة بالكامل`;
 
             document.getElementById('badgeInboundCount').textContent = inboundData.length;
             document.getElementById('badgeDispatchCount').textContent = dispatchData.length;
