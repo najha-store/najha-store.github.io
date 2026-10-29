@@ -8,10 +8,10 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js" crossorigin="anonymous"></script>
-    <!-- Firebase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase SDK (Compat Version for Vanilla Web) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -29,16 +29,27 @@
             --omni-card-border: #fae5d3;
         }
 
-        * { font-family: var(--font-ar); box-sizing: border-box; }
+        * {
+            font-family: var(--font-ar);
+            box-sizing: border-box;
+        }
+
         html, body {
             background-color: var(--omni-bg-tint) !important;
             color: #45260a;
             overflow-x: hidden !important;
             width: 100%;
             line-height: 1.6;
+            letter-spacing: 0.005em;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .font-num { font-family: var(--font-num) !important; font-variant-numeric: tabular-nums; }
+
+        .font-num {
+            font-family: var(--font-num) !important;
+            font-variant-numeric: tabular-nums;
+        }
+
         .omni-card, .glass-panel, .card {
             background-color: #ffffff !important;
             border-radius: 18px !important;
@@ -46,44 +57,111 @@
             box-shadow: 0 10px 25px -5px rgba(230, 126, 34, 0.07), 0 6px 10px -4px rgba(0, 0, 0, 0.03) !important;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
-        .omni-nav-pill {
-            display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem;
-            font-size: 0.85rem; font-weight: 700; color: #6f6f6f; border-radius: 12px; transition: all 0.25s ease;
+
+        .omni-card:hover, .glass-panel:hover, .card:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 20px 35px -8px rgba(230, 126, 34, 0.14), 0 8px 12px -3px rgba(0, 0, 0, 0.05) !important;
+            border-color: #eb984e !important;
         }
-        .omni-nav-pill:hover { color: var(--omni-orange); background-color: #fdf2e9; }
+
+        .omni-nav-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #6f6f6f;
+            border-radius: 12px;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .omni-nav-pill:hover {
+            color: var(--omni-orange);
+            background-color: #fdf2e9;
+        }
+
         .omni-nav-pill.active {
             color: #ffffff !important;
             background: linear-gradient(135deg, #e67e22 0%, #cf711f 100%) !important;
             box-shadow: 0 6px 18px rgba(230, 126, 34, 0.35) !important;
             font-weight: 800 !important;
         }
-        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+
         table thead th {
-            background-color: #fdf2e9 !important; color: #45260a !important; font-weight: 800 !important;
-            padding: 0.85rem 1rem !important; border-bottom: 2px solid var(--omni-card-border) !important;
+            background-color: #fdf2e9 !important;
+            color: #45260a !important;
+            font-weight: 800 !important;
+            padding: 0.85rem 1rem !important;
+            border-bottom: 2px solid var(--omni-card-border) !important;
+            white-space: nowrap;
+            font-size: 0.78rem !important;
         }
-        table tbody td { padding: 0.85rem 1rem !important; border-bottom: 1px solid #fdf2e9 !important; color: #333333 !important; }
+
+        table tbody td {
+            padding: 0.85rem 1rem !important;
+            border-bottom: 1px solid #fdf2e9 !important;
+            color: #333333 !important;
+            font-weight: 500;
+        }
+
+        table tbody tr:hover {
+            background-color: rgba(253, 242, 233, 0.5) !important;
+        }
+
         input, select, textarea {
-            background-color: #ffffff !important; border: 1px solid #e0d0c1 !important; color: #333333 !important; border-radius: 12px !important;
+            background-color: #ffffff !important;
+            border: 1px solid #e0d0c1 !important;
+            color: #333333 !important;
+            border-radius: 12px !important;
+            transition: all 0.2s ease !important;
         }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none !important;
+            border-color: var(--omni-orange) !important;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2) !important;
+        }
+
         .drawer-closed { transform: translateX(100%) !important; }
         .drawer-open { transform: translateX(0) !important; }
         #adminSideDrawer { transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1); }
-        body.visitor-mode .admin-only { display: none !important; }
+
+        body.visitor-mode .admin-only {
+            display: none !important;
+        }
+
+        @keyframes omniFadeIn {
+            0% { opacity: 0; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        main > section:not(.hidden) {
+            animation: omniFadeIn 220ms ease-in-out forwards;
+        }
     </style>
 </head>
 <body class="bg-[#fdfaf7] text-[#45260a] min-h-screen flex flex-col antialiased visitor-mode selection:bg-orange-600 selection:text-white">
 
-    <!-- Navbar -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#fae5d3] shadow-sm w-full">
+    <!-- Top Sticky Navbar -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#fae5d3] shadow-sm w-full transition-all">
         <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full py-3.5 flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
-                <button type="button" onclick="toggleAdminDrawer()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-[#fdf2e9] border border-[#fae5d3]">
+                <button onclick="toggleAdminDrawer()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-[#fdf2e9] border border-[#fae5d3]" title="قائمة الأقسام">
                     <i data-lucide="menu" class="w-5 h-5 text-[#e67e22]"></i>
                 </button>
-                <div class="h-11 w-16 sm:h-12 sm:w-20 bg-gradient-to-b from-slate-900 to-black p-1 rounded-xl border-2 border-amber-400/70 flex items-center justify-center cursor-pointer shadow-md" onclick="switchTab('dashboard')">
-                    <img src="al_neser_logo.png" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'40\' viewBox=\'0 0 60 40\'><rect width=\'60\' height=\'40\' fill=\'%23e67e22\'/><text x=\'50%25\' y=\'55%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23ffffff\' font-size=\'10\' font-weight=\'bold\'>النسر</text></svg>';" alt="شعار شركة النسر" class="w-full h-full object-contain rounded-lg">
+
+                <div class="h-11 w-16 sm:h-12 sm:w-20 bg-gradient-to-b from-slate-900 via-slate-950 to-black p-1 rounded-xl border-2 border-amber-400/70 flex items-center justify-center shadow-md shadow-orange-500/10 shrink-0 cursor-pointer" onclick="switchTab('dashboard')" title="شركة النسر التجارية - الرئيسية">
+                    <img src="al_neser_logo.png" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'40\' viewBox=\'0 0 60 40\'><rect width=\'60\' height=\'40\' fill=\'%23e67e22\'/><text x=\'50%25\' y=\'55%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23ffffff\' font-size=\'10\' font-weight=\'bold\'>النسر</text></svg>';" alt="شعار شركة النسر التجارية" class="w-full h-full object-contain rounded-lg drop-shadow-md">
                 </div>
+
                 <div class="flex flex-col">
                     <h1 class="text-base sm:text-lg font-black text-[#45260a] tracking-tight">شركة النسر التجارية</h1>
                     <span class="text-[11px] sm:text-xs text-[#888] font-medium hidden sm:block">إدارة المخزون وتخمير الموز — مستودع نجها</span>
@@ -95,62 +173,77 @@
                     <span class="text-[#6f6f6f] font-semibold">رصيد المستودع الفعلي:</span>
                     <span class="font-black text-[#cf711f] font-num" id="headerStockBadge">15,220 طرد</span>
                 </div>
-                <button type="button" id="btnLoginOpen" onclick="openLoginModal()" class="px-4 py-2 text-xs sm:text-sm font-bold text-white bg-[#45260a] hover:bg-[#333] rounded-xl shadow-md flex items-center gap-1.5">
-                    <i data-lucide="lock" class="w-3.5 h-3.5 text-[#ffd43b]"></i><span>دخول مسؤول</span>
+
+                <button id="btnLoginOpen" onclick="openLoginModal()" class="px-4 py-2 text-xs sm:text-sm font-bold text-white bg-[#45260a] hover:bg-[#333] rounded-xl shadow-md flex items-center gap-1.5 transition-all">
+                    <i data-lucide="lock" class="w-3.5 h-3.5 text-[#ffd43b]"></i>
+                    <span>دخول مسؤول</span>
                 </button>
-                <div id="adminBadgeWrapper" class="hidden flex items-center gap-2">
+
+                <div id="adminBadgeWrapper" class="hidden flex items-center gap-1.5 sm:gap-2">
                     <div class="px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span id="adminUserEmail" class="text-xs font-bold text-emerald-800 truncate">مسؤول</span>
+                        <span id="adminUserEmail" class="text-xs font-bold text-emerald-800 truncate">مسؤول النظام</span>
                     </div>
-                    <button type="button" onclick="handleLogout()" class="p-2 bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 rounded-xl" title="خروج">
+                    <button onclick="handleLogout()" class="p-2 bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 rounded-xl" title="تسجيل الخروج">
                         <i data-lucide="log-out" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Subnav -->
+        <!-- Subnav (Desktop) -->
         <div class="border-t border-[#fae5d3]/70 bg-white/70 hidden lg:block">
             <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between overflow-x-auto">
                 <nav class="flex items-center gap-2 py-2">
-                    <button type="button" id="nav-dashboard" onclick="switchTab('dashboard')" class="omni-nav-pill active"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span>الرئيسية</span></button>
-                    <button type="button" id="nav-inbound" onclick="switchTab('inbound')" class="omni-nav-pill"><i data-lucide="arrow-down-left" class="w-4 h-4 text-blue-600"></i><span>استلام الحاويات</span></button>
-                    <button type="button" id="nav-dispatch" onclick="switchTab('dispatch')" class="omni-nav-pill"><i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-600"></i><span>التوزيع والشحن</span></button>
-                    <button type="button" id="nav-movement" onclick="switchTab('movement')" class="omni-nav-pill"><i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i><span>الحركة والأرصدة</span></button>
-                    <button type="button" id="nav-rooms" onclick="switchTab('rooms')" class="omni-nav-pill"><i data-lucide="boxes" class="w-4 h-4 text-amber-600"></i><span>قاعات التخمير</span></button>
-                </nav>
-                <div class="flex items-center gap-2 py-2 admin-only">
-                    <button type="button" onclick="openQuickModal('inbound')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
-                        <i data-lucide="plus-circle" class="w-4 h-4"></i> إضافة حاوية واردة
+                    <button id="nav-dashboard" onclick="switchTab('dashboard')" class="omni-nav-pill active">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                        <span>الرئيسية والمؤشرات</span>
                     </button>
-                    <button type="button" onclick="openQuickModal('dispatch')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
-                        <i data-lucide="truck" class="w-4 h-4"></i> تسجيل إرسالية
+
+                    <button id="nav-inbound" onclick="switchTab('inbound')" class="omni-nav-pill">
+                        <i data-lucide="arrow-down-left" class="w-4 h-4 text-blue-600"></i>
+                        <span>استلام الحاويات</span>
+                        <span id="badgeInboundCount" class="bg-blue-100 text-blue-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">143</span>
+                    </button>
+
+                    <button id="nav-dispatch" onclick="switchTab('dispatch')" class="omni-nav-pill">
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-600"></i>
+                        <span>التوزيع والشحن</span>
+                        <span id="badgeDispatchCount" class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">761</span>
+                    </button>
+
+                    <button id="nav-movement" onclick="switchTab('movement')" class="omni-nav-pill">
+                        <i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i>
+                        <span>حركة المستودع والأرصدة</span>
+                        <span id="badgeMovementCount" class="bg-cyan-100 text-cyan-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">59 يوماً</span>
+                    </button>
+
+                    <button id="nav-rooms" onclick="switchTab('rooms')" class="omni-nav-pill">
+                        <i data-lucide="boxes" class="w-4 h-4 text-amber-600"></i>
+                        <span>قاعات التخمير</span>
+                        <span id="badgeRoomsStock" class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">15,220</span>
+                    </button>
+
+                    <button id="nav-inspection" onclick="switchTab('inspection')" class="omni-nav-pill">
+                        <i data-lucide="camera" class="w-4 h-4 text-purple-600"></i>
+                        <span>معرض وتقارير الفحص</span>
+                        <span id="badgeInspectionCount" class="bg-purple-100 text-purple-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">143</span>
+                    </button>
+                </nav>
+
+                <div class="flex items-center gap-2 py-2">
+                    <button onclick="openDriverModal()" class="omni-nav-pill text-xs">
+                        <i data-lucide="users" class="w-3.5 h-3.5 text-blue-600"></i>
+                        <span>دليل السائقين</span>
+                    </button>
+                    <button onclick="openBrandsModal()" class="omni-nav-pill text-xs">
+                        <i data-lucide="tags" class="w-3.5 h-3.5 text-amber-600"></i>
+                        <span>دليل الماركات</span>
                     </button>
                 </div>
             </div>
         </div>
     </header>
-
-    <!-- Mobile Drawer -->
-    <div id="adminDrawerBackdrop" onclick="closeAdminDrawer()" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm lg:hidden transition-opacity duration-300 opacity-0"></div>
-    <aside id="adminSideDrawer" class="drawer-closed fixed top-0 right-0 z-50 flex h-screen w-72 flex-col bg-white border-l border-[#fae5d3] duration-300 ease-linear lg:hidden shadow-2xl">
-        <div class="p-4 border-b border-[#fae5d3] flex items-center justify-between bg-[#fdf2e9]">
-            <h2 class="font-extrabold text-[#45260a] text-sm">مستودع نجها - شركة النسر</h2>
-            <button type="button" onclick="closeAdminDrawer()" class="p-1.5 text-slate-500 hover:text-slate-900"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        <div class="flex-1 overflow-y-auto p-4 space-y-2">
-            <button type="button" onclick="switchTab('dashboard')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="layout-dashboard" class="w-4 h-4 text-[#e67e22]"></i><span>الرئيسية والمؤشرات</span></button>
-            <button type="button" onclick="switchTab('inbound')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="arrow-down-left" class="w-4 h-4 text-blue-600"></i><span>استلام الحاويات</span></button>
-            <button type="button" onclick="switchTab('dispatch')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-600"></i><span>التوزيع والشحن</span></button>
-            <button type="button" onclick="switchTab('movement')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i><span>حركة المستودع والأرصدة</span></button>
-            <button type="button" onclick="switchTab('rooms')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="boxes" class="w-4 h-4 text-amber-600"></i><span>قاعات التخمير</span></button>
-            <div class="admin-only pt-3 border-t border-[#fae5d3] space-y-2">
-                <button type="button" onclick="openQuickModal('inbound'); closeAdminDrawer();" class="w-full p-2.5 rounded-xl bg-blue-50 text-blue-700 text-right font-bold text-xs">إضافة حاوية استلام</button>
-                <button type="button" onclick="openQuickModal('dispatch'); closeAdminDrawer();" class="w-full p-2.5 rounded-xl bg-emerald-50 text-emerald-700 text-right font-bold text-xs">تسجيل إرسالية توزيع</button>
-            </div>
-        </div>
-    </aside>
 
     <!-- Main Container -->
     <main class="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
@@ -160,7 +253,7 @@
             <div id="toastMsg" class="text-sm font-bold text-[#45260a]">تمت العملية بنجاح</div>
         </div>
 
-        <!-- 1. DASHBOARD -->
+        <!-- DASHBOARD -->
         <section id="tab-dashboard" class="space-y-6">
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="glass-panel p-5 rounded-2xl border border-slate-200">
@@ -208,20 +301,21 @@
             </div>
         </section>
 
-        <!-- 2. INBOUND -->
+        <!-- INBOUND -->
         <section id="tab-inbound" class="hidden space-y-6">
             <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">سجل استلام الحاويات</h2>
                     <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynInboundContCount" class="font-bold text-blue-600 font-num">143</span> حاوية</p>
                 </div>
+                <button onclick="openBrandsModal()" class="px-3.5 py-2.5 bg-amber-500/10 text-amber-700 border border-amber-500/30 rounded-xl text-xs font-bold">دليل الماركات</button>
             </div>
             <div class="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
                 <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
                     <table class="w-full min-w-[1150px] text-right text-xs">
                         <thead>
                             <tr>
-                                <th class="p-3">#</th><th class="p-3">رقم الحاوية</th><th class="p-3">التاريخ</th><th class="p-3">المنفذ</th><th class="p-3">الماركة</th><th class="p-3">العدد (كرتونة)</th><th class="p-3">رقم السيارة</th><th class="p-3">السائق</th><th class="p-3 text-center">الحرارة</th>
+                                <th class="p-3">#</th><th class="p-3">رقم الحاوية</th><th class="p-3">تاريخ الوصول</th><th class="p-3">المنفذ</th><th class="p-3">الماركة</th><th class="p-3">المنشأ</th><th class="p-3">العدد (كرتونة)</th><th class="p-3">رقم السيارة</th><th class="p-3">السائق</th><th class="p-3 text-center">الحرارة</th>
                             </tr>
                         </thead>
                         <tbody id="inboundTableBody" class="divide-y divide-slate-100"></tbody>
@@ -230,7 +324,7 @@
             </div>
         </section>
 
-        <!-- 3. DISPATCH -->
+        <!-- DISPATCH -->
         <section id="tab-dispatch" class="hidden space-y-6">
             <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
                 <div>
@@ -243,7 +337,7 @@
                     <table class="w-full text-right text-xs">
                         <thead>
                             <tr>
-                                <th class="p-3">#</th><th class="p-3">التاريخ</th><th class="p-3">السائق</th><th class="p-3 text-amber-700 font-bold">التاجر</th><th class="p-3">السيارة</th><th class="p-3">الماركة</th><th class="p-3">العدد (طرد)</th><th class="p-3">الإيصال</th>
+                                <th class="p-3">#</th><th class="p-3">التاريخ</th><th class="p-3">اليوم</th><th class="p-3">السائق</th><th class="p-3 text-amber-700 font-bold">التاجر</th><th class="p-3">السيارة</th><th class="p-3">الوجهة</th><th class="p-3">الماركة</th><th class="p-3">العدد (طرد)</th><th class="p-3">الإيصال</th>
                             </tr>
                         </thead>
                         <tbody id="dispatchTableBody" class="divide-y divide-slate-100"></tbody>
@@ -252,7 +346,7 @@
             </div>
         </section>
 
-        <!-- 4. MOVEMENT -->
+        <!-- MOVEMENT -->
         <section id="tab-movement" class="hidden space-y-6">
             <div class="glass-panel p-5 rounded-2xl border border-slate-200">
                 <h2 class="text-lg font-bold text-slate-900">حركة مستودع نجها الشاملة (59 يوماً)</h2>
@@ -262,7 +356,7 @@
                     <table class="w-full text-right text-xs">
                         <thead>
                             <tr>
-                                <th class="p-3">التاريخ</th><th class="p-3">اليوم</th><th class="p-3">رصيد البداية</th><th class="p-3 text-cyan-600">الوارد</th><th class="p-3 text-emerald-600">الصادر</th><th class="p-3 font-black text-[#45260a]">رصيد النهاية</th><th class="p-3">البيان</th>
+                                <th class="p-3">التاريخ</th><th class="p-3">اليوم</th><th class="p-3">رصيد البداية</th><th class="p-3 text-cyan-600">الوارد</th><th class="p-3 text-emerald-600">الصادر</th><th class="p-3 text-amber-600">الصافي</th><th class="p-3 font-black text-[#45260a]">رصيد النهاية</th><th class="p-3">البيان</th>
                             </tr>
                         </thead>
                         <tbody id="movementTableBody" class="divide-y divide-slate-100"></tbody>
@@ -271,57 +365,55 @@
             </div>
         </section>
 
-        <!-- 5. ROOMS -->
+        <!-- ROOMS -->
         <section id="tab-rooms" class="hidden space-y-6">
             <div id="roomsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
         </section>
+
+        <!-- INSPECTION -->
+        <section id="tab-inspection" class="hidden space-y-6">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200">
+                <h2 class="text-lg font-bold text-slate-900">معرض وتقارير الفحص</h2>
+            </div>
+        </section>
     </main>
 
-    <!-- Modal: Quick Add / Edit -->
-    <div id="quickAdminModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-lg bg-white border border-[#fae5d3] rounded-3xl p-6 shadow-2xl space-y-4">
+    <!-- Footer -->
+    <footer class="bg-white border-t border-[#fae5d3] py-5 text-center mt-12">
+        <p dir="ltr" class="text-xs text-[#767676] font-mono tracking-wider">Developed by <span class="text-[#e67e22] font-black">Mohamad Harba</span></p>
+    </footer>
+
+    <!-- Modals -->
+    <div id="brandsModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-xl bg-white border border-[#fae5d3] rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
             <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                <h3 class="font-bold text-slate-900 text-base" id="quickModalTitle">إضافة بيانات جديدة</h3>
-                <button type="button" onclick="closeQuickModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
+                <h3 class="font-bold text-slate-900 text-base">دليل الماركات المعتمدة</h3>
+                <button onclick="closeBrandsModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
             </div>
-            <form onsubmit="handleQuickFormSubmit(event)" class="space-y-3 text-xs">
-                <input type="hidden" id="quickFormType" value="inbound">
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">رقم الحاوية أو الإيصال *</label>
-                    <input type="text" id="qIdInput" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">التاريخ *</label>
-                        <input type="date" id="qDateInput" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">الكمية (كرتونة) *</label>
-                        <input type="number" id="qQtyInput" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold" value="1098">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">الماركة *</label>
-                    <select id="qBrandInput" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                        <option value="روزيتا">روزيتا</option>
-                        <option value="ديلمونتي">ديلمونتي</option>
-                        <option value="اكسترا بان">اكسترا بان</option>
-                        <option value="كوستا سول">كوستا سول</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">اسم السائق / التاجر *</label>
-                    <input type="text" id="qEntityInput" required placeholder="مثال: رامي زينو أو عمر العقاد" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                </div>
-                <div class="flex justify-end gap-2 pt-2 border-t border-slate-200">
-                    <button type="button" onclick="closeQuickModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl">إلغاء</button>
-                    <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md">حفظ ومزامنة سحابية</button>
-                </div>
-            </form>
+            <div class="flex-1 overflow-y-auto max-h-72">
+                <table class="w-full text-right text-xs">
+                    <thead><tr><th class="p-2.5">#</th><th class="p-2.5">اسم الماركة</th><th class="p-2.5">المنشأ والتعبئة</th></tr></thead>
+                    <tbody id="brandsListTableBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- Login Modal -->
+    <div id="driverModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl bg-white border border-[#fae5d3] rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h3 class="font-bold text-slate-900 text-base">دليل أسطول السائقين</h3>
+                <button onclick="closeDriverModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
+            </div>
+            <div class="flex-1 overflow-y-auto max-h-80">
+                <table class="w-full text-right text-xs">
+                    <thead><tr><th class="p-2.5">اسم السائق</th><th class="p-2.5">رقم السيارة</th><th class="p-2.5">الوجهة</th><th class="p-2.5 text-center">الرحلات</th><th class="p-2.5 text-center">إجمالي الكراتين</th></tr></thead>
+                    <tbody id="driverListTableBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div id="loginModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md bg-white border border-blue-500/40 rounded-3xl p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-200 pb-3">
@@ -329,10 +421,10 @@
                     <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-600 flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
                     <h3 class="font-bold text-slate-900 text-base">تسجيل دخول المسؤولين</h3>
                 </div>
-                <button type="button" onclick="closeLoginModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
+                <button onclick="closeLoginModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
             </div>
             <form onsubmit="handleLoginSubmit(event)" class="space-y-3 text-xs">
-                <div id="loginErrorMsg" class="hidden p-2.5 rounded-xl bg-red-500/10 text-red-600 text-xs font-medium"></div>
+                <div id="loginErrorMsg" class="hidden p-2.5 rounded-xl bg-red-500/10 text-red-600 text-xs"></div>
                 <div><label class="block text-slate-700 font-semibold mb-1">البريد الإلكتروني *</label><input type="email" id="loginEmailInput" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2"></div>
                 <div><label class="block text-slate-700 font-semibold mb-1">كلمة المرور *</label><input type="password" id="loginPasswordInput" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2"></div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-200">
@@ -345,16 +437,11 @@
 
     <!-- JavaScript Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-10-30-v50-stable-atomic";
+        const APP_DATA_VERSION = "2026-10-30-v51-original-layout";
 
         function escapeHtml(str) {
             if (!str) return '';
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-        }
-
-        function normalizeArabic(text) {
-            if (!text) return '';
-            return String(text).toLowerCase().replace(/[إأآا]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').trim();
         }
 
         const firebaseConfig = {
@@ -377,9 +464,10 @@
 
         const WAREHOUSE_DOC_REF = db.collection("warehouse_data").doc("current_state");
 
-        let inboundData = [{"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "temp": 16.5}, {"id": "168975", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "temp": 14.0}];
-        let dispatchList = [{"id": 1, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1016", "driver": "أبو رمضان", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 477}, {"id": 761, "date": "2026-10-29", "day": "الخميس", "receipt": "1506", "driver": "إتلاف مستودع", "customer": "تلف", "brand": "روزيتا", "qty": 1}];
-        let movementData = [{"date": "2026-09-01", "date_short": "1/9", "day": "الثلاثاء", "open": 10274, "inQty": 3936, "outQty": 2940, "close": 11270}, {"date": "2026-10-29", "date_short": "29/10", "day": "الخميس", "open": 13779, "inQty": 3294, "outQty": 1853, "close": 15220}];
+        // Datasets
+        let inboundData = [{"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "temp": 16.5, "pack": "اكوادور-20كغ"}];
+        let dispatchData = [{"id": 1, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1016", "driver": "أبو رمضان", "car": "349681", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 477, "pack": "إكوادوري 20"}];
+        let movementData = [{"date": "2026-09-01", "date_short": "1/9", "day": "الثلاثاء", "open": 10274, "inQty": 3936, "outQty": 2940, "net": 996, "close": 11270, "notes": "استلام وتوزيع"}];
         let roomsData = [
             { room: 7, status: "cooled", temp: 13.5, hours: "مبردة جاهزة", items: [{ brand: "روزيتا", origin: "اكوادور", qty: 613 }] },
             { room: 8, status: "ripening", temp: 16.9, hours: "تخمير 24 ساعة", items: [{ brand: "روزيتا", origin: "اكوادور", qty: 3233 }] },
@@ -388,11 +476,11 @@
             { room: 11, status: "ripening", temp: 17.0, hours: "تخمير", items: [{ brand: "ديلمونتي", origin: "كوستريكا", qty: 3468 }] },
             { room: 12, status: "cooled", temp: 14.0, hours: "مبردة", items: [{ brand: "كوستا سول", origin: "كوستريكا", qty: 2335 }] }
         ];
+        let driversData = [{"name": "أبو عدي", "car": "854193", "dest": "دمشق", "trips": 57, "total_qty": 12122}];
+        let brandsData = [{"name": "روزيتا", "origin": "اكوادور-20كغ"}];
 
         let currentUser = null;
         let activeTab = 'dashboard';
-        let currentDispatchPage = 1;
-        const DISPATCH_PER_PAGE = 35;
 
         // Atomic Transaction Handler
         async function runAtomicWarehouseUpdate(mutatorCallback) {
@@ -404,7 +492,7 @@
             try {
                 await db.runTransaction(async (transaction) => {
                     const doc = await transaction.get(WAREHOUSE_DOC_REF);
-                    let remoteState = doc.exists ? doc.data() : { inboundData, dispatchList, roomsData, movementData };
+                    let remoteState = doc.exists ? doc.data() : { inboundData, dispatchData, roomsData, movementData, driversData, brandsData };
                     const modifiedState = mutatorCallback(remoteState);
                     modifiedState.lastUpdated = firebase.firestore.FieldValue.serverTimestamp();
                     modifiedState.updatedBy = currentUser.email;
@@ -423,10 +511,12 @@
             if (doc.exists) {
                 const data = doc.data();
                 if (Array.isArray(data.inboundData)) inboundData = data.inboundData;
-                if (Array.isArray(data.dispatchList)) dispatchList = data.dispatchList;
+                if (Array.isArray(data.dispatchData)) dispatchData = data.dispatchData;
                 if (Array.isArray(data.roomsData)) roomsData = data.roomsData;
                 if (Array.isArray(data.movementData)) movementData = data.movementData;
-                renderInboundTable(); renderDispatchTable(); renderMovementTable(); renderRipeningRooms(); updateGlobalStats();
+                if (Array.isArray(data.driversData)) driversData = data.driversData;
+                if (Array.isArray(data.brandsData)) brandsData = data.brandsData;
+                renderAll();
             }
         });
 
@@ -448,7 +538,7 @@
 
         function switchTab(tabId) {
             activeTab = tabId;
-            ['dashboard', 'inbound', 'dispatch', 'movement', 'rooms'].forEach(s => {
+            ['dashboard', 'inbound', 'dispatch', 'movement', 'rooms', 'inspection'].forEach(s => {
                 document.getElementById(`tab-${s}`)?.classList.toggle('hidden', s !== tabId);
                 document.getElementById(`nav-${s}`)?.classList.toggle('active', s === tabId);
             });
@@ -498,36 +588,10 @@
         }
         async function handleLogout() { await auth.signOut(); showToast('تم تسجيل الخروج'); }
 
-        // Quick Add Modals
-        function openQuickModal(type) {
-            if (!currentUser) { openLoginModal(); return; }
-            document.getElementById('quickFormType').value = type;
-            document.getElementById('quickModalTitle').textContent = type === 'inbound' ? 'إضافة حاوية استلام' : 'تسجيل إرسالية توزيع';
-            document.getElementById('qDateInput').value = new Date().toISOString().split('T')[0];
-            document.getElementById('quickAdminModal').classList.remove('hidden');
-        }
-        function closeQuickModal() { document.getElementById('quickAdminModal').classList.add('hidden'); }
-
-        async function handleQuickFormSubmit(e) {
-            e.preventDefault();
-            const type = document.getElementById('quickFormType').value;
-            const id = document.getElementById('qIdInput').value.trim();
-            const date = document.getElementById('qDateInput').value;
-            const qty = parseInt(document.getElementById('qQtyInput').value, 10) || 0;
-            const brand = document.getElementById('qBrandInput').value;
-            const entity = document.getElementById('qEntityInput').value.trim();
-
-            const success = await runAtomicWarehouseUpdate((state) => {
-                if (type === 'inbound') {
-                    state.inboundData.unshift({ id, date, port: "باب الهوى", brand, qty, car: "8157930", driver: entity, temp: 13.5 });
-                } else {
-                    state.dispatchList.unshift({ id: state.dispatchList.length + 1, date, day: "الخميس", receipt: id, driver: entity, customer: entity, brand, qty });
-                }
-                return state;
-            });
-
-            if (success) closeQuickModal();
-        }
+        function openBrandsModal() { document.getElementById('brandsModal')?.classList.remove('hidden'); safeCreateIcons(); }
+        function closeBrandsModal() { document.getElementById('brandsModal')?.classList.add('hidden'); }
+        function openDriverModal() { document.getElementById('driverModal')?.classList.remove('hidden'); safeCreateIcons(); }
+        function closeDriverModal() { document.getElementById('driverModal')?.classList.add('hidden'); }
 
         // Render Functions
         let movementChartInstance = null;
@@ -552,7 +616,7 @@
             if (merchantsChartInstance) merchantsChartInstance.destroy();
             merchantsChartInstance = new Chart(canvas.getContext('2d'), {
                 type: 'doughnut',
-                data: { labels: ['عمر العقاد', 'أحمد الطالب'], datasets: [{ data: [78600, 77643], backgroundColor: ['#e67e22', '#2563eb'] }] },
+                data: { labels: ['عمر العقاد', 'أحمد الطالب'], datasets: [{ data: [36366, 35809], backgroundColor: ['#e67e22', '#2563eb'] }] },
                 options: { responsive: true, maintainAspectRatio: false, cutout: '65%' }
             });
         }
@@ -565,34 +629,34 @@
                     <td class="p-3 font-mono">${i + 1}</td>
                     <td class="p-3 font-mono font-bold">${escapeHtml(row.id)}</td>
                     <td class="p-3 font-mono">${escapeHtml(row.date)}</td>
-                    <td class="p-3">${escapeHtml(row.port)}</td>
+                    <td class="p-3">${escapeHtml(row.port || 'باب الهوى')}</td>
                     <td class="p-3 font-bold">${escapeHtml(row.brand)}</td>
+                    <td class="p-3 font-mono text-slate-600">${escapeHtml(row.pack || 'اكوادور-20كغ')}</td>
                     <td class="p-3 font-mono font-bold text-[#45260a]">${(row.qty || 0).toLocaleString()}</td>
                     <td class="p-3 font-mono text-emerald-600">${escapeHtml(row.car || '-')}</td>
                     <td class="p-3">${escapeHtml(row.driver || '-')}</td>
-                    <td class="p-3 text-center font-mono">${escapeHtml(row.temp)}°C</td>
+                    <td class="p-3 text-center font-mono">${escapeHtml(row.temp || 13.5)}°C</td>
                 </tr>
             `).join('');
-            safeCreateIcons();
         }
 
         function renderDispatchTable() {
             const tbody = document.getElementById('dispatchTableBody');
             if (!tbody) return;
-            const pageData = dispatchList.slice((currentDispatchPage - 1) * DISPATCH_PER_PAGE, currentDispatchPage * DISPATCH_PER_PAGE);
-            tbody.innerHTML = pageData.map((row, i) => `
+            tbody.innerHTML = dispatchData.slice(0, 50).map((row, i) => `
                 <tr>
                     <td class="p-3 font-mono">${i + 1}</td>
                     <td class="p-3 font-mono">${escapeHtml(row.date)}</td>
+                    <td class="p-3">${escapeHtml(row.day || '-')}</td>
                     <td class="p-3 font-bold">${escapeHtml(row.driver || '-')}</td>
                     <td class="p-3 font-bold text-slate-800">${escapeHtml(row.customer || '-')}</td>
                     <td class="p-3 font-mono text-emerald-600">${escapeHtml(row.car || '-')}</td>
+                    <td class="p-3">${escapeHtml(row.dest || 'دمشق')}</td>
                     <td class="p-3 font-bold">${escapeHtml(row.brand)}</td>
                     <td class="p-3 font-mono font-bold">${(row.qty || 0).toLocaleString()}</td>
                     <td class="p-3 font-mono">${escapeHtml(row.receipt || '-')}</td>
                 </tr>
             `).join('');
-            safeCreateIcons();
         }
 
         function renderMovementTable() {
@@ -605,6 +669,7 @@
                     <td class="p-3 font-mono">${(row.open || 0).toLocaleString()}</td>
                     <td class="p-3 font-mono text-cyan-600">+${(row.inQty || 0).toLocaleString()}</td>
                     <td class="p-3 font-mono text-emerald-600">-${(row.outQty || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono text-amber-600">${(row.net || 0).toLocaleString()}</td>
                     <td class="p-3 font-mono font-black text-[#cf711f]">${(row.close || 0).toLocaleString()}</td>
                     <td class="p-3 text-slate-500 text-[11px]">${escapeHtml(row.notes || 'حركة نظام')}</td>
                 </tr>
@@ -627,7 +692,18 @@
                     </div>
                 </div>
             `).join('');
-            safeCreateIcons();
+        }
+
+        function renderBrandsListTable() {
+            const tbody = document.getElementById('brandsListTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = brandsData.map((b, i) => `<tr><td class="p-2.5 font-mono">${i + 1}</td><td class="p-2.5 font-bold">${escapeHtml(b.name)}</td><td class="p-2.5 font-mono">${escapeHtml(b.origin)}</td></tr>`).join('');
+        }
+
+        function renderDriverListTable() {
+            const tbody = document.getElementById('driverListTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = driversData.map(d => `<tr><td class="p-2.5 font-bold">${escapeHtml(d.name)}</td><td class="p-2.5 font-mono text-emerald-600">${escapeHtml(d.car)}</td><td class="p-2.5">${escapeHtml(d.dest)}</td><td class="p-2.5 text-center font-mono">${d.trips || 0}</td><td class="p-2.5 text-center font-mono">${(d.total_qty || 0).toLocaleString()}</td></tr>`).join('');
         }
 
         function updateGlobalStats() {
@@ -635,12 +711,25 @@
             document.getElementById('headerStockBadge').textContent = `${totalStock.toLocaleString()} طرد`;
             document.getElementById('kpiCurrentStock').textContent = totalStock.toLocaleString();
             document.getElementById('kpiTotalContainers').textContent = inboundData.length;
-            document.getElementById('kpiTotalDispatched').textContent = dispatchList.reduce((a, b) => a + (b.qty || 0), 0).toLocaleString();
+            document.getElementById('kpiTotalDispatched').textContent = dispatchData.reduce((a, b) => a + (b.qty || 0), 0).toLocaleString();
+        }
+
+        function renderAll() {
+            renderInboundTable();
+            renderDispatchTable();
+            renderMovementTable();
+            renderRipeningRooms();
+            renderBrandsListTable();
+            renderDriverListTable();
+            updateGlobalStats();
+            safeCreateIcons();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            renderInboundTable(); renderDispatchTable(); renderMovementTable(); renderRipeningRooms(); updateGlobalStats();
-            initMovementChart(); initMerchantsSplitChart(); safeCreateIcons();
+            renderAll();
+            setCalendarToToday?.();
+            initMovementChart();
+            initMerchantsSplitChart();
         });
     </script>
 </body>
