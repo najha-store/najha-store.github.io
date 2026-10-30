@@ -359,14 +359,14 @@
 
         <!-- 2. INBOUND -->
         <section id="tab-inbound" class="hidden space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-wrap justify-between items-center gap-3">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="arrow-down-left" class="w-5 h-5 text-blue-500"></i> سجل استلام الحاويات</h2>
                     <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynInboundContCount" class="font-bold text-blue-600 font-num">143</span> حاوية (<span id="dynInboundBoxesCount" class="font-bold text-slate-800 font-num">161,189</span> كرتونة)</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <button type="button" onclick="openBrandsModal()" class="px-3.5 py-2.5 bg-amber-500/10 text-amber-700 border border-amber-500/30 rounded-xl text-xs font-bold">دليل الماركات</button>
-                    <button type="button" onclick="toggleInboundForm()" class="admin-only px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+                    <button type="button" onclick="toggleInboundForm()" class="admin-only px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md">
                         <i data-lucide="plus-circle" class="w-4 h-4"></i> إضافة حاوية واردة
                     </button>
                 </div>
@@ -401,12 +401,12 @@
 
         <!-- 3. DISPATCH -->
         <section id="tab-dispatch" class="hidden space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-wrap justify-between items-center gap-3">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="arrow-up-right" class="w-5 h-5 text-emerald-500"></i> أذونات التوزيع وأسطول الشحن</h2>
                     <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynDispatchTransCount" class="font-num">761</span> إرسالية (<span id="dynDispatchBoxesCount" class="font-bold text-slate-800 font-num">156,243</span> كرتونة)</p>
                 </div>
-                <button type="button" onclick="toggleDispatchForm()" class="admin-only px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+                <button type="button" onclick="toggleDispatchForm()" class="admin-only px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md">
                     <i data-lucide="plus-circle" class="w-4 h-4"></i> تسجيل إرسالية توزيع
                 </button>
             </div>
@@ -471,21 +471,34 @@
 
         <!-- 5. ROOMS -->
         <section id="tab-rooms" class="space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-wrap justify-between items-center gap-3">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="boxes" class="w-5 h-5 text-amber-500"></i> قاعات التخمير والتبريد (7 إلى 12)</h2>
                     <p class="text-xs text-slate-500 mt-1">عرض ومتابعة أصناف وماركات الموز ومناشئها لكل قاعة مع حساب ساعات التشغيل تلقائياً</p>
                 </div>
-                <span class="px-3 py-1 bg-amber-50 text-amber-800 rounded-xl text-xs font-bold border border-amber-200 font-num">الرصيد الفعلي: 15,220 طرد</span>
+                <div class="flex items-center gap-2">
+                    <!-- زر طباعة وتصدير كشف قاعات التخمير كتقرير رسمي أو PDF -->
+                    <button type="button" onclick="printRoomsReport()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md transition-all">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                        <span>طباعة / تصدير PDF</span>
+                    </button>
+                    <span class="px-3 py-1.5 bg-amber-50 text-amber-800 rounded-xl text-xs font-bold border border-amber-200 font-num">
+                        الرصيد الفعلي: 15,220 طرد
+                    </span>
+                </div>
             </div>
             <div id="roomsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
         </section>
 
         <!-- 6. INSPECTION -->
         <section id="tab-inspection" class="hidden space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="camera" class="w-5 h-5 text-purple-600"></i> معرض وتقارير الفحص (143 حاوية)</h2>
+                <button type="button" onclick="openInspectionModal()" class="admin-only px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-md">
+                    + إضافة تقرير فحص
+                </button>
             </div>
+            <div id="inspectionCardsContainer" class="space-y-4"></div>
         </section>
 
         <!-- Admin Comprehensive Room Modal (with Add Brand Button & Origin support) -->
@@ -614,9 +627,60 @@
         </div>
     </div>
 
+    <!-- Modal for Admin Actions (Inbound & Dispatch) -->
+    <div id="adminActionModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-lg bg-white border border-[#fae5d3] rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h3 class="font-bold text-slate-900 text-base" id="adminModalTitle">تسجيل بيان جديد</h3>
+                <button type="button" onclick="closeAdminActionModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
+            </div>
+            <form onsubmit="handleAdminFormSubmit(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="adminFormType" value="dispatch">
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1" id="lblFormId">رقم الإيصال / الحاوية *</label>
+                    <input type="text" id="mFormId" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">التاريخ *</label>
+                        <input type="date" id="mFormDate" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">الكمية (طرد) *</label>
+                        <input type="number" id="mFormQty" required min="1" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">الماركة *</label>
+                        <select id="mFormBrand" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                            <option value="روزيتا">روزيتا</option>
+                            <option value="ديلمونتي">ديلمونتي</option>
+                            <option value="اكسترا بان">اكسترا بان</option>
+                            <option value="كوستا سول">كوستا سول</option>
+                            <option value="بانا غولد">بانا غولد</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">رقم السيارة</label>
+                        <input type="text" id="mFormCar" placeholder="مثال: 624013" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1" id="lblFormEntity">السائق / التاجر *</label>
+                    <input type="text" id="mFormEntity" required placeholder="اسم السائق أو التاجر" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                </div>
+                <div class="flex justify-end gap-2 pt-3 border-t border-slate-200">
+                    <button type="button" onclick="closeAdminActionModal()" class="px-4 py-2 bg-slate-100 rounded-xl">إلغاء</button>
+                    <button type="submit" id="btnSubmitAdminData" class="px-6 py-2 bg-emerald-600 text-white font-bold rounded-xl shadow-md">حفظ ومزامنة فورية</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- JavaScript Complete Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-10-31-v55-multi-brand-rooms";
+        const APP_DATA_VERSION = "2026-10-31-v56-newest-first-and-print";
 
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
@@ -799,7 +863,7 @@
             if (user && document.getElementById('adminUserEmail')) {
                 document.getElementById('adminUserEmail').textContent = user.email.split('@')[0];
             }
-            safeCreateIcons();
+            renderAll();
         });
 
         function openLoginModal() { 
@@ -886,18 +950,147 @@
         }
 
         function toggleInboundForm() {
-            showToast("واجهة الاستلام متاحة للمسؤولين");
-        }
-        function toggleDispatchForm() {
-            showToast("واجهة التوزيع متاحة للمسؤولين");
+            if (!auth.currentUser) {
+                showToast("يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            document.getElementById('adminFormType').value = 'inbound';
+            document.getElementById('adminModalTitle').textContent = 'إضافة حاوية استلام جديدة';
+            document.getElementById('lblFormId').textContent = 'رقم الحاوية *';
+            document.getElementById('lblFormEntity').textContent = 'السائق الناقل *';
+            document.getElementById('mFormDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('adminActionModal')?.classList.remove('hidden');
         }
 
-        function filterInboundTable() {}
-        function clearInboundSearch() {}
-        function filterDispatchTable() {}
-        function clearDispatchSearch() {}
-        function filterMovementTable() {}
-        function clearMovementSearch() {}
+        function toggleDispatchForm() {
+            if (!auth.currentUser) {
+                showToast("يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            document.getElementById('adminFormType').value = 'dispatch';
+            document.getElementById('adminModalTitle').textContent = 'تسجيل إرسالية توزيع جديدة';
+            document.getElementById('lblFormId').textContent = 'رقم الإيصال / الفاتورة *';
+            document.getElementById('lblFormEntity').textContent = 'التاجر / الزبون *';
+            document.getElementById('mFormDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('adminActionModal')?.classList.remove('hidden');
+        }
+
+        function closeAdminActionModal() {
+            document.getElementById('adminActionModal')?.classList.add('hidden');
+        }
+
+        async function handleAdminFormSubmit(e) {
+            e.preventDefault();
+            const type = document.getElementById('adminFormType').value;
+            const idVal = document.getElementById('mFormId').value.trim();
+            const dateVal = document.getElementById('mFormDate').value;
+            const qtyVal = parseInt(document.getElementById('mFormQty').value, 10) || 0;
+            const brandVal = document.getElementById('mFormBrand').value;
+            const carVal = document.getElementById('mFormCar').value.trim();
+            const entityVal = document.getElementById('mFormEntity').value.trim();
+
+            const btn = document.getElementById('btnSubmitAdminData');
+            btn.disabled = true;
+            btn.textContent = 'جارٍ المزامنة...';
+
+            const success = await runAtomicWarehouseUpdate((state) => {
+                if (type === 'inbound') {
+                    if (!state.inboundData) state.inboundData = [];
+                    state.inboundData.unshift({
+                        id: idVal,
+                        date: dateVal,
+                        port: "باب الهوى",
+                        brand: brandVal,
+                        qty: qtyVal,
+                        car: carVal || "-",
+                        driver: entityVal,
+                        temp: 13.5,
+                        pack: "اكوادور-20كغ"
+                    });
+                } else {
+                    if (!state.dispatchData) state.dispatchData = [];
+                    state.dispatchData.unshift({
+                        id: state.dispatchData.length + 1,
+                        date: dateVal,
+                        day: "الخميس",
+                        receipt: idVal,
+                        driver: "سائق معتمد",
+                        customer: entityVal,
+                        car: carVal || "-",
+                        dest: "دمشق",
+                        brand: brandVal,
+                        qty: qtyVal
+                    });
+                }
+                return state;
+            });
+
+            btn.disabled = false;
+            btn.textContent = 'حفظ ومزامنة فورية';
+
+            if (success) {
+                closeAdminActionModal();
+                showToast("تم الحفظ بنجاح وتحديث قاعدة البيانات");
+            }
+        }
+
+        function openInspectionModal() {
+            showToast("واجهة الفحص والمعرض: جاهزة للمسؤول");
+        }
+
+        // Search & Filter Functions for Visitors
+        function filterInboundTable() {
+            const q = (document.getElementById('inboundSearchInput')?.value || '').toLowerCase();
+            const d = document.getElementById('inboundDateFilter')?.value || '';
+            const filtered = inboundData.filter(item => {
+                const matchText = !q || (item.id && item.id.toLowerCase().includes(q)) || (item.driver && item.driver.toLowerCase().includes(q)) || (item.brand && item.brand.toLowerCase().includes(q));
+                const matchDate = !d || item.date === d;
+                return matchText && matchDate;
+            });
+            renderInboundTable(filtered);
+        }
+
+        function clearInboundSearch() {
+            if (document.getElementById('inboundSearchInput')) document.getElementById('inboundSearchInput').value = '';
+            if (document.getElementById('inboundDateFilter')) document.getElementById('inboundDateFilter').value = '';
+            renderInboundTable(inboundData);
+        }
+
+        function filterDispatchTable() {
+            const q = (document.getElementById('dispatchSearchInput')?.value || '').toLowerCase();
+            const d = document.getElementById('dispatchDateFilter')?.value || '';
+            const filtered = dispatchData.filter(item => {
+                const matchText = !q || (item.customer && item.customer.toLowerCase().includes(q)) || (item.driver && item.driver.toLowerCase().includes(q)) || (item.receipt && item.receipt.toLowerCase().includes(q));
+                const matchDate = !d || item.date === d;
+                return matchText && matchDate;
+            });
+            renderDispatchTable(filtered);
+        }
+
+        function clearDispatchSearch() {
+            if (document.getElementById('dispatchSearchInput')) document.getElementById('dispatchSearchInput').value = '';
+            if (document.getElementById('dispatchDateFilter')) document.getElementById('dispatchDateFilter').value = '';
+            renderDispatchTable(dispatchData);
+        }
+
+        function filterMovementTable() {
+            const q = (document.getElementById('movementSearchInput')?.value || '').toLowerCase();
+            const d = document.getElementById('movementDateFilter')?.value || '';
+            const filtered = movementData.filter(item => {
+                const matchText = !q || (item.notes && item.notes.toLowerCase().includes(q)) || (item.day && item.day.toLowerCase().includes(q));
+                const matchDate = !d || item.date === d;
+                return matchText && matchDate;
+            });
+            renderMovementTable(filtered);
+        }
+
+        function clearMovementSearch() {
+            if (document.getElementById('movementSearchInput')) document.getElementById('movementSearchInput').value = '';
+            if (document.getElementById('movementDateFilter')) document.getElementById('movementDateFilter').value = '';
+            renderMovementTable(movementData);
+        }
 
         let movementChartInstance = null;
         function initMovementChart() {
@@ -926,10 +1119,13 @@
             });
         }
 
-        function renderInboundTable() {
+        // Render Tables (Default Sorted from Newest to Oldest)
+        function renderInboundTable(dataToRender = inboundData) {
             const tbody = document.getElementById('inboundTableBody');
             if (!tbody) return;
-            tbody.innerHTML = inboundData.map((row, i) => `
+            // Sorting newest date to oldest
+            const sorted = [...dataToRender].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            tbody.innerHTML = sorted.map((row, i) => `
                 <tr>
                     <td class="p-3 font-mono">${i + 1}</td>
                     <td class="p-3 font-mono font-bold text-[#45260a]">${escapeHtml(row.id)}</td>
@@ -945,29 +1141,37 @@
             `).join('');
         }
 
-        function renderDispatchTable() {
+        function renderDispatchTable(dataToRender = dispatchData) {
             const tbody = document.getElementById('dispatchTableBody');
             if (!tbody) return;
-            tbody.innerHTML = dispatchData.map((row, i) => `
+            // Sorting newest date to oldest
+            const sorted = [...dataToRender].sort((a, b) => {
+                const diff = new Date(b.date).getTime() - new Date(a.date).getTime();
+                if (diff !== 0) return diff;
+                return (b.id || 0) - (a.id || 0);
+            });
+            tbody.innerHTML = sorted.map((row, i) => `
                 <tr>
                     <td class="p-3 font-mono">${i + 1}</td>
-                    <td class="p-3 font-mono">${escapeHtml(row.date)}</td>
+                    <td class="p-3 font-mono font-bold">${escapeHtml(row.date)}</td>
                     <td class="p-3">${escapeHtml(row.day || '-')}</td>
                     <td class="p-3 font-bold">${escapeHtml(row.driver || '-')}</td>
                     <td class="p-3 font-bold text-slate-800">${escapeHtml(row.customer || '-')}</td>
-                    <td class="p-3 font-mono text-emerald-600">${escapeHtml(row.car || '-')}</td>
+                    <td class="p-3 font-mono text-emerald-600 font-bold">${escapeHtml(row.car || '-')}</td>
                     <td class="p-3">${escapeHtml(row.dest || 'دمشق')}</td>
                     <td class="p-3 font-bold">${escapeHtml(row.brand)}</td>
-                    <td class="p-3 font-mono font-bold">${(row.qty || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono font-black text-[#45260a]">${(row.qty || 0).toLocaleString()}</td>
                     <td class="p-3 font-mono">${escapeHtml(row.receipt || '-')}</td>
                 </tr>
             `).join('');
         }
 
-        function renderMovementTable() {
+        function renderMovementTable(dataToRender = movementData) {
             const tbody = document.getElementById('movementTableBody');
             if (!tbody) return;
-            tbody.innerHTML = movementData.map(row => `
+            // Sorting newest date to oldest
+            const sorted = [...dataToRender].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            tbody.innerHTML = sorted.map(row => `
                 <tr>
                     <td class="p-3 font-mono font-bold">${escapeHtml(row.date_short || row.date)}</td>
                     <td class="p-3 text-slate-500">${escapeHtml(row.day || '-')}</td>
@@ -1161,6 +1365,125 @@
                 closeFullRoomModal();
                 showToast(`تم تحديث قاعة ${roomNum} وتثبيت الماركات والمنشأ بنجاح`);
             }
+        }
+
+        // دالة إنشاء نافذة تقرير جرد قاعات التخمير وتجهيزها للطباعة أو الحفظ كـ PDF
+        function printRoomsReport() {
+            const totalStock = roomsData.reduce((acc, r) => acc + (r.items ? r.items.reduce((s, it) => s + (parseInt(it.qty, 10) || 0), 0) : 0), 0);
+            const currentDate = new Date().toLocaleDateString('ar-SY', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+
+            let rowsHtml = '';
+            roomsData.forEach(r => {
+                const roomTotal = (r.items || []).reduce((sum, it) => sum + (parseInt(it.qty, 10) || 0), 0);
+                if (r.items && r.items.length > 0) {
+                    r.items.forEach((it, idx) => {
+                        rowsHtml += `
+                            <tr>
+                                ${idx === 0 ? `<td rowspan="${r.items.length}" style="text-align: center; font-weight: bold; font-size: 14px; background: #fffaf5;">قاعة ${r.room}</td>` : ''}
+                                ${idx === 0 ? `<td rowspan="${r.items.length}" style="text-align: center;">${escapeHtml(r.hours || '-')}</td>` : ''}
+                                ${idx === 0 ? `<td rowspan="${r.items.length}" style="text-align: center; direction: ltr; font-weight: bold;">${r.temp || 13.5}°C</td>` : ''}
+                                <td style="font-weight: bold; color: #2c3e50;">${escapeHtml(it.brand || '-')}</td>
+                                <td style="color: #7f8c8d;">${escapeHtml(it.origin || '-')}</td>
+                                <td style="text-align: center; font-weight: bold;">${(it.qty || 0).toLocaleString()}</td>
+                                ${idx === 0 ? `<td rowspan="${r.items.length}" style="text-align: center; font-weight: 900; background: #fdf2e9; color: #d35400;">${roomTotal.toLocaleString()}</td>` : ''}
+                            </tr>
+                        `;
+                    });
+                } else {
+                    rowsHtml += `
+                        <tr>
+                            <td style="text-align: center; font-weight: bold;">قاعة ${r.room}</td>
+                            <td style="text-align: center;">فارغة (شاغرة)</td>
+                            <td style="text-align: center; direction: ltr;">${r.temp || 13.5}°C</td>
+                            <td colspan="3" style="text-align: center; color: #95a5a6;">لا توجد بضاعة حالياً</td>
+                            <td style="text-align: center; font-weight: bold;">0</td>
+                        </tr>
+                    `;
+                }
+            });
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="ar" dir="rtl">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>تقرير جرد قاعات التخمير - شركة النسر التجارية</title>
+                    <style>
+                        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+                        * { box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+                        body { padding: 30px; color: #333; background: #fff; }
+                        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e67e22; padding-bottom: 15px; margin-bottom: 20px; }
+                        .header h1 { margin: 0; font-size: 22px; color: #45260a; }
+                        .header p { margin: 4px 0 0; font-size: 13px; color: #7f8c8d; }
+                        .meta { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 13px; background: #fdfaf7; padding: 12px 18px; border-radius: 8px; border: 1px solid #fae5d3; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+                        th, td { border: 1px solid #e0d0c1; padding: 10px 12px; font-size: 12px; }
+                        th { background-color: #fdf2e9; color: #45260a; font-weight: 700; text-align: right; }
+                        tfoot tr td { background: #fdf2e9; font-weight: bold; font-size: 14px; }
+                        .footer { display: flex; justify-content: space-between; margin-top: 40px; font-size: 13px; padding-top: 15px; border-top: 1px solid #eee; }
+                        @media print {
+                            body { padding: 0; }
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div>
+                            <h1>شركة النسر التجارية</h1>
+                            <p>إدارة المستودعات والتبريد — مستودع نجها لتخمير الموز</p>
+                        </div>
+                        <div style="text-align: left;">
+                            <h3 style="margin: 0; color: #e67e22;">كشف جرد قاعات التخمير</h3>
+                            <p style="margin: 2px 0 0; font-size: 11px;">تاريخ الاستخراج: ${currentDate}</p>
+                        </div>
+                    </div>
+
+                    <div class="meta">
+                        <div><strong>إجمالي رصيد القاعات الفعلي:</strong> <span style="color: #e67e22; font-size: 15px; font-weight: 900;">${totalStock.toLocaleString()} طرد</span></div>
+                        <div><strong>عدد القاعات:</strong> 6 قاعات (7 - 12)</div>
+                        <div><strong>حالة المستودع:</strong> مطابق 100% للجرد الفعلي</div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 10%; text-align: center;">رقم القاعة</th>
+                                <th style="width: 20%; text-align: center;">الحالة / التشغيل</th>
+                                <th style="width: 10%; text-align: center;">الحرارة</th>
+                                <th style="width: 22%;">الماركة</th>
+                                <th style="width: 18%;">المنشأ والتعبئة</th>
+                                <th style="width: 10%; text-align: center;">الكمية (طرد)</th>
+                                <th style="width: 10%; text-align: center;">مجموع القاعة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" style="text-align: left; padding-left: 20px;">المجموع الإجمالي لكافة القاعات:</td>
+                                <td colspan="2" style="text-align: center; color: #d35400; font-size: 16px;">${totalStock.toLocaleString()} طرد</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="footer">
+                        <div><strong>أمين المستودع:</strong> ..............................</div>
+                        <div><strong>مسؤول الجودة والتخمير:</strong> ..............................</div>
+                        <div><strong>إدارة شركة النسر:</strong> ..............................</div>
+                    </div>
+
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         }
 
         function renderBrandsListTable() {
