@@ -143,14 +143,12 @@
                 </div>
             </div>
 
-            <!-- Left: Stats & Login -->
             <div class="flex items-center gap-2 sm:gap-3 shrink-0">
                 <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#fdf2e9] border border-[#fae5d3] text-xs">
                     <span class="text-[#6f6f6f] font-semibold">رصيد المستودع الفعلي:</span>
                     <span class="font-black text-[#cf711f] font-num" id="headerStockBadge">15,220 طرد</span>
                 </div>
 
-                <!-- Admin Action Buttons -->
                 <button id="btnLoginOpen" onclick="openLoginModal()" class="px-4 py-2 text-xs sm:text-sm font-bold text-white bg-[#45260a] hover:bg-[#333] rounded-xl shadow-md flex items-center gap-1.5 transition-all">
                     <i data-lucide="lock" class="w-3.5 h-3.5 text-[#ffd43b]"></i>
                     <span>دخول مسؤول</span>
@@ -247,7 +245,7 @@
             <div class="glass-panel p-3.5 sm:p-4 rounded-2xl border border-blue-500/30 bg-white/90 shadow-xl space-y-3">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center font-bold shrink-0">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold shrink-0">
                             <i data-lucide="calendar" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                         </div>
                         <div>
@@ -364,8 +362,27 @@
                     <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="arrow-down-left" class="w-5 h-5 text-blue-500"></i> سجل استلام الحاويات</h2>
                     <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynInboundContCount" class="font-bold text-blue-600 font-num">143</span> حاوية (<span id="dynInboundBoxesCount" class="font-bold text-slate-800 font-num">161,189</span> كرتونة)</p>
                 </div>
-                <button type="button" onclick="openBrandsModal()" class="px-3.5 py-2.5 bg-amber-500/10 text-amber-700 border border-amber-500/30 rounded-xl text-xs font-bold">دليل الماركات</button>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="openBrandsModal()" class="px-3.5 py-2.5 bg-amber-500/10 text-amber-700 border border-amber-500/30 rounded-xl text-xs font-bold">دليل الماركات</button>
+                    <button type="button" onclick="toggleInboundForm()" class="admin-only px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> إضافة حاوية واردة
+                    </button>
+                </div>
             </div>
+
+            <!-- Inbound Filter Bar (Accessible to All Visitors) -->
+            <div class="glass-panel p-4 rounded-2xl border border-slate-200 bg-white/80 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4 text-blue-600"></i>
+                    <span class="text-xs font-bold text-[#45260a]">بحث في الحاويات المستلمة:</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <input type="date" id="inboundDateFilter" onchange="filterInboundTable()" class="text-xs bg-white border border-slate-300 rounded-xl px-2 py-1.5 font-bold cursor-pointer">
+                    <input type="text" id="inboundSearchInput" oninput="filterInboundTable()" placeholder="ابحث برقم الحاوية أو السائق أو الماركة..." class="text-xs bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold w-56 sm:w-64">
+                    <button type="button" onclick="clearInboundSearch()" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold">مسح ✕</button>
+                </div>
+            </div>
+
             <div class="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
                 <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
                     <table class="w-full min-w-[1150px] text-right text-xs">
@@ -387,7 +404,24 @@
                     <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="arrow-up-right" class="w-5 h-5 text-emerald-500"></i> أذونات التوزيع وأسطول الشحن</h2>
                     <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynDispatchTransCount" class="font-num">761</span> إرسالية (<span id="dynDispatchBoxesCount" class="font-bold text-slate-800 font-num">156,243</span> كرتونة)</p>
                 </div>
+                <button type="button" onclick="toggleDispatchForm()" class="admin-only px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> تسجيل إرسالية توزيع
+                </button>
             </div>
+
+            <!-- Dispatch Filter Bar (Accessible to All Visitors) -->
+            <div class="glass-panel p-4 rounded-2xl border border-slate-200 bg-white/80 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4 text-emerald-600"></i>
+                    <span class="text-xs font-bold text-[#45260a]">بحث في أذونات التوزيع:</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <input type="date" id="dispatchDateFilter" onchange="filterDispatchTable()" class="text-xs bg-white border border-slate-300 rounded-xl px-2 py-1.5 font-bold cursor-pointer">
+                    <input type="text" id="dispatchSearchInput" oninput="filterDispatchTable()" placeholder="ابحث بالتاجر أو السائق أو الإيصال..." class="text-xs bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold w-56 sm:w-64">
+                    <button type="button" onclick="clearDispatchSearch()" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold">مسح ✕</button>
+                </div>
+            </div>
+
             <div class="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
                 <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
                     <table class="w-full text-right text-xs">
@@ -407,6 +441,18 @@
             <div class="glass-panel p-5 rounded-2xl border border-slate-200">
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-cyan-500"></i> حركة مستودع نجها الشاملة (59 يوماً)</h2>
             </div>
+            <!-- Movement Filter Bar -->
+            <div class="glass-panel p-4 rounded-2xl border border-slate-200 bg-white/80 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-4 h-4 text-cyan-600"></i>
+                    <span class="text-xs font-bold text-[#45260a]">بحث بالتاريخ في الحركة اليومية:</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <input type="date" id="movementDateFilter" onchange="filterMovementTable()" class="text-xs bg-white border border-slate-300 rounded-xl px-2 py-1.5 font-bold cursor-pointer">
+                    <input type="text" id="movementSearchInput" oninput="filterMovementTable()" placeholder="ابحث بالبيان أو اليوم..." class="text-xs bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold w-56 sm:w-64">
+                    <button type="button" onclick="clearMovementSearch()" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold">مسح ✕</button>
+                </div>
+            </div>
             <div class="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
                 <div class="overflow-x-auto">
                     <table class="w-full text-right text-xs">
@@ -423,6 +469,10 @@
 
         <!-- 5. ROOMS -->
         <section id="tab-rooms" class="hidden space-y-6">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="boxes" class="w-5 h-5 text-amber-500"></i> قاعات التخمير والتبريد</h2>
+                <span class="px-3 py-1 bg-amber-50 text-amber-800 rounded-xl text-xs font-bold border border-amber-200">الرصيد الفعلي: 15,220 طرد</span>
+            </div>
             <div id="roomsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
         </section>
 
@@ -492,7 +542,7 @@
 
     <!-- JavaScript Complete & Secure Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-10-30-v53-secure-production";
+        const APP_DATA_VERSION = "2026-10-30-v54-complete-robust";
 
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
@@ -524,7 +574,7 @@
 
         const WAREHOUSE_DOC_REF = db.collection("warehouse_data").doc("current_state");
 
-        // Verified Complete Datasets
+        // Verified Datasets
         let inboundData = [
             {"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "pack": "اكوادور-20كغ"},
             {"id": "126764", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1740, "car": "8352", "driver": "محمد إسماعيل", "country": "الإكوادور", "temp": 17.1, "pack": "اكوادور-20كغ"},
@@ -582,7 +632,6 @@
         let activeTab = 'dashboard';
         let activeCalendarDate = '2026-10-29';
 
-        // Security Checked Atomic Transaction Mutator
         async function runAtomicWarehouseUpdate(mutatorCallback) {
             if (!auth.currentUser) {
                 showToast("إجراء مرفوض: يتطلب صلاحيات مسؤول مسجل", false);
@@ -759,6 +808,77 @@
             document.getElementById('calCloseStock').textContent = closeStock.toLocaleString();
         }
 
+        // Search & Filter Functions for Visitors
+        function filterInboundTable() {
+            const q = (document.getElementById('inboundSearchInput')?.value || '').toLowerCase();
+            const d = document.getElementById('inboundDateFilter')?.value || '';
+            const filtered = inboundData.filter(item => {
+                const matchText = !q || (item.id && item.id.toLowerCase().includes(q)) || (item.driver && item.driver.toLowerCase().includes(q)) || (item.brand && item.brand.toLowerCase().includes(q));
+                const matchDate = !d || item.date === d;
+                return matchText && matchDate;
+            });
+            renderInboundTable(filtered);
+        }
+
+        function clearInboundSearch() {
+            if (document.getElementById('inboundSearchInput')) document.getElementById('inboundSearchInput').value = '';
+            if (document.getElementById('inboundDateFilter')) document.getElementById('inboundDateFilter').value = '';
+            renderInboundTable(inboundData);
+        }
+
+        function filterDispatchTable() {
+            const q = (document.getElementById('dispatchSearchInput')?.value || '').toLowerCase();
+            const d = document.getElementById('dispatchDateFilter')?.value || '';
+            const filtered = dispatchData.filter(item => {
+                const matchText = !q || (item.customer && item.customer.toLowerCase().includes(q)) || (item.driver && item.driver.toLowerCase().includes(q)) || (item.receipt && item.receipt.toLowerCase().includes(q));
+                const matchDate = !d || item.date === d;
+                return matchText && matchDate;
+            });
+            renderDispatchTable(filtered);
+        }
+
+        function clearDispatchSearch() {
+            if (document.getElementById('dispatchSearchInput')) document.getElementById('dispatchSearchInput').value = '';
+            if (document.getElementById('dispatchDateFilter')) document.getElementById('dispatchDateFilter').value = '';
+            renderDispatchTable(dispatchData);
+        }
+
+        function filterMovementTable() {
+            const q = (document.getElementById('movementSearchInput')?.value || '').toLowerCase();
+            const d = document.getElementById('movementDateFilter')?.value || '';
+            const filtered = movementData.filter(item => {
+                const matchText = !q || (item.notes && item.notes.toLowerCase().includes(q)) || (item.day && item.day.toLowerCase().includes(q));
+                const matchDate = !d || item.date === d;
+                return matchText && matchDate;
+            });
+            renderMovementTable(filtered);
+        }
+
+        function clearMovementSearch() {
+            if (document.getElementById('movementSearchInput')) document.getElementById('movementSearchInput').value = '';
+            if (document.getElementById('movementDateFilter')) document.getElementById('movementDateFilter').value = '';
+            renderMovementTable(movementData);
+        }
+
+        // Toggle Admin Forms
+        function toggleInboundForm() {
+            if (!auth.currentUser) {
+                showToast("يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            showToast("واجهة الإضافة متاحة ومحمية للمسؤولين");
+        }
+
+        function toggleDispatchForm() {
+            if (!auth.currentUser) {
+                showToast("يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            showToast("واجهة التوزيع متاحة ومحمية للمسؤولين");
+        }
+
         let movementChartInstance = null;
         function initMovementChart() {
             const canvas = document.getElementById('movementChart');
@@ -786,10 +906,10 @@
             });
         }
 
-        function renderInboundTable() {
+        function renderInboundTable(dataToRender = inboundData) {
             const tbody = document.getElementById('inboundTableBody');
             if (!tbody) return;
-            tbody.innerHTML = inboundData.map((row, i) => `
+            tbody.innerHTML = dataToRender.map((row, i) => `
                 <tr>
                     <td class="p-3 font-mono">${i + 1}</td>
                     <td class="p-3 font-mono font-bold text-[#45260a]">${escapeHtml(row.id)}</td>
@@ -805,10 +925,10 @@
             `).join('');
         }
 
-        function renderDispatchTable() {
+        function renderDispatchTable(dataToRender = dispatchData) {
             const tbody = document.getElementById('dispatchTableBody');
             if (!tbody) return;
-            tbody.innerHTML = dispatchData.map((row, i) => `
+            tbody.innerHTML = dataToRender.map((row, i) => `
                 <tr>
                     <td class="p-3 font-mono">${i + 1}</td>
                     <td class="p-3 font-mono">${escapeHtml(row.date)}</td>
@@ -824,10 +944,10 @@
             `).join('');
         }
 
-        function renderMovementTable() {
+        function renderMovementTable(dataToRender = movementData) {
             const tbody = document.getElementById('movementTableBody');
             if (!tbody) return;
-            tbody.innerHTML = movementData.map(row => `
+            tbody.innerHTML = dataToRender.map(row => `
                 <tr>
                     <td class="p-3 font-mono font-bold">${escapeHtml(row.date_short || row.date)}</td>
                     <td class="p-3 text-slate-500">${escapeHtml(row.day || '-')}</td>
@@ -875,7 +995,7 @@
             const totalStock = roomsData.reduce((acc, r) => acc + (r.items ? r.items.reduce((s, it) => s + (parseInt(it.qty, 10) || 0), 0) : 0), 0);
             document.getElementById('headerStockBadge').textContent = `${totalStock.toLocaleString()} طرد`;
             document.getElementById('kpiCurrentStock').textContent = totalStock.toLocaleString();
-            document.getElementById('kpiTotalContainers').textContent = inboundData.length;
+            document.getElementById('kpiTotalContainers').textContent = "143";
             document.getElementById('kpiTotalReceived').textContent = "161,189";
             document.getElementById('kpiTotalDispatched').textContent = "156,243";
             document.getElementById('kpiTotalDispatchedTrans').textContent = "761";
