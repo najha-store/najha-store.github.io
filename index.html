@@ -628,158 +628,106 @@
     </div>
 
     <!-- Modal for Admin Actions (Inbound & Dispatch) -->
-    <!-- نافذة تسجيل إرسالية توزيع متطورة -->
-<div id="adminActionModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
-    <div class="glass-panel w-full max-w-lg bg-white border border-[#fae5d3] rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
-        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-            <h3 class="font-bold text-slate-900 text-base" id="adminModalTitle">تسجيل إرسالية توزيع جديدة</h3>
-            <button type="button" onclick="closeAdminActionModal()" class="text-slate-500 hover:text-[#cf711f] font-bold p-1">✕</button>
+    <div id="adminActionModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+        <div class="glass-panel w-full max-w-lg bg-white border border-[#fae5d3] rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h3 class="font-bold text-slate-900 text-base" id="adminModalTitle">تسجيل بيان جديد</h3>
+                <button type="button" onclick="closeAdminActionModal()" class="text-slate-500 hover:text-[#cf711f] font-bold p-1">✕</button>
+            </div>
+            <form onsubmit="handleAdminFormSubmit(event)" class="space-y-3.5 text-xs">
+                <input type="hidden" id="adminFormType" value="dispatch">
+                
+                <!-- رقم الإيصال / الحاوية وتاريخ ووقت التسجيل -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1" id="lblFormId">رقم الإيصال / الحاوية *</label>
+                        <input type="text" id="mFormId" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">التاريخ *</label>
+                        <input type="date" id="mFormDate" required class="w-full bg-white border border-slate-300 rounded-xl px-2.5 py-2 text-slate-900 font-semibold font-num focus:border-amber-500">
+                    </div>
+                    <div id="mFormTimeWrapper">
+                        <label class="block text-slate-700 font-semibold mb-1">وقت التسجيل (تلقائي) *</label>
+                        <input type="time" step="1" id="mFormTime" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-slate-900 font-bold font-num focus:border-amber-500">
+                    </div>
+                </div>
+
+                <!-- خيارات قسم التوزيع: اختيار التاجر والتحميل من القاعة -->
+                <div id="dispatchFieldsGroup" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">التاجر / الزبون *</label>
+                        <select id="mFormMerchantSelect" onchange="onMerchantSelectedChange(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                            <option value="عمر العقاد">عمر العقاد</option>
+                            <option value="أحمد الطالب">أحمد الطالب</option>
+                            <option value="custom">-- تاجر آخر (كتابة مخصصة) --</option>
+                        </select>
+                        <input type="text" id="mFormMerchantCustom" placeholder="اكتب اسم التاجر هنا" class="hidden mt-1.5 w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">التحميل من قاعة رقم *</label>
+                        <select id="mFormSourceRoom" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                            <option value="7">قاعة 7 (تبريد جاهزة للصرف)</option>
+                            <option value="8">قاعة 8 (تخمير 24 ساعة)</option>
+                            <option value="9">قاعة 9 (تخزين تبريد موز أخضر)</option>
+                            <option value="10">قاعة 10 (تخمير 24 ساعة)</option>
+                            <option value="11">قاعة 11 (تخمير 24 ساعة)</option>
+                            <option value="12">قاعة 12 (تبريد جاهزة للصرف)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- اختيار السائق مع تعبئة رقم السيارة تلقائياً -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1" id="lblFormDriver">السائق الناقل *</label>
+                        <select id="mFormDriverSelect" onchange="onDriverSelectedChange(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                            <!-- Populated dynamically via populateDriverDropdown() -->
+                        </select>
+                        <input type="text" id="mFormDriverCustom" placeholder="اكتب اسم السائق هنا" class="hidden mt-1.5 w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">رقم السيارة / اللوحة *</label>
+                        <input type="text" id="mFormCar" required placeholder="يظهر رقم السيارة تلقائياً" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono focus:border-amber-500">
+                    </div>
+                </div>
+
+                <!-- الماركة والكمية والوجهة -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">الماركة *</label>
+                        <select id="mFormBrand" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                            <option value="روزيتا">روزيتا</option>
+                            <option value="ديلمونتي">ديلمونتي</option>
+                            <option value="اكسترا بان">اكسترا بان</option>
+                            <option value="كوستا سول">كوستا سول</option>
+                            <option value="بانا غولد">بانا غولد</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">الكمية (طرد) *</label>
+                        <input type="number" id="mFormQty" required min="1" placeholder="مثال: 440" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono text-center focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">الوجهة *</label>
+                        <input type="text" id="mFormDest" value="دمشق" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t border-slate-200">
+                    <span class="text-[11px] text-slate-500">مزامنة سحابية ذرية فورية.</span>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="closeAdminActionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold">إلغاء</button>
+                        <button type="submit" id="btnSubmitAdminData" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all">حفظ وتأكيد الصرف</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        
-        <form onsubmit="handleAdminFormSubmit(event)" class="space-y-3.5 text-xs">
-            <input type="hidden" id="adminFormType" value="dispatch">
-
-            <!-- رقم الإيصال والتاريخ -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1" id="lblFormId">رقم الإيصال / الفاتورة *</label>
-                    <input type="text" id="mFormId" required placeholder="مثال: 1507" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold focus:border-amber-500">
-                </div>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">تاريخ الإرسالية *</label>
-                    <input type="date" id="mFormDate" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold font-num focus:border-amber-500">
-                </div>
-            </div>
-
-            <!-- اختيار التاجر وقاعة التحميل -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <!-- اختيار التاجر -->
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">التاجر / الزبون *</label>
-                    <select id="mFormMerchantSelect" onchange="onMerchantSelected(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
-                        <option value="عمر العقاد">عمر العقاد</option>
-                        <option value="أحمد الطالب">أحمد الطالب</option>
-                        <option value="custom">-- تاجر آخر (كتابة يدوية) --</option>
-                    </select>
-                    <input type="text" id="mFormMerchantCustom" placeholder="اكتب اسم التاجر هنا" class="hidden mt-1.5 w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold">
-                </div>
-
-                <!-- التحميل من القاعة -->
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">التحميل من قاعة رقم *</label>
-                    <select id="mFormSourceRoom" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
-                        <option value="7">قاعة 7 (تبريد / جاهزة)</option>
-                        <option value="8">قاعة 8 (تخمير 24 ساعة)</option>
-                        <option value="9">قاعة 9 (تخزين تبريد)</option>
-                        <option value="10">قاعة 10 (تخمير 24 ساعة)</option>
-                        <option value="11">قاعة 11 (تخمير 24 ساعة)</option>
-                        <option value="12">قاعة 12 (تبريد / جاهزة)</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- اختيار السائق ورقم السيارة التلقائي -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <!-- اختيار السائق -->
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">السائق الناقل *</label>
-                    <select id="mFormDriverSelect" onchange="onDriverSelectedChange(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
-                        <option value="">-- اختر السائق من الأسطول --</option>
-                        <!-- يتم ملء الأسماء تلقائياً من بيانات الأسطول -->
-                    </select>
-                    <input type="text" id="mFormDriverCustom" placeholder="اكتب اسم السائق" class="hidden mt-1.5 w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                </div>
-
-                <!-- رقم السيارة (يتم ملؤه تلقائياً) -->
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">رقم السيارة / اللوحة *</label>
-                    <input type="text" id="mFormCar" required placeholder="رقم اللوحة يظهر تلقائياً" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono focus:border-amber-500">
-                </div>
-            </div>
-
-            <!-- الماركة والكمية والوجهة -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">الماركة *</label>
-                    <select id="mFormBrand" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
-                        <option value="روزيتا">روزيتا</option>
-                        <option value="ديلمونتي">ديلمونتي</option>
-                        <option value="اكسترا بان">اكسترا بان</option>
-                        <option value="كوستا سول">كوستا سول</option>
-                        <option value="بانا غولد">بانا غولد</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">العدد (طرد) *</label>
-                    <input type="number" id="mFormQty" required min="1" placeholder="مثال: 440" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono text-center focus:border-amber-500">
-                </div>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">الوجهة *</label>
-                    <input type="text" id="mFormDest" value="دمشق" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                </div>
-            </div>
-
-            <!-- أزرار الإجراء -->
-            <div class="flex items-center justify-between pt-3 border-t border-slate-200">
-                <span class="text-[11px] text-slate-500">سيتم ربط الإرسالية بالقاعة وحفظها سحابياً فوراً.</span>
-                <div class="flex gap-2">
-                    <button type="button" onclick="closeAdminActionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold">إلغاء</button>
-                    <button type="submit" id="btnSubmitAdminData" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all">حفظ وتأكيد الصرف</button>
-                </div>
-            </div>
-        </form>
     </div>
-</div>
+
     <!-- JavaScript Complete Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-10-31-v56-newest-first-and-print";
-
-        function escapeHtml(str) {
-            if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyACDHNGKLPOhNQySf2CS2DnufNh7IrKQU0",
-            authDomain: "najha-store.firebaseapp.com",
-            projectId: "najha-store",
-            storageBucket: "najha-store.firebasestorage.app",
-            messagingSenderId: "494730546853",
-            appId: "1:494730546853:web:c2f29cc7b11e69b8ed874c",
-            measurementId: "G-B6D2H4ES9V"
-        };
-
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        try {
-            db.enablePersistence({ synchronizeTabs: true }).catch(err => {});
-        } catch (e) {}
-
-        const WAREHOUSE_DOC_REF = db.collection("warehouse_data").doc("current_state");
-
-        let inboundData = [
-            {"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "pack": "اكوادور-20كغ"},
-            {"id": "126764", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1740, "car": "8352", "driver": "محمد إسماعيل", "country": "الإكوادور", "temp": 17.1, "pack": "اكوادور-20كغ"},
-            {"id": "126656", "date": "2026-09-01", "port": "باب الهوى", "brand": "اكسترا", "qty": 1098, "car": "8289112", "driver": "عبدالقادرخاروف", "country": "كوستاريكا", "temp": 15.5, "pack": "كوستريكا-19كغ"},
-            {"id": "168975", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
-            {"id": "168969", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8156884", "driver": "أحمد القش", "country": "الإكوادور", "temp": 14.5, "pack": "اكوادور-20كغ"},
-            {"id": "168964", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8219605", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 14.3, "pack": "اكوادور-20كغ"}
-        ];
-
-        let dispatchData = [
-            {"id": 1, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1016", "driver": "أبو رمضان", "car": "349681", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 477, "pack": "إكوادوري 20"},
-            {"id": 749, "date": "2026-10-28", "day": "الأربعاء", "receipt": "1499", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 260, "pack": "كوستريكا-19كغ"},
-            {"id": 750, "date": "2026-10-29", "day": "الخميس", "receipt": "1501", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 430, "pack": "كوستريكا-19كغ"},
-            {"id": 751, "date": "2026-10-29", "day": "الخميس", "receipt": "1501", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "اكسترا بان", "qty": 20, "pack": "كوستريكا-19كغ"},
-            {"id": 752, "date": "2026-10-29", "day": "الخميس", "receipt": "1502", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 503, "pack": "كوستريكا-19كغ"},
-            {"id": 753, "date": "2026-10-29", "day": "الخميس", "receipt": "1502", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 17, "pack": "كوستريكا-19كغ"},
+        const APP_DATA_VERSION = "2026-10-31-v57-dispatch-automation";
             {"id": 754, "date": "2026-10-29", "day": "الخميس", "receipt": "1503", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 404, "pack": "كوستريكا-19كغ"},
             {"id": 755, "date": "2026-10-29", "day": "الخميس", "receipt": "1503", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 20, "pack": "اكوادور-20كغ"},
             {"id": 756, "date": "2026-10-29", "day": "الخميس", "receipt": "1504", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 437, "pack": "كوستريكا-19كغ"},
@@ -807,46 +755,200 @@
             {"name": "أبو عدي", "car": "854193", "dest": "دمشق", "trips": 57, "total_qty": 12122},
             {"name": "عدي", "car": "623423", "dest": "دمشق", "trips": 30, "total_qty": 8248},
             {"name": "بلال", "car": "624013", "dest": "دمشق", "trips": 23, "total_qty": 4894},
-            {"name": "شادي السبع", "car": "768082", "dest": "دمشق", "trips": 16, "total_qty": 3657}
+            {"name": "شادي السبع", "car": "768082", "dest": "دمشق", "trips": 16, "total_qty": 3657},
+            {"name": "أبو رمضان", "car": "349681", "dest": "دمشق", "trips": 48, "total_qty": 8574},
+            {"name": "أبو علي", "car": "10862", "dest": "دمشق", "trips": 32, "total_qty": 7661},
+            {"name": "أبو حسين", "car": "46078", "dest": "دمشق", "trips": 50, "total_qty": 11324},
+            {"name": "علي حمود", "car": "83581", "dest": "دمشق", "trips": 31, "total_qty": 8912},
+            {"name": "فادي", "car": "624756", "dest": "دمشق", "trips": 35, "total_qty": 8688},
+            {"name": "أبو محمود", "car": "513321", "dest": "دمشق", "trips": 34, "total_qty": 11188},
+            {"name": "عجاج", "car": "623360", "dest": "دمشق", "trips": 41, "total_qty": 8984},
+            {"name": "أحمد", "car": "38646", "dest": "دمشق", "trips": 14, "total_qty": 3949},
+            {"name": "رائد", "car": "63898", "dest": "دمشق", "trips": 11, "total_qty": 2222}
         ];
+        function populateDriverDropdown() {
+            const select = document.getElementById('mFormDriverSelect');
+            if (!select) return;
+            select.innerHTML = '<option value="">-- اختر السائق من الأسطول --</option>';
+            driversData.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d.name;
+                opt.textContent = `${d.name} (لوحة: ${d.car})`;
+                select.appendChild(opt);
+            });
+            const customOpt = document.createElement('option');
+            customOpt.value = "custom";
+            customOpt.textContent = "-- سائق آخر (كتابة يدوية) --";
+            select.appendChild(customOpt);
+        }
 
-        let brandsData = [
-            {"name": "روزيتا", "origin": "اكوادور-20كغ"},
-            {"name": "ديلمونتي", "origin": "كوستريكا-19كغ"},
-            {"name": "اكسترا بان", "origin": "كوستريكا-19كغ"},
-            {"name": "كوستا سول", "origin": "كوستريكا-19كغ"},
-            {"name": "اكسترا", "origin": "كوستريكا-19كغ"},
-            {"name": "بانا غولد", "origin": "اكوادور-20كغ"}
-        ];
+        function onDriverSelectedChange(driverName) {
+            const carInput = document.getElementById('mFormCar');
+            const customInput = document.getElementById('mFormDriverCustom');
+            if (driverName === 'custom') {
+                customInput?.classList.remove('hidden');
+                if (customInput) customInput.required = true;
+                if (carInput) carInput.value = '';
+            } else {
+                customInput?.classList.add('hidden');
+                if (customInput) customInput.required = false;
+                const matched = driversData.find(d => d.name === driverName);
+                if (matched && carInput) {
+                    carInput.value = matched.car; // Auto-populate vehicle number
+                }
+            }
+        }
 
-        let originsList = ["اكوادور-20كغ", "كوستريكا-19كغ", "هندي-14كغ", "اكوادور-13.5كغ", "كوستريكي-20كغ"];
+        function onMerchantSelectedChange(val) {
+            const customInput = document.getElementById('mFormMerchantCustom');
+            if (val === 'custom') {
+                customInput?.classList.remove('hidden');
+                if (customInput) customInput.required = true;
+            } else {
+                customInput?.classList.add('hidden');
+                if (customInput) customInput.required = false;
+            }
+        }
 
-        let currentUser = null;
-        let activeTab = 'rooms';
-        let activeCalendarDate = '2026-10-29';
-
-        async function runAtomicWarehouseUpdate(mutatorCallback) {
+        function toggleInboundForm() {
             if (!auth.currentUser) {
-                showToast("إجراء مرفوض: يتطلب صلاحيات مسؤول مسجل", false);
+                showToast("يتطلب صلاحيات مسؤول مسجل", false);
                 openLoginModal();
-                return false;
+                return;
+            }
+            populateDriverDropdown();
+            document.getElementById('adminFormType').value = 'inbound';
+            document.getElementById('adminModalTitle').textContent = 'إضافة حاوية استلام جديدة';
+            document.getElementById('lblFormId').textContent = 'رقم الحاوية *';
+            document.getElementById('lblFormDriver').textContent = 'السائق الناقل *';
+            document.getElementById('dispatchFieldsGroup')?.classList.add('hidden');
+            document.getElementById('mFormTimeWrapper')?.classList.add('hidden');
+            document.getElementById('mFormDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('btnSubmitAdminData').textContent = 'حفظ الحاوية سحابياً';
+            document.getElementById('adminActionModal')?.classList.remove('hidden');
+        }
+
+        function toggleDispatchForm() {
+            if (!auth.currentUser) {
+                showToast("يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            populateDriverDropdown();
+            document.getElementById('adminFormType').value = 'dispatch';
+            document.getElementById('adminModalTitle').textContent = 'تسجيل إرسالية توزيع وصرف من القاعة';
+            document.getElementById('lblFormId').textContent = 'رقم الإيصال / الفاتورة *';
+            document.getElementById('lblFormDriver').textContent = 'السائق الناقل *';
+            document.getElementById('dispatchFieldsGroup')?.classList.remove('hidden');
+            document.getElementById('mFormTimeWrapper')?.classList.remove('hidden');
+
+            const now = new Date();
+            document.getElementById('mFormDate').value = now.toISOString().split('T')[0];
+            
+            // Auto capture current time formatted as HH:mm:ss
+            const timeStr = [
+                String(now.getHours()).padStart(2, '0'),
+                String(now.getMinutes()).padStart(2, '0'),
+                String(now.getSeconds()).padStart(2, '0')
+            ].join(':');
+            document.getElementById('mFormTime').value = timeStr;
+
+            document.getElementById('mFormMerchantSelect').value = 'عمر العقاد';
+            onMerchantSelectedChange('عمر العقاد');
+
+            // Default driver selection
+            if (driversData.length > 0) {
+                document.getElementById('mFormDriverSelect').value = driversData[0].name;
+                onDriverSelectedChange(driversData[0].name);
             }
 
-            try {
-                await db.runTransaction(async (transaction) => {
-                    const doc = await transaction.get(WAREHOUSE_DOC_REF);
-                    let remoteState = doc.exists ? doc.data() : { inboundData, dispatchData, roomsData, movementData, driversData, brandsData };
-                    const modifiedState = mutatorCallback(remoteState);
-                    modifiedState.lastUpdated = firebase.firestore.FieldValue.serverTimestamp();
-                    modifiedState.updatedBy = auth.currentUser.email;
-                    transaction.set(WAREHOUSE_DOC_REF, modifiedState);
-                });
-                showToast("تم الحفظ والمزامنة السحابية بنجاح");
-                return true;
-            } catch (error) {
-                console.error("Firestore Transaction Error:", error);
-                showToast("تعذر الإتمام، حدث تضارب لحظي حاول مجدداً", false);
-                return false;
+            document.getElementById('btnSubmitAdminData').textContent = 'حفظ وتأكيد الصرف';
+            document.getElementById('adminActionModal')?.classList.remove('hidden');
+        }
+
+        async function handleAdminFormSubmit(e) {
+            e.preventDefault();
+            const type = document.getElementById('adminFormType').value;
+            const idVal = document.getElementById('mFormId').value.trim();
+            const dateVal = document.getElementById('mFormDate').value;
+            const timeVal = document.getElementById('mFormTime').value || new Date().toTimeString().split(' ')[0];
+            const qtyVal = parseInt(document.getElementById('mFormQty').value, 10) || 0;
+            const brandVal = document.getElementById('mFormBrand').value;
+            const carVal = document.getElementById('mFormCar').value.trim();
+            const destVal = document.getElementById('mFormDest').value.trim() || 'دمشق';
+
+            const driverSelect = document.getElementById('mFormDriverSelect').value;
+            const driverVal = driverSelect === 'custom'
+                ? document.getElementById('mFormDriverCustom').value.trim()
+                : driverSelect;
+
+            const merchantSelect = document.getElementById('mFormMerchantSelect').value;
+            const merchantVal = merchantSelect === 'custom'
+                ? document.getElementById('mFormMerchantCustom').value.trim()
+                : merchantSelect;
+
+            const roomVal = document.getElementById('mFormSourceRoom').value;
+
+            if (!driverVal) {
+                showToast("يرجى اختيار أو تحديد اسم السائق", false);
+                return;
+            }
+
+            const btn = document.getElementById('btnSubmitAdminData');
+            btn.disabled = true;
+            btn.textContent = 'جارٍ المزامنة...';
+
+            const success = await runAtomicWarehouseUpdate((state) => {
+                if (type === 'inbound') {
+                    if (!state.inboundData) state.inboundData = [];
+                    state.inboundData.unshift({
+                        id: idVal,
+                        date: dateVal,
+                        port: "باب الهوى",
+                        brand: brandVal,
+                        qty: qtyVal,
+                        car: carVal || "-",
+                        driver: driverVal,
+                        temp: 13.5,
+                        pack: "اكوادور-20كغ"
+                    });
+                } else {
+                    if (!state.dispatchData) state.dispatchData = [];
+                    state.dispatchData.unshift({
+                        id: state.dispatchData.length + 1,
+                        date: dateVal,
+                        time: timeVal,
+                        day: new Date(dateVal).toLocaleDateString('ar-SY', { weekday: 'long' }),
+                        receipt: idVal,
+                        driver: driverVal,
+                        customer: merchantVal,
+                        car: carVal || "-",
+                        dest: destVal,
+                        brand: brandVal,
+                        qty: qtyVal,
+                        room: roomVal
+                    });
+
+                    // Auto-deduct inventory from selected room
+                    if (state.roomsData) {
+                        const targetRoom = state.roomsData.find(r => r.room == roomVal);
+                        if (targetRoom && targetRoom.items) {
+                            const matchItem = targetRoom.items.find(it => it.brand === brandVal);
+                            if (matchItem && matchItem.qty >= qtyVal) {
+                                matchItem.qty -= qtyVal;
+                            }
+                        }
+                    }
+                }
+                return state;
+            });
+
+            btn.disabled = false;
+            btn.textContent = 'حفظ ومزامنة فورية';
+
+            if (success) {
+                closeAdminActionModal();
+                showToast(type === 'inbound' ? "تم حفظ الحاوية بنجاح" : `تم صرف ${qtyVal} طرد لحساب ${merchantVal} من قاعة ${roomVal} بنجاح`);
             }
         }
 
@@ -1196,7 +1298,7 @@
         function renderDispatchTable(dataToRender = dispatchData) {
             const tbody = document.getElementById('dispatchTableBody');
             if (!tbody) return;
-            // Sorting newest date to oldest
+            // Sorting newest date and time to oldest
             const sorted = [...dataToRender].sort((a, b) => {
                 const diff = new Date(b.date).getTime() - new Date(a.date).getTime();
                 if (diff !== 0) return diff;
@@ -1205,12 +1307,19 @@
             tbody.innerHTML = sorted.map((row, i) => `
                 <tr>
                     <td class="p-3 font-mono">${i + 1}</td>
-                    <td class="p-3 font-mono font-bold">${escapeHtml(row.date)}</td>
+                    <td class="p-3 font-mono">
+                        <div class="font-bold text-slate-800">${escapeHtml(row.date)}</div>
+                        ${row.time ? `<div class="text-[10px] text-emerald-600 font-num font-bold">🕒 ${escapeHtml(row.time)}</div>` : ''}
+                    </td>
                     <td class="p-3">${escapeHtml(row.day || '-')}</td>
                     <td class="p-3 font-bold">${escapeHtml(row.driver || '-')}</td>
                     <td class="p-3 font-bold text-slate-800">${escapeHtml(row.customer || '-')}</td>
                     <td class="p-3 font-mono text-emerald-600 font-bold">${escapeHtml(row.car || '-')}</td>
-                    <td class="p-3">${escapeHtml(row.dest || 'دمشق')}</td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded-lg text-xs ${row.room ? 'bg-cyan-50 text-cyan-800 border border-cyan-200' : 'text-slate-400'}">
+                            ${row.room ? 'قاعة ' + escapeHtml(row.room) : 'دمشق'}
+                        </span>
+                    </td>
                     <td class="p-3 font-bold">${escapeHtml(row.brand)}</td>
                     <td class="p-3 font-mono font-black text-[#45260a]">${(row.qty || 0).toLocaleString()}</td>
                     <td class="p-3 font-mono">${escapeHtml(row.receipt || '-')}</td>
