@@ -728,6 +728,54 @@
     <!-- JavaScript Complete Engine -->
     <script>
         const APP_DATA_VERSION = "2026-10-31-v57-dispatch-automation";
+
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyACDHNGKLPOhNQySf2CS2DnufNh7IrKQU0",
+            authDomain: "najha-store.firebaseapp.com",
+            projectId: "najha-store",
+            storageBucket: "najha-store.firebasestorage.app",
+            messagingSenderId: "494730546853",
+            appId: "1:494730546853:web:c2f29cc7b11e69b8ed874c",
+            measurementId: "G-B6D2H4ES9V"
+        };
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        try {
+            db.enablePersistence({ synchronizeTabs: true }).catch(err => {});
+        } catch (e) {}
+
+        const WAREHOUSE_DOC_REF = db.collection("warehouse_data").doc("current_state");
+
+        // Verified Datasets
+        let inboundData = [
+            {"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "pack": "اكوادور-20كغ"},
+            {"id": "126764", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1740, "car": "8352", "driver": "محمد إسماعيل", "country": "الإكوادور", "temp": 17.1, "pack": "اكوادور-20كغ"},
+            {"id": "126656", "date": "2026-09-01", "port": "باب الهوى", "brand": "اكسترا", "qty": 1098, "car": "8289112", "driver": "عبدالقادرخاروف", "country": "كوستاريكا", "temp": 15.5, "pack": "كوستريكا-19كغ"},
+            {"id": "168975", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
+            {"id": "168969", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8156884", "driver": "أحمد القش", "country": "الإكوادور", "temp": 14.5, "pack": "اكوادور-20كغ"},
+            {"id": "168964", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8219605", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 14.3, "pack": "اكوادور-20كغ"}
+        ];
+
+        let dispatchData = [
+            {"id": 1, "date": "2026-09-01", "day": "الثلاثاء", "receipt": "1016", "driver": "أبو رمضان", "car": "349681", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 477, "pack": "إكوادوري 20"},
+            {"id": 749, "date": "2026-10-28", "day": "الأربعاء", "receipt": "1499", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 260, "pack": "كوستريكا-19كغ"},
+            {"id": 750, "date": "2026-10-29", "day": "الخميس", "receipt": "1501", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 430, "pack": "كوستريكا-19كغ"},
+            {"id": 751, "date": "2026-10-29", "day": "الخميس", "receipt": "1501", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "اكسترا بان", "qty": 20, "pack": "كوستريكا-19كغ"},
+            {"id": 752, "date": "2026-10-29", "day": "الخميس", "receipt": "1502", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 503, "pack": "كوستريكا-19كغ"},
+            {"id": 753, "date": "2026-10-29", "day": "الخميس", "receipt": "1502", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 17, "pack": "كوستريكا-19كغ"},
             {"id": 754, "date": "2026-10-29", "day": "الخميس", "receipt": "1503", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 404, "pack": "كوستريكا-19كغ"},
             {"id": 755, "date": "2026-10-29", "day": "الخميس", "receipt": "1503", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 20, "pack": "اكوادور-20كغ"},
             {"id": 756, "date": "2026-10-29", "day": "الخميس", "receipt": "1504", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 437, "pack": "كوستريكا-19كغ"},
@@ -766,6 +814,18 @@
             {"name": "أحمد", "car": "38646", "dest": "دمشق", "trips": 14, "total_qty": 3949},
             {"name": "رائد", "car": "63898", "dest": "دمشق", "trips": 11, "total_qty": 2222}
         ];
+
+        let brandsData = [
+            {"name": "روزيتا", "origin": "اكوادور-20كغ"},
+            {"name": "ديلمونتي", "origin": "كوستريكا-19كغ"},
+            {"name": "اكسترا بان", "origin": "كوستريكا-19كغ"},
+            {"name": "كوستا سول", "origin": "كوستريكا-19كغ"},
+            {"name": "اكسترا", "origin": "كوستريكا-19كغ"},
+            {"name": "بانا غولد", "origin": "اكوادور-20كغ"}
+        ];
+
+        let originsList = ["اكوادور-20كغ", "كوستريكا-19كغ", "هندي-14كغ", "اكوادور-13.5كغ", "كوستريكي-20كغ"];
+
         function populateDriverDropdown() {
             const select = document.getElementById('mFormDriverSelect');
             if (!select) return;
@@ -1650,6 +1710,14 @@
         function renderBrandsListTable() {
             const tbody = document.getElementById('brandsListTableBody');
             if (!tbody) return;
+            if (!Array.isArray(brandsData)) {
+                brandsData = [
+                    {"name": "روزيتا", "origin": "اكوادور-20كغ"},
+                    {"name": "ديلمونتي", "origin": "كوستريكا-19كغ"},
+                    {"name": "اكسترا بان", "origin": "كوستريكا-19كغ"},
+                    {"name": "كوستا سول", "origin": "كوستريكا-19كغ"}
+                ];
+            }
             tbody.innerHTML = brandsData.map((b, i) => `<tr><td class="p-2.5 font-mono">${i + 1}</td><td class="p-2.5 font-bold">${escapeHtml(b.name)}</td><td class="p-2.5 font-mono">${escapeHtml(b.origin)}</td></tr>`).join('');
         }
 
