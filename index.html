@@ -628,56 +628,108 @@
     </div>
 
     <!-- Modal for Admin Actions (Inbound & Dispatch) -->
-    <div id="adminActionModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-lg bg-white border border-[#fae5d3] rounded-3xl p-6 shadow-2xl space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                <h3 class="font-bold text-slate-900 text-base" id="adminModalTitle">تسجيل بيان جديد</h3>
-                <button type="button" onclick="closeAdminActionModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
-            </div>
-            <form onsubmit="handleAdminFormSubmit(event)" class="space-y-3 text-xs">
-                <input type="hidden" id="adminFormType" value="dispatch">
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1" id="lblFormId">رقم الإيصال / الحاوية *</label>
-                    <input type="text" id="mFormId" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">التاريخ *</label>
-                        <input type="date" id="mFormDate" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">الكمية (طرد) *</label>
-                        <input type="number" id="mFormQty" required min="1" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">الماركة *</label>
-                        <select id="mFormBrand" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                            <option value="روزيتا">روزيتا</option>
-                            <option value="ديلمونتي">ديلمونتي</option>
-                            <option value="اكسترا بان">اكسترا بان</option>
-                            <option value="كوستا سول">كوستا سول</option>
-                            <option value="بانا غولد">بانا غولد</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">رقم السيارة</label>
-                        <input type="text" id="mFormCar" placeholder="مثال: 624013" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1" id="lblFormEntity">السائق / التاجر *</label>
-                    <input type="text" id="mFormEntity" required placeholder="اسم السائق أو التاجر" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
-                </div>
-                <div class="flex justify-end gap-2 pt-3 border-t border-slate-200">
-                    <button type="button" onclick="closeAdminActionModal()" class="px-4 py-2 bg-slate-100 rounded-xl">إلغاء</button>
-                    <button type="submit" id="btnSubmitAdminData" class="px-6 py-2 bg-emerald-600 text-white font-bold rounded-xl shadow-md">حفظ ومزامنة فورية</button>
-                </div>
-            </form>
+    <!-- نافذة تسجيل إرسالية توزيع متطورة -->
+<div id="adminActionModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="glass-panel w-full max-w-lg bg-white border border-[#fae5d3] rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+            <h3 class="font-bold text-slate-900 text-base" id="adminModalTitle">تسجيل إرسالية توزيع جديدة</h3>
+            <button type="button" onclick="closeAdminActionModal()" class="text-slate-500 hover:text-[#cf711f] font-bold p-1">✕</button>
         </div>
-    </div>
+        
+        <form onsubmit="handleAdminFormSubmit(event)" class="space-y-3.5 text-xs">
+            <input type="hidden" id="adminFormType" value="dispatch">
 
+            <!-- رقم الإيصال والتاريخ -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1" id="lblFormId">رقم الإيصال / الفاتورة *</label>
+                    <input type="text" id="mFormId" required placeholder="مثال: 1507" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">تاريخ الإرسالية *</label>
+                    <input type="date" id="mFormDate" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold font-num focus:border-amber-500">
+                </div>
+            </div>
+
+            <!-- اختيار التاجر وقاعة التحميل -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- اختيار التاجر -->
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">التاجر / الزبون *</label>
+                    <select id="mFormMerchantSelect" onchange="onMerchantSelected(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                        <option value="عمر العقاد">عمر العقاد</option>
+                        <option value="أحمد الطالب">أحمد الطالب</option>
+                        <option value="custom">-- تاجر آخر (كتابة يدوية) --</option>
+                    </select>
+                    <input type="text" id="mFormMerchantCustom" placeholder="اكتب اسم التاجر هنا" class="hidden mt-1.5 w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold">
+                </div>
+
+                <!-- التحميل من القاعة -->
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">التحميل من قاعة رقم *</label>
+                    <select id="mFormSourceRoom" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                        <option value="7">قاعة 7 (تبريد / جاهزة)</option>
+                        <option value="8">قاعة 8 (تخمير 24 ساعة)</option>
+                        <option value="9">قاعة 9 (تخزين تبريد)</option>
+                        <option value="10">قاعة 10 (تخمير 24 ساعة)</option>
+                        <option value="11">قاعة 11 (تخمير 24 ساعة)</option>
+                        <option value="12">قاعة 12 (تبريد / جاهزة)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- اختيار السائق ورقم السيارة التلقائي -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- اختيار السائق -->
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">السائق الناقل *</label>
+                    <select id="mFormDriverSelect" onchange="onDriverSelectedChange(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                        <option value="">-- اختر السائق من الأسطول --</option>
+                        <!-- يتم ملء الأسماء تلقائياً من بيانات الأسطول -->
+                    </select>
+                    <input type="text" id="mFormDriverCustom" placeholder="اكتب اسم السائق" class="hidden mt-1.5 w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                </div>
+
+                <!-- رقم السيارة (يتم ملؤه تلقائياً) -->
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">رقم السيارة / اللوحة *</label>
+                    <input type="text" id="mFormCar" required placeholder="رقم اللوحة يظهر تلقائياً" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono focus:border-amber-500">
+                </div>
+            </div>
+
+            <!-- الماركة والكمية والوجهة -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">الماركة *</label>
+                    <select id="mFormBrand" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                        <option value="روزيتا">روزيتا</option>
+                        <option value="ديلمونتي">ديلمونتي</option>
+                        <option value="اكسترا بان">اكسترا بان</option>
+                        <option value="كوستا سول">كوستا سول</option>
+                        <option value="بانا غولد">بانا غولد</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">العدد (طرد) *</label>
+                    <input type="number" id="mFormQty" required min="1" placeholder="مثال: 440" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono text-center focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">الوجهة *</label>
+                    <input type="text" id="mFormDest" value="دمشق" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                </div>
+            </div>
+
+            <!-- أزرار الإجراء -->
+            <div class="flex items-center justify-between pt-3 border-t border-slate-200">
+                <span class="text-[11px] text-slate-500">سيتم ربط الإرسالية بالقاعة وحفظها سحابياً فوراً.</span>
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeAdminActionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold">إلغاء</button>
+                    <button type="submit" id="btnSubmitAdminData" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all">حفظ وتأكيد الصرف</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
     <!-- JavaScript Complete Engine -->
     <script>
         const APP_DATA_VERSION = "2026-10-31-v56-newest-first-and-print";
