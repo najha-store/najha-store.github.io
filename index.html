@@ -143,12 +143,14 @@
                 </div>
             </div>
 
+            <!-- Left: Stats & Login -->
             <div class="flex items-center gap-2 sm:gap-3 shrink-0">
                 <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#fdf2e9] border border-[#fae5d3] text-xs">
                     <span class="text-[#6f6f6f] font-semibold">رصيد المستودع الفعلي:</span>
                     <span class="font-black text-[#cf711f] font-num" id="headerStockBadge">15,220 طرد</span>
                 </div>
 
+                <!-- Admin Action Buttons -->
                 <button id="btnLoginOpen" onclick="openLoginModal()" class="px-4 py-2 text-xs sm:text-sm font-bold text-white bg-[#45260a] hover:bg-[#333] rounded-xl shadow-md flex items-center gap-1.5 transition-all">
                     <i data-lucide="lock" class="w-3.5 h-3.5 text-[#ffd43b]"></i>
                     <span>دخول مسؤول</span>
@@ -357,14 +359,14 @@
 
         <!-- 2. INBOUND -->
         <section id="tab-inbound" class="hidden space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-wrap justify-between items-center gap-3">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="arrow-down-left" class="w-5 h-5 text-blue-500"></i> سجل استلام الحاويات</h2>
                     <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynInboundContCount" class="font-bold text-blue-600 font-num">143</span> حاوية (<span id="dynInboundBoxesCount" class="font-bold text-slate-800 font-num">161,189</span> كرتونة)</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <button type="button" onclick="openBrandsModal()" class="px-3.5 py-2.5 bg-amber-500/10 text-amber-700 border border-amber-500/30 rounded-xl text-xs font-bold">دليل الماركات</button>
-                    <button type="button" onclick="toggleInboundForm()" class="admin-only px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+                    <button type="button" onclick="toggleInboundForm()" class="admin-only px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md">
                         <i data-lucide="plus-circle" class="w-4 h-4"></i> إضافة حاوية واردة
                     </button>
                 </div>
@@ -399,12 +401,12 @@
 
         <!-- 3. DISPATCH -->
         <section id="tab-dispatch" class="hidden space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-wrap justify-between items-center gap-3">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="arrow-up-right" class="w-5 h-5 text-emerald-500"></i> أذونات التوزيع وأسطول الشحن</h2>
                     <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynDispatchTransCount" class="font-num">761</span> إرسالية (<span id="dynDispatchBoxesCount" class="font-bold text-slate-800 font-num">156,243</span> كرتونة)</p>
                 </div>
-                <button type="button" onclick="toggleDispatchForm()" class="admin-only px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+                <button type="button" onclick="toggleDispatchForm()" class="admin-only px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md">
                     <i data-lucide="plus-circle" class="w-4 h-4"></i> تسجيل إرسالية توزيع
                 </button>
             </div>
@@ -470,7 +472,7 @@
         <!-- 5. ROOMS -->
         <section id="tab-rooms" class="hidden space-y-6">
             <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="boxes" class="w-5 h-5 text-amber-500"></i> قاعات التخمير والتبريد</h2>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="boxes" class="w-5 h-5 text-amber-500"></i> قاعات التخمير والتبريد (7 إلى 12)</h2>
                 <span class="px-3 py-1 bg-amber-50 text-amber-800 rounded-xl text-xs font-bold border border-amber-200">الرصيد الفعلي: 15,220 طرد</span>
             </div>
             <div id="roomsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
@@ -478,17 +480,102 @@
 
         <!-- 6. INSPECTION -->
         <section id="tab-inspection" class="hidden space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="camera" class="w-5 h-5 text-purple-600"></i> معرض وتقارير الفحص (143 حاوية)</h2>
+                <button type="button" onclick="openInspectionModal()" class="admin-only px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-md">
+                    + إضافة تقرير فحص
+                </button>
             </div>
+            <div id="inspectionCardsContainer" class="space-y-4"></div>
         </section>
     </main>
 
-    <footer class="bg-white border-t border-[#fae5d3] py-5 text-center mt-12">
-        <p dir="ltr" class="text-xs text-[#767676] font-mono tracking-wider">Developed by <span class="text-[#e67e22] font-black">Mohamad Harba</span></p>
-    </footer>
+    <!-- Modal for Admin Actions (Inbound & Dispatch) -->
+    <div id="adminActionModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-lg bg-white border border-[#fae5d3] rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h3 class="font-bold text-slate-900 text-base" id="adminModalTitle">تسجيل بيان جديد</h3>
+                <button type="button" onclick="closeAdminActionModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
+            </div>
+            <form onsubmit="handleAdminFormSubmit(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="adminFormType" value="dispatch">
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1" id="lblFormId">رقم الإيصال / الحاوية *</label>
+                    <input type="text" id="mFormId" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">التاريخ *</label>
+                        <input type="date" id="mFormDate" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">الكمية (طرد) *</label>
+                        <input type="number" id="mFormQty" required min="1" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">الماركة *</label>
+                        <select id="mFormBrand" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                            <option value="روزيتا">روزيتا</option>
+                            <option value="ديلمونتي">ديلمونتي</option>
+                            <option value="اكسترا بان">اكسترا بان</option>
+                            <option value="كوستا سول">كوستا سول</option>
+                            <option value="بانا غولد">بانا غولد</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">رقم السيارة</label>
+                        <input type="text" id="mFormCar" placeholder="مثال: 624013" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1" id="lblFormEntity">السائق / التاجر *</label>
+                    <input type="text" id="mFormEntity" required placeholder="اسم السائق أو التاجر" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                </div>
+                <div class="flex justify-end gap-2 pt-3 border-t border-slate-200">
+                    <button type="button" onclick="closeAdminActionModal()" class="px-4 py-2 bg-slate-100 rounded-xl">إلغاء</button>
+                    <button type="submit" id="btnSubmitAdminData" class="px-6 py-2 bg-emerald-600 text-white font-bold rounded-xl shadow-md">حفظ ومزامنة فورية</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <!-- Modals -->
+    <!-- Modal for Room Management -->
+    <div id="roomEditModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md bg-white border border-amber-500/40 rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h3 class="font-bold text-slate-900 text-base" id="roomModalTitle">تعديل قاعة التخمير</h3>
+                <button type="button" onclick="closeRoomModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
+            </div>
+            <form onsubmit="handleRoomEditSubmit(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="editRoomNumber" value="">
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">حالة القاعة *</label>
+                    <select id="editRoomStatus" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                        <option value="ripening">تخمير 24 ساعة</option>
+                        <option value="cooled">مبردة جاهزة (صرف)</option>
+                        <option value="storage">تخزين تبريد (موز أخضر)</option>
+                        <option value="empty">فارغة (شاغرة)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">درجة الحرارة (°C) *</label>
+                    <input type="number" step="0.1" id="editRoomTemp" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                </div>
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">الكمية الإجمالية (طرد) *</label>
+                    <input type="number" id="editRoomTotalQty" required min="0" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                </div>
+                <div class="flex justify-end gap-2 pt-3 border-t border-slate-200">
+                    <button type="button" onclick="closeRoomModal()" class="px-4 py-2 bg-slate-100 rounded-xl">إلغاء</button>
+                    <button type="submit" class="px-6 py-2 bg-amber-600 text-white font-bold rounded-xl shadow-md">حفظ التعديل</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modals (Brands, Drivers, Login) -->
     <div id="brandsModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="w-full max-w-xl bg-white border border-[#fae5d3] rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
             <div class="flex items-center justify-between border-b border-slate-200 pb-3">
@@ -542,16 +629,11 @@
 
     <!-- JavaScript Complete & Secure Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-10-30-v54-complete-robust";
+        const APP_DATA_VERSION = "2026-10-31-v55-master";
 
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
         const firebaseConfig = {
@@ -574,7 +656,7 @@
 
         const WAREHOUSE_DOC_REF = db.collection("warehouse_data").doc("current_state");
 
-        // Verified Datasets
+        // Master authorative datasets
         let inboundData = [
             {"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "pack": "اكوادور-20كغ"},
             {"id": "126764", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1740, "car": "8352", "driver": "محمد إسماعيل", "country": "الإكوادور", "temp": 17.1, "pack": "اكوادور-20كغ"},
@@ -632,6 +714,7 @@
         let activeTab = 'dashboard';
         let activeCalendarDate = '2026-10-29';
 
+        // Security Checked Atomic Transaction Mutator
         async function runAtomicWarehouseUpdate(mutatorCallback) {
             if (!auth.currentUser) {
                 showToast("إجراء مرفوض: يتطلب صلاحيات مسؤول مسجل", false);
@@ -722,7 +805,7 @@
             if (user && document.getElementById('adminUserEmail')) {
                 document.getElementById('adminUserEmail').textContent = user.email.split('@')[0];
             }
-            safeCreateIcons();
+            renderAll();
         });
 
         function openLoginModal() { 
@@ -860,14 +943,19 @@
             renderMovementTable(movementData);
         }
 
-        // Toggle Admin Forms
+        // Admin Interactive Modals (Inbound & Dispatch)
         function toggleInboundForm() {
             if (!auth.currentUser) {
                 showToast("يتطلب صلاحيات مسؤول مسجل", false);
                 openLoginModal();
                 return;
             }
-            showToast("واجهة الإضافة متاحة ومحمية للمسؤولين");
+            document.getElementById('adminFormType').value = 'inbound';
+            document.getElementById('adminModalTitle').textContent = 'إضافة حاوية استلام جديدة';
+            document.getElementById('lblFormId').textContent = 'رقم الحاوية *';
+            document.getElementById('lblFormEntity').textContent = 'السائق الناقل *';
+            document.getElementById('mFormDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('adminActionModal')?.classList.remove('hidden');
         }
 
         function toggleDispatchForm() {
@@ -876,9 +964,136 @@
                 openLoginModal();
                 return;
             }
-            showToast("واجهة التوزيع متاحة ومحمية للمسؤولين");
+            document.getElementById('adminFormType').value = 'dispatch';
+            document.getElementById('adminModalTitle').textContent = 'تسجيل إرسالية توزيع جديدة';
+            document.getElementById('lblFormId').textContent = 'رقم الإيصال / الفاتورة *';
+            document.getElementById('lblFormEntity').textContent = 'التاجر / الزبون *';
+            document.getElementById('mFormDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('adminActionModal')?.classList.remove('hidden');
         }
 
+        function closeAdminActionModal() {
+            document.getElementById('adminActionModal')?.classList.add('hidden');
+        }
+
+        async function handleAdminFormSubmit(e) {
+            e.preventDefault();
+            const type = document.getElementById('adminFormType').value;
+            const idVal = document.getElementById('mFormId').value.trim();
+            const dateVal = document.getElementById('mFormDate').value;
+            const qtyVal = parseInt(document.getElementById('mFormQty').value, 10) || 0;
+            const brandVal = document.getElementById('mFormBrand').value;
+            const carVal = document.getElementById('mFormCar').value.trim();
+            const entityVal = document.getElementById('mFormEntity').value.trim();
+
+            const btn = document.getElementById('btnSubmitAdminData');
+            btn.disabled = true;
+            btn.textContent = 'جارٍ المزامنة...';
+
+            const success = await runAtomicWarehouseUpdate((state) => {
+                if (type === 'inbound') {
+                    if (!state.inboundData) state.inboundData = [];
+                    state.inboundData.unshift({
+                        id: idVal,
+                        date: dateVal,
+                        port: "باب الهوى",
+                        brand: brandVal,
+                        qty: qtyVal,
+                        car: carVal || "-",
+                        driver: entityVal,
+                        temp: 13.5,
+                        pack: "اكوادور-20كغ"
+                    });
+                } else {
+                    if (!state.dispatchData) state.dispatchData = [];
+                    state.dispatchData.unshift({
+                        id: state.dispatchData.length + 1,
+                        date: dateVal,
+                        day: "الخميس",
+                        receipt: idVal,
+                        driver: "سائق معتمد",
+                        customer: entityVal,
+                        car: carVal || "-",
+                        dest: "دمشق",
+                        brand: brandVal,
+                        qty: qtyVal
+                    });
+                }
+                return state;
+            });
+
+            btn.disabled = false;
+            btn.textContent = 'حفظ ومزامنة فورية';
+
+            if (success) {
+                closeAdminActionModal();
+                showToast("تم الحفظ بنجاح وتحديث قاعدة البيانات");
+            }
+        }
+
+        // Room Edit Admin Functions
+        function openEditRoomModal(roomNum) {
+            if (!auth.currentUser) {
+                showToast("يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            const rObj = roomsData.find(r => r.room === roomNum);
+            if (!rObj) return;
+
+            document.getElementById('editRoomNumber').value = roomNum;
+            document.getElementById('roomModalTitle').textContent = `تعديل قاعة ${roomNum}`;
+            document.getElementById('editRoomStatus').value = rObj.status || 'ripening';
+            document.getElementById('editRoomTemp').value = rObj.temp || 14.0;
+            const totalQty = (rObj.items || []).reduce((acc, it) => acc + (parseInt(it.qty, 10) || 0), 0);
+            document.getElementById('editRoomTotalQty').value = totalQty;
+            document.getElementById('roomEditModal')?.classList.remove('hidden');
+        }
+
+        function closeRoomModal() {
+            document.getElementById('roomEditModal')?.classList.add('hidden');
+        }
+
+        async function handleRoomEditSubmit(e) {
+            e.preventDefault();
+            const roomNum = parseInt(document.getElementById('editRoomNumber').value, 10);
+            const newStatus = document.getElementById('editRoomStatus').value;
+            const newTemp = parseFloat(document.getElementById('editRoomTemp').value) || 14.0;
+            const newQty = parseInt(document.getElementById('editRoomTotalQty').value, 10) || 0;
+
+            const success = await runAtomicWarehouseUpdate((state) => {
+                const targetRoom = (state.roomsData || []).find(r => r.room === roomNum);
+                if (targetRoom) {
+                    targetRoom.status = newStatus;
+                    targetRoom.temp = newTemp;
+                    if (newStatus === 'empty') {
+                        targetRoom.hours = 'فارغة (شاغرة)';
+                        targetRoom.items = [];
+                    } else {
+                        targetRoom.hours = newStatus === 'storage' ? 'تخزين تبريد (موز أخضر)' : (newStatus === 'cooled' ? 'مبردة جاهزة (صرف)' : 'تخمير 24 ساعة');
+                        targetRoom.items = [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: newQty }];
+                    }
+                }
+                return state;
+            });
+
+            if (success) {
+                closeRoomModal();
+                showToast(`تم تحديث قاعة ${roomNum} بنجاح`);
+            }
+        }
+
+        // Inspection Admin Modal
+        function openInspectionModal() {
+            if (!auth.currentUser) {
+                showToast("يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            showToast("إضافة تقرير فحص: جاهزة للمسؤول");
+        }
+
+        // Render Functions
         let movementChartInstance = null;
         function initMovementChart() {
             const canvas = document.getElementById('movementChart');
@@ -969,7 +1184,10 @@
                     <div>
                         <div class="flex justify-between items-center pb-2 border-b border-slate-100">
                             <span class="font-black text-sm text-[#45260a]">قاعة ${r.room}</span>
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">${escapeHtml(r.hours)}</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">${escapeHtml(r.hours)}</span>
+                                <button onclick="openEditRoomModal(${r.room})" class="admin-only px-2 py-0.5 rounded-lg bg-amber-600 text-white text-[10px] font-bold">تعديل</button>
+                            </div>
                         </div>
                         <div class="py-2">
                             ${(r.items || []).map(it => `<div class="flex justify-between text-xs py-1"><span>${escapeHtml(it.brand)} (${escapeHtml(it.origin)})</span><span class="font-mono font-bold">${(it.qty || 0).toLocaleString()} طرد</span></div>`).join('')}
