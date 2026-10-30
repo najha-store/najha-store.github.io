@@ -143,14 +143,12 @@
                 </div>
             </div>
 
-            <!-- Left: Stats & Login -->
             <div class="flex items-center gap-2 sm:gap-3 shrink-0">
                 <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#fdf2e9] border border-[#fae5d3] text-xs">
                     <span class="text-[#6f6f6f] font-semibold">رصيد المستودع الفعلي:</span>
                     <span class="font-black text-[#cf711f] font-num" id="headerStockBadge">15,220 طرد</span>
                 </div>
 
-                <!-- Admin Action Buttons -->
                 <button id="btnLoginOpen" onclick="openLoginModal()" class="px-4 py-2 text-xs sm:text-sm font-bold text-white bg-[#45260a] hover:bg-[#333] rounded-xl shadow-md flex items-center gap-1.5 transition-all">
                     <i data-lucide="lock" class="w-3.5 h-3.5 text-[#ffd43b]"></i>
                     <span>دخول مسؤول</span>
@@ -390,7 +388,7 @@
                     <table class="w-full min-w-[1150px] text-right text-xs">
                         <thead class="bg-white text-slate-600 font-bold border-b border-slate-200 sticky top-0">
                             <tr>
-                                <th class="p-3">#</th><th class="p-3">رقم الحاوية</th><th class="p-3">تاريخ الوصول</th><th class="p-3">المنفذ</th><th class="p-3">الماركة</th><th class="p-3">المنشأ</th><th class="p-3">العدد (كرتونة)</th><th class="p-3">رقم السيارة</th><th class="p-3">السائق الناقل</th><th class="p-3 text-center">الحرارة</th>
+                                <th class="p-3">#</th><th class="p-3">رقم الحاوية</th><th class="p-3">تاريخ الوصول</th><th class="p-3">المنفذ</th><th class="p-3">الماركة</th><th class="p-3">المنشأ</th><th class="p-3">العدد (كرتونة)</th><th class="p-3">رقم السيارة</th><th class="p-3">السائق الناقل</th><th class="p-3 text-center">الحرارة</th><th class="p-3 text-center admin-only">إجراءات</th>
                             </tr>
                         </thead>
                         <tbody id="inboundTableBody" class="divide-y divide-slate-100"></tbody>
@@ -429,7 +427,7 @@
                     <table class="w-full text-right text-xs">
                         <thead class="bg-white text-slate-500 sticky top-0 font-bold border-b border-slate-200">
                             <tr>
-                                <th class="p-3">#</th><th class="p-3">التاريخ</th><th class="p-3">اليوم</th><th class="p-3">السائق</th><th class="p-3 text-amber-700 font-bold">التاجر</th><th class="p-3">رقم السيارة</th><th class="p-3">الوجهة</th><th class="p-3">الماركة</th><th class="p-3">العدد (طرد)</th><th class="p-3">الإيصال</th>
+                                <th class="p-3">#</th><th class="p-3">التاريخ</th><th class="p-3">اليوم</th><th class="p-3">السائق</th><th class="p-3 text-amber-700 font-bold">التاجر</th><th class="p-3">رقم السيارة</th><th class="p-3">الوجهة</th><th class="p-3">الماركة</th><th class="p-3">العدد (طرد)</th><th class="p-3">الإيصال</th><th class="p-3 text-center admin-only">إجراءات</th>
                             </tr>
                         </thead>
                         <tbody id="dispatchTableBody" class="divide-y divide-slate-100"></tbody>
@@ -507,7 +505,6 @@
                 <form onsubmit="handleAdminFormSubmit(event)" class="space-y-3.5 text-xs">
                     <input type="hidden" id="adminFormType" value="dispatch">
 
-                    <!-- رقم الإيصال والتاريخ -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-slate-700 font-semibold mb-1" id="lblFormId">رقم الإيصال / الفاتورة *</label>
@@ -519,15 +516,12 @@
                         </div>
                     </div>
 
-                    <!-- وقت الإرسالية التلقائي -->
                     <div id="wrapperTimeInput">
                         <label class="block text-slate-700 font-semibold mb-1">وقت الإرسالية (تلقائي ولحظي) *</label>
                         <input type="text" id="mFormTime" readonly class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold font-mono">
                     </div>
 
-                    <!-- اختيار التاجر وقاعة التحميل -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="wrapperMerchantAndRoom">
-                        <!-- اختيار التاجر -->
                         <div>
                             <label class="block text-slate-700 font-semibold mb-1" id="lblMerchantSelect">التاجر / الزبون *</label>
                             <select id="mFormMerchantSelect" onchange="onMerchantSelected(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
@@ -538,7 +532,6 @@
                             <input type="text" id="mFormMerchantCustom" placeholder="اكتب اسم التاجر هنا" class="hidden mt-1.5 w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold">
                         </div>
 
-                        <!-- التحميل من القاعة -->
                         <div>
                             <label class="block text-slate-700 font-semibold mb-1">التحميل من قاعة رقم *</label>
                             <select id="mFormSourceRoom" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
@@ -552,9 +545,7 @@
                         </div>
                     </div>
 
-                    <!-- اختيار السائق ورقم السيارة التلقائي -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- اختيار السائق -->
                         <div>
                             <label class="block text-slate-700 font-semibold mb-1" id="lblDriverSelect">السائق الناقل *</label>
                             <select id="mFormDriverSelect" onchange="onDriverSelectedChange(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
@@ -563,14 +554,12 @@
                             <input type="text" id="mFormDriverCustom" placeholder="اكتب اسم السائق" class="hidden mt-1.5 w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
                         </div>
 
-                        <!-- رقم السيارة (يتم ملؤه تلقائياً) -->
                         <div>
                             <label class="block text-slate-700 font-semibold mb-1">رقم السيارة / اللوحة *</label>
                             <input type="text" id="mFormCar" required placeholder="رقم اللوحة يظهر تلقائياً" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono focus:border-amber-500">
                         </div>
                     </div>
 
-                    <!-- الماركة والكمية والوجهة -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
                             <label class="block text-slate-700 font-semibold mb-1">الماركة *</label>
@@ -592,7 +581,6 @@
                         </div>
                     </div>
 
-                    <!-- أزرار الإجراء -->
                     <div class="flex items-center justify-between pt-3 border-t border-slate-200">
                         <span class="text-[11px] text-slate-500">سيتم حفظ البيانات والمزامنة السحابية فوراً.</span>
                         <div class="flex gap-2">
@@ -637,7 +625,6 @@
                         </div>
                     </div>
 
-                    <!-- Brands and Origins Container in this Room -->
                     <div class="space-y-2 pt-2 border-t border-slate-100">
                         <div class="flex items-center justify-between">
                             <label class="font-bold text-slate-800 flex items-center gap-1.5">
@@ -732,7 +719,7 @@
 
     <!-- JavaScript Complete Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-10-31-v59-full-complete-code";
+        const APP_DATA_VERSION = "2026-10-31-v60-delete-buttons-complete";
 
         function safeCreateIcons() {
             try {
@@ -794,29 +781,18 @@
             {"id": "168975", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
             {"id": "168969", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8156884", "driver": "أحمد القش", "country": "الإكوادور", "temp": 14.5, "pack": "اكوادور-20كغ"},
             {"id": "168964", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8219605", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 14.3, "pack": "اكوادور-20كغ"},
-            {"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "pack": "اكوادور-20كغ"},
-            {"id": "126764", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1740, "car": "8352", "driver": "محمد إسماعيل", "country": "الإكوادور", "temp": 17.1, "pack": "اكوادور-20كغ"},
-            {"id": "126656", "date": "2026-09-01", "port": "باب الهوى", "brand": "اكسترا", "qty": 1098, "car": "8289112", "driver": "عبدالقادرخاروف", "country": "كوستاريكا", "temp": 15.5, "pack": "كوستريكا-19كغ"}
+            {"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "pack": "اكوادور-20كغ"}
         ];
 
         let dispatchData = [
             {"id": 761, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "receipt": "1506", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "كوستا سول", "qty": 1, "pack": "كوستريكا-19كغ"},
             {"id": 760, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "receipt": "1506", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "روزيتا", "qty": 7, "pack": "اكوادور-20كغ"},
             {"id": 756, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "receipt": "1504", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 437, "pack": "كوستريكا-19كغ"},
-            {"id": 755, "date": "2026-10-29", "time": "13:00:00", "day": "الخميس", "receipt": "1503", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 20, "pack": "اكوادور-20كغ"},
-            {"id": 754, "date": "2026-10-29", "time": "13:00:00", "day": "الخميس", "receipt": "1503", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 404, "pack": "كوستريكا-19كغ"},
-            {"id": 753, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "receipt": "1502", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 17, "pack": "كوستريكا-19كغ"},
-            {"id": 752, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "receipt": "1502", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 503, "pack": "كوستريكا-19كغ"},
-            {"id": 751, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "receipt": "1501", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "اكسترا بان", "qty": 20, "pack": "كوستريكا-19كغ"},
-            {"id": 750, "date": "2026-10-29", "time": "12:00:00", "day": "الخميس", "receipt": "1501", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 430, "pack": "كوستريكا-19كغ"},
-            {"id": 749, "date": "2026-10-28", "time": "16:30:00", "day": "الأربعاء", "receipt": "1499", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 260, "pack": "كوستريكا-19كغ"},
             {"id": 1, "date": "2026-09-01", "time": "08:00:00", "day": "الثلاثاء", "receipt": "1016", "driver": "أبو رمضان", "car": "349681", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 477, "pack": "إكوادوري 20"}
         ];
 
         let movementData = [
             {"date": "2026-10-29", "date_short": "29/10", "day": "الخميس", "open": 13779, "inQty": 3294, "outQty": 1853, "net": 1441, "close": 15220, "notes": "استلام 3 حاويات وتوزيع 1,853 طرد"},
-            {"date": "2026-10-28", "date_short": "28/10", "day": "الأربعاء", "open": 16988, "inQty": 0, "outQty": 3209, "net": -3209, "close": 13779, "notes": "توزيع 3,209 طرد موز لدمشق"},
-            {"date": "2026-10-27", "date_short": "27/10", "day": "الثلاثاء", "open": 19101, "inQty": 0, "outQty": 2113, "net": -2113, "close": 16988, "notes": "توزيع 2,113 طرد موز لدمشق"},
             {"date": "2026-09-01", "date_short": "1/9", "day": "الثلاثاء", "open": 10274, "inQty": 3936, "outQty": 2940, "net": 996, "close": 11270, "notes": "استلام 3 حاويات وتوزيع 2,940 طرد"}
         ];
 
@@ -1217,6 +1193,37 @@
             }
         }
 
+        // ================= DELETE FUNCTIONS FOR ADMIN =================
+        async function deleteInboundRecord(containerId) {
+            if (!auth.currentUser) {
+                showToast("إجراء مرفوض: يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            if (confirm(`هل أنت متأكد من حذف الحاوية رقم (${containerId})؟`)) {
+                await runAtomicWarehouseUpdate((state) => {
+                    state.inboundData = (state.inboundData || inboundData).filter(item => String(item.id) !== String(containerId));
+                    return state;
+                });
+                showToast(`تم حذف الحاوية ${containerId} بنجاح`);
+            }
+        }
+
+        async function deleteDispatchRecord(recordId) {
+            if (!auth.currentUser) {
+                showToast("إجراء مرفوض: يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            if (confirm(`هل أنت متأكد من حذف إرسالية التوزيع رقم (${recordId})؟`)) {
+                await runAtomicWarehouseUpdate((state) => {
+                    state.dispatchData = (state.dispatchData || dispatchData).filter(item => String(item.id) !== String(recordId));
+                    return state;
+                });
+                showToast(`تم حذف الإرسالية رقم ${recordId} بنجاح`);
+            }
+        }
+
         // ================= ROOM EDITING MODAL (MULTI-BRAND & ORIGIN LOGIC) =================
         let activeFullRoomNum = null;
         let modalRoomItems = [];
@@ -1555,7 +1562,7 @@
             });
         }
 
-        // Newest-First Tables Rendering
+        // Newest-First Tables Rendering with Admin Delete Buttons
         function renderInboundTable(dataToRender = inboundData) {
             const tbody = document.getElementById('inboundTableBody');
             if (!tbody) return;
@@ -1572,8 +1579,14 @@
                     <td class="p-3 font-mono text-emerald-600">${escapeHtml(row.car || '-')}</td>
                     <td class="p-3">${escapeHtml(row.driver || '-')}</td>
                     <td class="p-3 text-center font-mono">${escapeHtml(row.temp || 13.5)}°C</td>
+                    <td class="p-3 text-center admin-only">
+                        <button type="button" onclick="deleteInboundRecord('${escapeHtml(row.id)}')" class="p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-all font-bold text-xs" title="حذف هذه الحاوية">
+                            ✕ حذف
+                        </button>
+                    </td>
                 </tr>
             `).join('');
+            safeCreateIcons();
         }
 
         function renderDispatchTable(dataToRender = dispatchData) {
@@ -1595,8 +1608,14 @@
                     <td class="p-3 font-bold">${escapeHtml(row.brand)}</td>
                     <td class="p-3 font-mono font-bold">${(row.qty || 0).toLocaleString()}</td>
                     <td class="p-3 font-mono">${escapeHtml(row.receipt || '-')}</td>
+                    <td class="p-3 text-center admin-only">
+                        <button type="button" onclick="deleteDispatchRecord('${escapeHtml(row.id)}')" class="p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-all font-bold text-xs" title="حذف هذه الإرسالية">
+                            ✕ حذف
+                        </button>
+                    </td>
                 </tr>
             `).join('');
+            safeCreateIcons();
         }
 
         function renderMovementTable(dataToRender = movementData) {
