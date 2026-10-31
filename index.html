@@ -125,6 +125,23 @@
 </head>
 <body class="bg-[#fdfaf7] text-[#45260a] min-h-screen flex flex-col antialiased visitor-mode selection:bg-orange-600 selection:text-white">
 
+    <!-- ============================================================
+         SECURITY NOTE (يجب نشرها على الاستضافة كملف firestore.rules):
+         rules_version = '2';
+         service cloud.firestore {
+           match /databases/{database}/documents {
+             match /warehouse_data/{doc} {
+               allow read: if true;
+               allow write: if request.auth != null
+                 && request.auth.token.admin == true;   // Custom Claim
+             }
+           }
+         }
+         كما يجب تعطيل التسجيل الذاتي في Firebase Console:
+         Authentication > Sign-in method > Email/Password
+         > (ترك تمكين الدخول فقط، وعدم السماح بإنشاء حسابات من الواجهة)
+         ============================================================ -->
+
     <!-- Top Sticky Omnifood Navbar -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#fae5d3] shadow-sm w-full transition-all">
         <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full py-3.5 flex items-center justify-between gap-3">
@@ -834,6 +851,18 @@
                 return false;
             }
 
+            // دفاع طبقة أولى (عميل). الحماية النهائية في قواعد Firestore ضمن firestore.rules
+            try {
+                const token = await auth.currentUser.getIdTokenResult();
+                if (token.claims.admin !== true) {
+                    showToast("حسابك مسجل لكنه غير مُصرَّح كمدير (admin claim مفقود)", false);
+                    return false;
+                }
+            } catch (e) {
+                showToast("تعذر التحقق من الصلاحيات، حاول مجدداً", false);
+                return false;
+            }
+
             try {
                 await db.runTransaction(async (transaction) => {
                     const doc = await transaction.get(WAREHOUSE_DOC_REF);
@@ -863,6 +892,10 @@
                 if (Array.isArray(data.brandsData)) brandsData = data.brandsData;
                 renderAll();
             }
+        }, (error) => {
+            // لا نترك الزائر أمام بيانات النموذج الافتراضي ظنّاً أنها حقيقية
+            console.error('Firestore Snapshot Error:', error);
+            showToast('فشل الاتصال بالبيانات السحابية (' + (error.code || 'unknown') + ')، الأرقام المعروضة حالية فقط على هذا الجهاز', false);
         });
 
         function showToast(message, isSuccess = true) {
@@ -1194,6 +1227,28 @@
         }
 
         // ================= DELETE FUNCTIONS FOR ADMIN =================
+        // (آمن من XSS: تفويض الأحداث عبر data-attributes بدلاً من onclick المدمج)
+        function bindDeleteHandlers() {
+            const inboundTbody = document.getElementById('inboundTableBody');
+            inboundTbody?.addEventListener('click', (e) => {
+                const btn = e.target.closest('button[data-inbound-id]');
+                if (btn) deleteInboundRecord(btn.dataset.inboundId);
+            });
+            const dispatchTbody = document.getElementById('dispatchTableBody');
+            dispatchTbody?.addEventListener('click', (e) => {
+                const btn = e.target.closest('button[data-dispatch-id]');
+                if (btn) deleteDispatchRecord(btn.dataset.dispatchId);
+            });
+        }
+
+        // أعِد الملائمة SAFE: escapeJsParam يفلت الرموز الخطرة أيضاً (\ والاقتباسات)
+        function escapeJsParam(str) {
+            return String(str)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '\\"');
+        }
+
         async function deleteInboundRecord(containerId) {
             if (!auth.currentUser) {
                 showToast("إجراء مرفوض: يتطلب صلاحيات مسؤول مسجل", false);
@@ -1201,11 +1256,11 @@
                 return;
             }
             if (confirm(`هل أنت متأكد من حذف الحاوية رقم (${containerId})؟`)) {
-                await runAtomicWarehouseUpdate((state) => {
+                const ok = await runAtomicWarehouseUpdate((state) => {
                     state.inboundData = (state.inboundData || inboundData).filter(item => String(item.id) !== String(containerId));
                     return state;
                 });
-                showToast(`تم حذف الحاوية ${containerId} بنجاح`);
+                if (ok) showToast(`تم حذف الحاوية ${containerId} بنجاح`);
             }
         }
 
@@ -1216,11 +1271,11 @@
                 return;
             }
             if (confirm(`هل أنت متأكد من حذف إرسالية التوزيع رقم (${recordId})؟`)) {
-                await runAtomicWarehouseUpdate((state) => {
+                const ok = await runAtomicWarehouseUpdate((state) => {
                     state.dispatchData = (state.dispatchData || dispatchData).filter(item => String(item.id) !== String(recordId));
                     return state;
                 });
-                showToast(`تم حذف الإرسالية رقم ${recordId} بنجاح`);
+                if (ok) showToast(`تم حذف الإرسالية رقم ${recordId} بنجاح`);
             }
         }
 
@@ -1580,7 +1635,7 @@
                     <td class="p-3">${escapeHtml(row.driver || '-')}</td>
                     <td class="p-3 text-center font-mono">${escapeHtml(row.temp || 13.5)}°C</td>
                     <td class="p-3 text-center admin-only">
-                        <button type="button" onclick="deleteInboundRecord('${escapeHtml(row.id)}')" class="p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-all font-bold text-xs" title="حذف هذه الحاوية">
+                        <button type="button" data-inbound-id="${escapeHtml(String(row.id))}" class="btn-delete-inbound p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-all font-bold text-xs" title="حذف هذه الحاوية">
                             ✕ حذف
                         </button>
                     </td>
@@ -1609,7 +1664,7 @@
                     <td class="p-3 font-mono font-bold">${(row.qty || 0).toLocaleString()}</td>
                     <td class="p-3 font-mono">${escapeHtml(row.receipt || '-')}</td>
                     <td class="p-3 text-center admin-only">
-                        <button type="button" onclick="deleteDispatchRecord('${escapeHtml(row.id)}')" class="p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-all font-bold text-xs" title="حذف هذه الإرسالية">
+                        <button type="button" data-dispatch-id="${escapeHtml(String(row.id))}" class="btn-delete-dispatch p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-all font-bold text-xs" title="حذف هذه الإرسالية">
                             ✕ حذف
                         </button>
                     </td>
@@ -1717,6 +1772,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             renderAll();
+            bindDeleteHandlers();
             setCalendarToToday();
             initMovementChart();
             initMerchantsSplitChart();

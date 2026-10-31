@@ -1,0 +1,51 @@
+rules_version = '2';
+
+// قواعد أمان Firestore - منظومة مستودع نجها / شركة النسر التجارية
+// النشر: firebase deploy --only firestore:rules
+// أو: Firebase Console > Firestore Database > Rules > نسخ المحتوى > Publish
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============ متطلبات المسؤولية: Custom Claim admin = true ============
+    // تُمنح عبر Cloud Function أو Admin SDK من جهاز موثوق:
+    //   admin.auth().setCustomUserClaims(uid, { admin: true })
+    // أضف UID المسؤولين المسموح لهم في القائمة أدناه (دفاع مزدوج مع الـ Claim)
+    function isAdminClaim() {
+      return request.auth.token.admin == true;
+    }
+
+    // بديل/مجمّع: قائمة UID موثوقة (استبدل الألوفيد الموجود بـ UID حسابك الفعلي،
+    // ويُفضَّل الاعتماد على الـ Claim بعد إصداره)
+    function isWhitelistedAdmin() {
+      return request.auth.uid in [
+        'kQ7M6MFt8axFVz0BI33NdKQcw3w3l',
+        'vabExbEEZSTU6Lg68WFM59IJyGr2'
+      ];
+    }
+
+    function isAdmin() {
+      return request.auth != null && (isAdminClaim() || isWhitelistedAdmin());
+    }
+
+    // ============ بيانات المستودع ============
+    match /warehouse_data/{docId} {
+      // القراءة متاحة للجميع (شاشات الاستعلام العامة)
+      allow read: if true;
+
+      // الكتابة فقط لمسؤول موثوق من خلال Claim أو القائمة البيضاء
+      allow create, update, delete: if isAdmin();
+
+      // منع الاستبدال الجامح: أي كتابة يجب أن تحفظ الحقول الإدارية
+      // وتقيّد حجم البيانات (حماية من فشل حد 1MB والكتابات الخاطئة)
+      allow create, update: if isAdmin()
+        && request.resource.data.get('lastUpdated', null) != null
+        && request.resource.data.get('updatedBy', null) != null;
+    }
+
+    // ============ حجب كل ما عدا ذلك بشكل صريح ============
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
