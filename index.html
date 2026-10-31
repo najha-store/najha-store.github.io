@@ -367,6 +367,7 @@
                         <h3 class="font-bold text-slate-900 text-base mb-1">توزيع الكراتين وحصص التجار</h3>
                         <p class="text-xs text-slate-500 mb-5">توزيع الأصناف وحصص الأسواق (156,243 طرد)</p>
                         <div class="h-44 w-full relative flex items-center justify-center"><canvas id="merchantsSplitChart"></canvas></div>
+                        <div id="merchantsBreakdownBox" class="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-xs"></div>
                     </div>
                 </div>
             </div>
@@ -496,9 +497,7 @@
                         <i data-lucide="printer" class="w-4 h-4"></i>
                         <span>طباعة / تصدير PDF</span>
                     </button>
-                    <span class="px-3 py-1.5 bg-amber-50 text-amber-800 rounded-xl text-xs font-bold border border-amber-200 font-num">
-                        الرصيد الفعلي: 15,220 طرد
-                    </span>
+                    <span id="roomsActualBadge" class="px-3 py-1.5 bg-amber-50 text-amber-800 rounded-xl text-xs font-bold border border-amber-200 font-num">الرصيد الفعلي: — طرد</span>
                 </div>
             </div>
             <div id="roomsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
@@ -798,14 +797,41 @@
             {"id": "168975", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
             {"id": "168969", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8156884", "driver": "أحمد القش", "country": "الإكوادور", "temp": 14.5, "pack": "اكوادور-20كغ"},
             {"id": "168964", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8219605", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 14.3, "pack": "اكوادور-20كغ"},
+            {"id": "1274025", "date": "2026-10-30", "port": "محمد نعمة", "brand": "اكسترا بان", "qty": 1595, "car": "8217579", "driver": "المرفأ", "country": "الهند", "temp": 14.5, "pack": "هندي-14كغ"},
+            {"id": "6974999", "date": "2026-10-30", "port": "عيد موسى", "brand": "اكسترا بان", "qty": 1595, "car": "8181932", "driver": "المرفأ", "country": "الهند", "temp": 14.7, "pack": "هندي-14كغ"},
+            {"id": "8765154", "date": "2026-10-30", "port": "مهران ليلى", "brand": "اكسترا بان", "qty": 1595, "car": "8189427", "driver": "المرفأ", "country": "الهند", "temp": 15.3, "pack": "هندي-14كغ"},
+            {"id": "5432400", "date": "2026-10-30", "port": "محمد زعيتر", "brand": "اكسترا بان", "qty": 1595, "car": "81411573", "driver": "المرفأ", "country": "الهند", "temp": 14.6, "pack": "هندي-14كغ"},
+            {"id": "16975", "date": "2026-10-30", "port": "محمد إسماعيل", "brand": "روزيتا", "qty": 1098, "car": "008352", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.7, "pack": "اكوادور-20كغ"},
+            {"id": "169611", "date": "2026-10-30", "port": "عبد الرحمن نوادي", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.2, "pack": "اكوادور-20كغ"},
+            {"id": "169668", "date": "2026-10-30", "port": "مهند حاج ناصر", "brand": "روزيتا", "qty": 1098, "car": "003684", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
             {"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "pack": "اكوادور-20كغ"}
         ];
 
         let dispatchData = [
+            {"id": 9001, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1507", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 232, "pack": "كوستريكا-19كغ"},
+            {"id": 9002, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1507", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 208, "pack": "كوستريكا-19كغ"},
+            {"id": 9003, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1508", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 309, "pack": "كوستريكا-19كغ"},
+            {"id": 9004, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1508", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 202, "pack": "كوستريكا-19كغ"},
+            {"id": 9005, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1509", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 3, "pack": "كوستريكا-19كغ"},
+            {"id": 9006, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1509", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 6, "pack": "اكوادور-20كغ"},
+            {"id": 9007, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1510", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 190, "pack": "كوستريكا-19كغ"},
+            {"id": 9008, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1510", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 330, "pack": "كوستريكا-19كغ"},
             {"id": 761, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "receipt": "1506", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "كوستا سول", "qty": 1, "pack": "كوستريكا-19كغ"},
             {"id": 760, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "receipt": "1506", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "روزيتا", "qty": 7, "pack": "اكوادور-20كغ"},
             {"id": 756, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "receipt": "1504", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 437, "pack": "كوستريكا-19كغ"},
-            {"id": 1, "date": "2026-09-01", "time": "08:00:00", "day": "الثلاثاء", "receipt": "1016", "driver": "أبو رمضان", "car": "349681", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 477, "pack": "إكوادوري 20"}
+            {"id": 1, "date": "2026-09-01", "time": "08:00:00", "day": "الثلاثاء", "receipt": "1016", "driver": "أبو رمضان", "car": "349681", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 477, "pack": "إكوادوري 20"},
+            {"id": 9009, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1511", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 170, "pack": "كوستريكا-19كغ"},
+            {"id": 9010, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1511", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 280, "pack": "كوستريكا-19كغ"},
+            {"id": 9011, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1512", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 53, "pack": "كوستريكا-19كغ"},
+            {"id": 9012, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1512", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 396, "pack": "كوستريكا-19كغ"},
+            {"id": 9013, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1513", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 312, "pack": "كوستريكا-19كغ"},
+            {"id": 9014, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1513", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 48, "pack": "كوستريكا-19كغ"},
+            {"id": 9015, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1514", "driver": "محمد", "car": "585855", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 513, "pack": "كوستريكا-19كغ"},
+            {"id": 9016, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1515", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 450, "pack": "كوستريكا-19كغ"},
+            {"id": 9017, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1516", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 201, "pack": "كوستريكا-19كغ"},
+            {"id": 9018, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1516", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 33, "pack": "هندي-14كغ"},
+            {"id": 9019, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1517", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 229, "pack": "كوستريكا-19كغ"},
+            {"id": 9020, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1518", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "اكسترا بان", "qty": 2, "pack": "هندي-14كغ"}
         ];
 
         let movementData = [
@@ -838,16 +864,16 @@
             {"date": "2026-10-27", "date_short": "27/10", "day": "الثلاثاء", "open": 19101, "inQty": 0, "outQty": 2113, "net": -2113, "close": 16988, "notes": "توزيع 2,113 طرد (لا استلام)"},
             {"date": "2026-10-28", "date_short": "28/10", "day": "الأربعاء", "open": 16988, "inQty": 0, "outQty": 3209, "net": -3209, "close": 13779, "notes": "توزيع 3,209 طرد (لا استلام)"},
             {"date": "2026-10-29", "date_short": "29/10", "day": "الخميس", "open": 13779, "inQty": 3294, "outQty": 1853, "net": 1441, "close": 15220, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 1,853 طرد"},
-            {"date": "2026-10-30", "date_short": "30/10", "day": "الجمعة", "open": 15220, "inQty": 8576, "outQty": 4167, "net": 4409, "close": 19629, "notes": "استلام 6 حاويات (8,576 كرتونة) وتوزيع 4,167 طرد"}
+            {"date": "2026-10-30", "date_short": "30/10", "day": "الجمعة", "open": 15220, "inQty": 9674, "outQty": 4167, "net": 5507, "close": 20727, "notes": "استلام 7 حاويات (9,674 كرتونة) وتوزيع 4,167 طرد"}
         ];
 
         let roomsData = [
-            { room: 7, status: "cooled", temp: 13.5, hours: "مبردة جاهزة (صرف)", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 6 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 442 }, { brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 165 }] },
-            { room: 8, status: "ripening", temp: 16.9, hours: "تخمير 24 ساعة", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2171 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1062 }] },
-            { room: 9, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 1086 }] },
-            { room: 10, status: "ripening", temp: 13.0, hours: "تخمير 24 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 1093 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 2392 }] },
-            { room: 11, status: "ripening", temp: 17.0, hours: "تخمير 24 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 1084 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 2384 }] },
-            { room: 12, status: "cooled", temp: 14.0, hours: "مبردة جاهزة (صرف)", items: [{ brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1169 }, { brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2165 }, { brand: "اكسترا", origin: "كوستريكا-19كغ", qty: 1 }] }
+            { room: 7, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "اكسترا بان", origin: "هندي-14كغ", qty: 5530 }] },
+            { room: 8, status: "ripening", temp: 16.9, hours: "تخمير 24 ساعة", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2169 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1062 }] },
+            { room: 9, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2196 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 815 }] },
+            { room: 10, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2196 }] },
+            { room: 11, status: "ripening", temp: 17.0, hours: "تخمير 24 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 1086 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 2347 }] },
+            { room: 12, status: "cooled", temp: 14.0, hours: "مبردة جاهزة (صرف)", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2157 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1169 }] }
         ];
 
         let driversData = [
@@ -867,6 +893,18 @@
         ];
 
         let originsList = ["اكوادور-20كغ", "كوستريكا-19كغ", "هندي-14كغ", "اكوادور-13.5كغ", "كوستريكي-20كغ"];
+
+        const SEED_DATA = { inbound: inboundData.slice(), dispatch: dispatchData.slice(), movement: movementData.slice() };
+
+        function unionByKey(remote, seed, keyFn) {
+            const seen = new Set(remote.map(keyFn));
+            const merged = [...remote];
+            (seed || []).forEach(item => {
+                const k = keyFn(item);
+                if (!seen.has(k)) { merged.push(item); seen.add(k); }
+            });
+            return merged;
+        }
 
         let currentUser = null;
         let activeTab = 'dashboard';
@@ -915,10 +953,12 @@
         WAREHOUSE_DOC_REF.onSnapshot((doc) => {
             if (doc.exists) {
                 const data = doc.data();
-                if (Array.isArray(data.inboundData)) inboundData = data.inboundData;
-                if (Array.isArray(data.dispatchData)) dispatchData = data.dispatchData;
-                if (Array.isArray(data.roomsData)) roomsData = data.roomsData;
-                if (Array.isArray(data.movementData)) movementData = data.movementData;
+                // دمج: بيانات السحابة أولاً + إثراء بالبيانات المضمّنة غير الموجودة سحابياً (مثل سجلات 30/10)
+                if (Array.isArray(data.inboundData)) inboundData = unionByKey(data.inboundData, SEED_DATA.inbound, it => `${String(it.id)}|${it.date}`);
+                if (Array.isArray(data.dispatchData)) dispatchData = unionByKey(data.dispatchData, SEED_DATA.dispatch, it => `${String(it.id)}|${it.date}|${it.qty}|${it.receipt}`);
+                if (Array.isArray(data.movementData)) movementData = unionByKey(data.movementData, SEED_DATA.movement, it => it.date);
+                if (Array.isArray(data.roomsData) && data.roomsData.length) roomsData = data.roomsData;
+                else roomsData = roomsData; // بيانات القاعات المعدلة محلياً تبقى إن غابت سحابياً
                 if (Array.isArray(data.driversData)) driversData = data.driversData;
                 if (Array.isArray(data.brandsData)) brandsData = data.brandsData;
                 renderAll();
@@ -1026,6 +1066,7 @@
             document.getElementById('calendarDayLabel').textContent = `${dayNames[d.getDay()]}، ${d.getDate()} / ${d.getMonth() + 1} / ${d.getFullYear()}`;
             document.getElementById('globalCalendarPicker').value = dateStr;
             updateCalendarMetrics(dateStr);
+            updateMerchantBreakdown();
         }
 
         function navigateCalendarDay(offset) {
@@ -1187,7 +1228,7 @@
             const type = document.getElementById('adminFormType').value;
             const idVal = document.getElementById('mFormId').value.trim();
             const dateVal = document.getElementById('mFormDate').value;
-            const timeVal = document.getElementById('mFormTime')?.value || new Date().toTimeString().split(' ')[0];
+            const timeVal = new Date().toTimeString().split(' ')[0]; // وقت لحظي عند الضغط على حفظ
             const qtyVal = parseInt(document.getElementById('mFormQty').value, 10) || 0;
             const brandVal = document.getElementById('mFormBrand').value;
             const carVal = document.getElementById('mFormCar').value.trim();
@@ -1229,8 +1270,9 @@
                     });
                 } else {
                     if (!state.dispatchData) state.dispatchData = dispatchData;
+                    const nextDispatchId = state.dispatchData.reduce((m, d) => Math.max(m, parseInt(d.id, 10) || 0), 0) + 1;
                     state.dispatchData.unshift({
-                        id: state.dispatchData.length + 1,
+                        id: nextDispatchId,
                         date: dateVal,
                         time: timeVal,
                         day: new Date(dateVal).toLocaleDateString('ar-SY', { weekday: 'long' }),
@@ -1648,6 +1690,39 @@
         }
 
         let merchantsChartInstance = null;
+        // حصص التجار مرتبطة بتقويم اليوم المختار في الواجهة
+        function updateMerchantBreakdown() {
+            const boxEl = document.getElementById('merchantsBreakdownBox');
+            const canvas = document.getElementById('merchantsSplitChart');
+            const rows = dispatchData.filter(d => d.date === activeCalendarDate);
+            const sumQty = (arr) => arr.reduce((a, c) => a + (parseInt(c.qty, 10) || 0), 0);
+            const dayTotal = sumQty(rows);
+            const per = {
+                'عمر العقاد': sumQty(rows.filter(d => d.customer === 'عمر العقاد')),
+                'أحمد الطالب': sumQty(rows.filter(d => d.customer === 'أحمد الطالب'))
+            };
+            const others = Math.max(dayTotal - per['عمر العقاد'] - per['أحمد الطالب'], 0);
+            if (canvas) {
+                if (merchantsChartInstance) merchantsChartInstance.destroy();
+                merchantsChartInstance = new Chart(canvas.getContext('2d'), {
+                    type: 'doughnut',
+                    data: { labels: ['عمر العقاد', 'أحمد الطالب', 'آخرون'], datasets: [{ data: [per['عمر العقاد'], per['أحمد الطالب'], others], backgroundColor: ['#e67e22', '#2563eb', '#94a3b8'], borderWidth: 2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: false } } }
+                });
+            }
+            if (boxEl) {
+                const pct = (v) => dayTotal > 0 ? Math.round(v / dayTotal * 100) : 0;
+                const dfmt = (d) => { const x = new Date(d + 'T00:00:00'); return `\u0627\u0644${['\u0623\u062d\u062f','\u0627\u062b\u0646\u064a\u0646','\u062b\u0644\u0627\u062b\u0627\u0621','\u0623\u0631\u0628\u0639\u0627\u0621','\u062e\u0645\u064a\u0633','\u062c\u0645\u0639\u0629','\u0633\u0628\u062a'][x.getDay()]} ${x.getDate()}/${x.getMonth()+1}`; };
+                boxEl.innerHTML = `
+                    <div class="flex justify-between text-[11px] font-bold text-slate-500 mb-1"><span>حصص تجار يوم</span><span class="font-num">${dfmt(activeCalendarDate)}</span></div>
+                    <div class="flex justify-between items-center px-2 py-1 bg-[#fdf2e9] rounded-lg"><span class="font-bold text-[#cf711f]">عمر العقاد</span><span class="font-mono font-black">${per['عمر العقاد'].toLocaleString()} (${pct(per['عمر العقاد'])}%)</span></div>
+                    <div class="flex justify-between items-center px-2 py-1 bg-blue-50 rounded-lg"><span class="font-bold text-blue-700">أحمد الطالب</span><span class="font-mono font-black">${per['أحمد الطالب'].toLocaleString()} (${pct(per['أحمد الطالب'])}%)</span></div>
+                    <div class="flex justify-between items-center px-2 py-1 bg-slate-50 rounded-lg"><span class="font-bold text-slate-600">أخرى${others > 0 ? ` (${others} إرسالية خارج الاثنين)` : ''}</span><span class="font-mono font-black">${others.toLocaleString()} (${pct(others)}%)</span></div>
+                    <div class="flex justify-between pt-1 border-t border-dashed border-slate-200"><span class="font-black text-[#45260a]">إجمالي موزع اليوم</span><span class="font-mono font-black text-[#cf711f]">${dayTotal.toLocaleString()} طرد</span></div>
+                `;
+            }
+        }
+
         function initMerchantsSplitChart() {
             const canvas = document.getElementById('merchantsSplitChart');
             if (!canvas) return;
@@ -1795,10 +1870,22 @@
             document.getElementById('headerStockBadge').textContent = `${totalStock.toLocaleString()} طرد`;
             document.getElementById('kpiCurrentStock').textContent = totalStock.toLocaleString();
             document.getElementById('badgeRoomsStock').textContent = totalStock.toLocaleString();
-            document.getElementById('kpiTotalContainers').textContent = "143";
-            document.getElementById('kpiTotalReceived').textContent = "161,189";
-            document.getElementById('kpiTotalDispatched').textContent = "156,243";
-            document.getElementById('kpiTotalDispatchedTrans').textContent = "761";
+            // حساب حقيقي من البيانات (لا أرقام ثابتة)
+            const receivedQty = inboundData.reduce((a, c) => a + (parseInt(c.qty, 10) || 0), 0);
+            const dispatchedQty = dispatchData.reduce((a, c) => a + (parseInt(c.qty, 10) || 0), 0);
+            document.getElementById('kpiTotalContainers').textContent = inboundData.length.toLocaleString();
+            document.getElementById('kpiTotalReceived').textContent = receivedQty.toLocaleString();
+            document.getElementById('kpiTotalDispatched').textContent = dispatchedQty.toLocaleString();
+            document.getElementById('kpiTotalDispatchedTrans').textContent = dispatchData.length.toLocaleString();
+            const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            setTxt('badgeInboundCount', inboundData.length);
+            setTxt('badgeDispatchCount', dispatchData.length);
+            setTxt('dynInboundContCount', inboundData.length.toLocaleString());
+            setTxt('dynInboundBoxesCount', receivedQty.toLocaleString());
+            setTxt('dynDispatchTransCount', dispatchData.length.toLocaleString());
+            setTxt('dynDispatchBoxesCount', dispatchedQty.toLocaleString());
+            const roomsBadgeEl = document.getElementById('roomsActualBadge');
+            if (roomsBadgeEl) roomsBadgeEl.textContent = `الرصيد الفعلي: ${totalStock.toLocaleString()} طرد`;
             // عدد أيام الحركة من البيانات الفعلية بدلاً من نص ثابت
             const daysCountEl = document.getElementById('movementDaysCount');
             if (daysCountEl) daysCountEl.textContent = movementData.length;
@@ -1814,6 +1901,7 @@
             renderBrandsListTable();
             renderDriverListTable();
             updateGlobalStats();
+            updateMerchantBreakdown();
             safeCreateIcons();
         }
 
