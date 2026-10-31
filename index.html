@@ -585,6 +585,7 @@
                                 <option value="اكسترا بان">اكسترا بان</option>
                                 <option value="كوستا سول">كوستا سول</option>
                                 <option value="بانا غولد">بانا غولد</option>
+                                <option value="بانا كولد">بانا كولد</option>
                             </select>
                         </div>
                         <div>
@@ -594,6 +595,17 @@
                         <div>
                             <label class="block text-slate-700 font-semibold mb-1">الوجهة *</label>
                             <input type="text" id="mFormDest" value="دمشق" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">المنشأ + الوزن *</label>
+                            <select id="mFormOrigin" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500"></select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">درجة الحرارة (°C)</label>
+                            <input type="number" step="0.1" id="mFormTemp" value="13.5" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono text-center focus:border-amber-500">
                         </div>
                     </div>
 
@@ -735,7 +747,7 @@
 
     <!-- JavaScript Complete Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-10-31-v60-delete-buttons-complete";
+        const APP_DATA_VERSION = "2026-11-01-v62-user-rooms-authoritative";
 
         function safeCreateIcons() {
             try {
@@ -945,9 +957,29 @@
                 return true;
             } catch (error) {
                 console.error("Firestore Transaction Error:", error);
-                showToast("تعذر الإتمام، حدث تضارب لحظي حاول مجدداً", false);
+                if (error && error.code === 'ROOM_SHORTAGE') showToast(error.message, false);
+                else showToast("تعذر الإتمام، حدث تضارب لحظي حاول مجدداً", false);
                 return false;
             }
+        }
+
+        // ============ تثبيت بذرة القاعات الصحيحة سحابياً (مرة واحدة) ============
+        let roomsMigrationDone = false;
+        function migrateRoomsIfNeeded(docData) {
+            if (roomsMigrationDone || !auth.currentUser) return;
+            if (docData && Number(docData.roomsSeedV || 0) >= 2) { roomsMigrationDone = true; return; }
+            roomsMigrationDone = true; // منع تكرار المحاولة
+            db.runTransaction(async (tx) => {
+                const ds = await tx.get(WAREHOUSE_DOC_REF);
+                const st = ds.exists ? ds.data() : {};
+                if (Number(st.roomsSeedV || 0) >= 2) return; // مسؤول آخر قام بها
+                st.roomsData = roomsData; // أرقام المستخدم الصحيحة المضمنة في هذه النسخة
+                st.roomsSeedV = 2;
+                st.lastUpdated = firebase.firestore.FieldValue.serverTimestamp();
+                st.updatedBy = auth.currentUser.email;
+                tx.set(WAREHOUSE_DOC_REF, st);
+            }).then(() => showToast('تم تثبيت بيانات القاعات الصحيحة (20,727 طرد) في السحابة'))
+              .catch(err => console.warn('rooms migration skipped:', err));
         }
 
         WAREHOUSE_DOC_REF.onSnapshot((doc) => {
@@ -957,8 +989,9 @@
                 if (Array.isArray(data.inboundData)) inboundData = unionByKey(data.inboundData, SEED_DATA.inbound, it => `${String(it.id)}|${it.date}`);
                 if (Array.isArray(data.dispatchData)) dispatchData = unionByKey(data.dispatchData, SEED_DATA.dispatch, it => `${String(it.id)}|${it.date}|${it.qty}|${it.receipt}`);
                 if (Array.isArray(data.movementData)) movementData = unionByKey(data.movementData, SEED_DATA.movement, it => it.date);
-                if (Array.isArray(data.roomsData) && data.roomsData.length) roomsData = data.roomsData;
-                else roomsData = roomsData; // بيانات القاعات المعدلة محلياً تبقى إن غابت سحابياً
+                // القاعات: بذرة المستخدم الصحيحة تبقى معتمدة حتى يثبت التثبيت السحابي (roomsSeedV)
+                if (Array.isArray(data.roomsData) && data.roomsData.length && Number(data.roomsSeedV || 0) >= 2) roomsData = data.roomsData;
+                migrateRoomsIfNeeded(data);
                 if (Array.isArray(data.driversData)) driversData = data.driversData;
                 if (Array.isArray(data.brandsData)) brandsData = data.brandsData;
                 renderAll();
@@ -1011,6 +1044,10 @@
 
         auth.onAuthStateChanged(user => {
             currentUser = user;
+            if (user) {
+                // إن دخول مسؤول -> تحقق هل بذرة القاعات الصحيحة مثبتة سحابياً
+                WAREHOUSE_DOC_REF.get().then(ds => migrateRoomsIfNeeded(ds.exists ? ds.data() : {})).catch(() => {});
+            }
             document.body.classList.toggle('visitor-mode', !user);
             document.getElementById('btnLoginOpen')?.classList.toggle('hidden', !!user);
             document.getElementById('adminBadgeWrapper')?.classList.toggle('hidden', !user);
@@ -1132,6 +1169,12 @@
             select.appendChild(customOpt);
         }
 
+        function populateOriginDropdown() {
+            const sel = document.getElementById('mFormOrigin');
+            if (!sel) return;
+            sel.innerHTML = originsList.map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');
+        }
+
         function onDriverSelectedChange(driverName) {
             const carInput = document.getElementById('mFormCar');
             const customInput = document.getElementById('mFormDriverCustom');
@@ -1176,6 +1219,7 @@
             }
 
             populateDriverDropdown();
+            populateOriginDropdown();
 
             document.getElementById('adminFormType').value = 'dispatch';
             document.getElementById('adminModalTitle').textContent = 'تسجيل إرسالية توزيع وصرف من القاعة';
@@ -1215,6 +1259,7 @@
             const now = new Date();
             document.getElementById('mFormDate').value = now.toISOString().split('T')[0];
             populateDriverDropdown();
+            populateOriginDropdown();
 
             document.getElementById('adminActionModal')?.classList.remove('hidden');
         }
@@ -1231,6 +1276,8 @@
             const timeVal = new Date().toTimeString().split(' ')[0]; // وقت لحظي عند الضغط على حفظ
             const qtyVal = parseInt(document.getElementById('mFormQty').value, 10) || 0;
             const brandVal = document.getElementById('mFormBrand').value;
+            const originVal = document.getElementById('mFormOrigin')?.value || '';
+            const tempVal = parseFloat(document.getElementById('mFormTemp')?.value) || 13.5;
             const carVal = document.getElementById('mFormCar').value.trim();
             const destVal = document.getElementById('mFormDest').value.trim() || 'دمشق';
             const roomVal = document.getElementById('mFormSourceRoom')?.value || '8';
@@ -1265,8 +1312,8 @@
                         qty: qtyVal,
                         car: carVal || "-",
                         driver: driverVal,
-                        temp: 13.5,
-                        pack: "اكوادور-20كغ"
+                        temp: tempVal,
+                        pack: originVal || ''
                     });
                 } else {
                     if (!state.dispatchData) state.dispatchData = dispatchData;
@@ -1283,18 +1330,21 @@
                         dest: destVal,
                         brand: brandVal,
                         qty: qtyVal,
-                        pack: "كوستريكا-19كغ",
+                        pack: originVal || '',
                         room: roomVal
                     });
 
-                    // Deduct from room if items available
+                    // Deduct from room: مطابقة (ماركة + منشأ) ورفض الصرف الفائض بدل تجاهله صامتاً
                     if (state.roomsData) {
                         const targetRoom = state.roomsData.find(r => r.room == roomVal);
                         if (targetRoom && targetRoom.items) {
-                            const itemMatch = targetRoom.items.find(it => it.brand === brandVal);
-                            if (itemMatch && itemMatch.qty >= qtyVal) {
-                                itemMatch.qty -= qtyVal;
+                            const itemMatch = targetRoom.items.find(it =>
+                                it.brand === brandVal && (it.origin === originVal || !it.origin));
+                            const avail = itemMatch ? (parseInt(itemMatch.qty, 10) || 0) : 0;
+                            if (!itemMatch || avail < qtyVal) {
+                                throw { code: 'ROOM_SHORTAGE', message: `الرفض: رصيد القاعة ${roomVal} من ${brandVal}${originVal ? ' - ' + originVal : ''} = ${avail} طرد فقط، والمطلوب ${qtyVal}` };
                             }
+                            itemMatch.qty -= qtyVal;
                         }
                     }
                 }
@@ -1626,7 +1676,7 @@
             const q = (document.getElementById('inboundSearchInput')?.value || '').toLowerCase().trim();
             const d = document.getElementById('inboundDateFilter')?.value || '';
             const filtered = inboundData.filter(item => {
-                const matchText = !q || (item.id && item.id.toLowerCase().includes(q)) || (item.driver && item.driver.toLowerCase().includes(q)) || (item.brand && item.brand.toLowerCase().includes(q));
+                const matchText = !q || (String(item.id ?? '').toLowerCase().includes(q)) || (String(item.driver ?? '').toLowerCase().includes(q)) || (String(item.brand ?? '').toLowerCase().includes(q));
                 const matchDate = !d || item.date === d;
                 return matchText && matchDate;
             });
@@ -1643,7 +1693,7 @@
             const q = (document.getElementById('dispatchSearchInput')?.value || '').toLowerCase().trim();
             const d = document.getElementById('dispatchDateFilter')?.value || '';
             const filtered = dispatchData.filter(item => {
-                const matchText = !q || (item.customer && item.customer.toLowerCase().includes(q)) || (item.driver && item.driver.toLowerCase().includes(q)) || (item.receipt && item.receipt.toLowerCase().includes(q));
+                const matchText = !q || (String(item.customer ?? '').toLowerCase().includes(q)) || (String(item.driver ?? '').toLowerCase().includes(q)) || (String(item.receipt ?? '').toLowerCase().includes(q));
                 const matchDate = !d || item.date === d;
                 return matchText && matchDate;
             });
@@ -1660,7 +1710,7 @@
             const q = (document.getElementById('movementSearchInput')?.value || '').toLowerCase().trim();
             const d = document.getElementById('movementDateFilter')?.value || '';
             const filtered = movementData.filter(item => {
-                const matchText = !q || (item.notes && item.notes.toLowerCase().includes(q)) || (item.day && item.day.toLowerCase().includes(q));
+                const matchText = !q || (String(item.notes ?? '').toLowerCase().includes(q)) || (String(item.day ?? '').toLowerCase().includes(q));
                 const matchDate = !d || item.date === d;
                 return matchText && matchDate;
             });
