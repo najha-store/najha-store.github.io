@@ -747,7 +747,7 @@
 
     <!-- JavaScript Complete Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-11-01-v63b-admin-uid-login";
+        const APP_DATA_VERSION = "2026-11-01-v63c-uid-corrected";
 
         function safeCreateIcons() {
             try {
@@ -941,7 +941,7 @@
         let currentUser = null;
         // معرفات المديرين المصرّح لهم — نفس قائمة whitelist في firestore.rules
         // الحماية النهائية في قواعد Firestore على السحابة، وهنا طبقة أولى متطابقة معها
-        const ADMIN_UIDS = ['kQ7M6MFt8axFVz0BI33NdKQcw3w3l', 'vabExbEEZSTU6Lg68WFM59IJyGr2'];
+        const ADMIN_UIDS = ['kQ7M6MfT8xfVzOBl3ShdKOcvw3w1', 'vabExbEEZ5TU6Lg68WFM59IJyGr2'];
         let activeTab = 'dashboard';
         // التاريخ الابتدائي: أحدث حركة مرصودة (يُحدَّث تلقائياً مع البيانات السحابية)
         let activeCalendarDate = (movementData.length

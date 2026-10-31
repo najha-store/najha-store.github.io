@@ -19,8 +19,8 @@ service cloud.firestore {
     // ويُفضَّل الاعتماد على الـ Claim بعد إصداره)
     function isWhitelistedAdmin() {
       return request.auth.uid in [
-        'kQ7M6MFt8axFVz0BI33NdKQcw3w3l',
-        'vabExbEEZSTU6Lg68WFM59IJyGr2'
+        'kQ7M6MfT8xfVzOBl3ShdKOcvw3w1', // محمد حربا
+        'vabExbEEZ5TU6Lg68WFM59IJyGr2'
       ];
     }
 
