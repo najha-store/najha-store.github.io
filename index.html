@@ -456,7 +456,7 @@
         <!-- 4. MOVEMENT -->
         <section id="tab-movement" class="hidden space-y-6">
             <div class="glass-panel p-5 rounded-2xl border border-slate-200">
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-cyan-500"></i> حركة مستودع نجها الشاملة (59 يوماً)</h2>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-cyan-500"></i> حركة مستودع نجها الشاملة (<span id="movementDaysCount">30</span> يوماً)</h2>
             </div>
             <!-- Movement Filter Bar -->
             <div class="glass-panel p-4 rounded-2xl border border-slate-200 bg-white/80 flex flex-wrap items-center justify-between gap-3">
@@ -809,8 +809,36 @@
         ];
 
         let movementData = [
-            {"date": "2026-10-29", "date_short": "29/10", "day": "الخميس", "open": 13779, "inQty": 3294, "outQty": 1853, "net": 1441, "close": 15220, "notes": "استلام 3 حاويات وتوزيع 1,853 طرد"},
-            {"date": "2026-09-01", "date_short": "1/9", "day": "الثلاثاء", "open": 10274, "inQty": 3936, "outQty": 2940, "net": 996, "close": 11270, "notes": "استلام 3 حاويات وتوزيع 2,940 طرد"}
+            {"date": "2026-10-01", "date_short": "1/10", "day": "الخميس", "open": 9126, "inQty": 2196, "outQty": 1699, "net": 497, "close": 9623, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 1,699 طرد"},
+            {"date": "2026-10-02", "date_short": "2/10", "day": "الجمعة", "open": 9623, "inQty": 2196, "outQty": 3253, "net": -1057, "close": 8566, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 3,253 طرد"},
+            {"date": "2026-10-03", "date_short": "3/10", "day": "السبت", "open": 8566, "inQty": 3240, "outQty": 2146, "net": 1094, "close": 9660, "notes": "استلام 3 حاويات (3,240 كرتونة) وتوزيع 2,146 طرد"},
+            {"date": "2026-10-04", "date_short": "4/10", "day": "الأحد", "open": 9660, "inQty": 3294, "outQty": 2330, "net": 964, "close": 10624, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 2,330 طرد"},
+            {"date": "2026-10-05", "date_short": "5/10", "day": "الاثنين", "open": 10624, "inQty": 2196, "outQty": 2400, "net": -204, "close": 10420, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 2,400 طرد"},
+            {"date": "2026-10-06", "date_short": "6/10", "day": "الثلاثاء", "open": 10420, "inQty": 8196, "outQty": 2252, "net": 5944, "close": 16364, "notes": "استلام 7 حاويات (8,196 كرتونة) وتوزيع 2,252 طرد"},
+            {"date": "2026-10-07", "date_short": "7/10", "day": "الأربعاء", "open": 16364, "inQty": 4494, "outQty": 3242, "net": 1252, "close": 17616, "notes": "استلام 4 حاويات (4,494 كرتونة) وتوزيع 3,242 طرد"},
+            {"date": "2026-10-08", "date_short": "8/10", "day": "الخميس", "open": 17616, "inQty": 1098, "outQty": 2417, "net": -1319, "close": 16297, "notes": "استلام 1 حاوية (1,098 كرتونة) وتوزيع 2,417 طرد"},
+            {"date": "2026-10-09", "date_short": "9/10", "day": "الجمعة", "open": 16297, "inQty": 3396, "outQty": 2883, "net": 513, "close": 16810, "notes": "استلام 3 حاويات (3,396 كرتونة) وتوزيع 2,883 طرد"},
+            {"date": "2026-10-10", "date_short": "10/10", "day": "السبت", "open": 16810, "inQty": 0, "outQty": 3218, "net": -3218, "close": 13592, "notes": "توزيع 3,218 طرد (لا استلام)"},
+            {"date": "2026-10-11", "date_short": "11/10", "day": "الأحد", "open": 13592, "inQty": 9618, "outQty": 3761, "net": 5857, "close": 19449, "notes": "استلام 8 حاويات (9,618 كرتونة) وتوزيع 3,761 طرد"},
+            {"date": "2026-10-12", "date_short": "12/10", "day": "الاثنين", "open": 19449, "inQty": 3396, "outQty": 3481, "net": -85, "close": 19364, "notes": "استلام 3 حاويات (3,396 كرتونة) وتوزيع 3,481 طرد"},
+            {"date": "2026-10-13", "date_short": "13/10", "day": "الثلاثاء", "open": 19364, "inQty": 0, "outQty": 3364, "net": -3364, "close": 16000, "notes": "توزيع 3,364 طرد (لا استلام)"},
+            {"date": "2026-10-14", "date_short": "14/10", "day": "الأربعاء", "open": 16000, "inQty": 0, "outQty": 4235, "net": -4235, "close": 11765, "notes": "توزيع 4,235 طرد (لا استلام)"},
+            {"date": "2026-10-15", "date_short": "15/10", "day": "الخميس", "open": 11765, "inQty": 2160, "outQty": 2286, "net": -126, "close": 11639, "notes": "استلام 2 حاويتين (2,160 كرتونة) وتوزيع 2,286 طرد"},
+            {"date": "2026-10-16", "date_short": "16/10", "day": "الجمعة", "open": 11639, "inQty": 5079, "outQty": 3488, "net": 1591, "close": 13230, "notes": "استلام 4 حاويات (5,079 كرتونة) وتوزيع 3,488 طرد"},
+            {"date": "2026-10-17", "date_short": "17/10", "day": "السبت", "open": 13230, "inQty": 5490, "outQty": 1942, "net": 3548, "close": 16778, "notes": "استلام 5 حاويات (5,490 كرتونة) وتوزيع 1,942 طرد"},
+            {"date": "2026-10-18", "date_short": "18/10", "day": "الأحد", "open": 16778, "inQty": 1098, "outQty": 2005, "net": -907, "close": 15871, "notes": "استلام 1 حاوية (1,098 كرتونة) وتوزيع 2,005 طرد"},
+            {"date": "2026-10-19", "date_short": "19/10", "day": "الاثنين", "open": 15871, "inQty": 3294, "outQty": 3020, "net": 274, "close": 16145, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 3,020 طرد"},
+            {"date": "2026-10-20", "date_short": "20/10", "day": "الثلاثاء", "open": 16145, "inQty": 3294, "outQty": 3712, "net": -418, "close": 15727, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 3,712 طرد"},
+            {"date": "2026-10-21", "date_short": "21/10", "day": "الأربعاء", "open": 15727, "inQty": 2196, "outQty": 2779, "net": -583, "close": 15144, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 2,779 طرد"},
+            {"date": "2026-10-22", "date_short": "22/10", "day": "الخميس", "open": 15144, "inQty": 1098, "outQty": 2819, "net": -1721, "close": 13423, "notes": "استلام 1 حاوية (1,098 كرتونة) وتوزيع 2,819 طرد"},
+            {"date": "2026-10-23", "date_short": "23/10", "day": "الجمعة", "open": 13423, "inQty": 1098, "outQty": 4281, "net": -3183, "close": 10240, "notes": "استلام 1 حاوية (1,098 كرتونة) وتوزيع 4,281 طرد"},
+            {"date": "2026-10-24", "date_short": "24/10", "day": "السبت", "open": 10240, "inQty": 3294, "outQty": 3057, "net": 237, "close": 10477, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 3,057 طرد"},
+            {"date": "2026-10-25", "date_short": "25/10", "day": "الأحد", "open": 10477, "inQty": 9192, "outQty": 3058, "net": 6134, "close": 16611, "notes": "استلام 8 حاويات (9,192 كرتونة) وتوزيع 3,058 طرد"},
+            {"date": "2026-10-26", "date_short": "26/10", "day": "الاثنين", "open": 16611, "inQty": 4698, "outQty": 2208, "net": 2490, "close": 19101, "notes": "استلام 4 حاويات (4,698 كرتونة) وتوزيع 2,208 طرد"},
+            {"date": "2026-10-27", "date_short": "27/10", "day": "الثلاثاء", "open": 19101, "inQty": 0, "outQty": 2113, "net": -2113, "close": 16988, "notes": "توزيع 2,113 طرد (لا استلام)"},
+            {"date": "2026-10-28", "date_short": "28/10", "day": "الأربعاء", "open": 16988, "inQty": 0, "outQty": 3209, "net": -3209, "close": 13779, "notes": "توزيع 3,209 طرد (لا استلام)"},
+            {"date": "2026-10-29", "date_short": "29/10", "day": "الخميس", "open": 13779, "inQty": 3294, "outQty": 1853, "net": 1441, "close": 15220, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 1,853 طرد"},
+            {"date": "2026-10-30", "date_short": "30/10", "day": "الجمعة", "open": 15220, "inQty": 8576, "outQty": 4167, "net": 4409, "close": 19629, "notes": "استلام 6 حاويات (8,576 كرتونة) وتوزيع 4,167 طرد"}
         ];
 
         let roomsData = [
@@ -842,7 +870,10 @@
 
         let currentUser = null;
         let activeTab = 'dashboard';
-        let activeCalendarDate = '2026-10-29';
+        // التاريخ الابتدائي: أحدث حركة مرصودة (يُحدَّث تلقائياً مع البيانات السحابية)
+        let activeCalendarDate = (movementData.length
+            ? [...movementData].sort((a, b) => String(a.date).localeCompare(String(b.date))).pop().date
+            : new Date().toLocaleDateString('sv'));
 
         async function runAtomicWarehouseUpdate(mutatorCallback) {
             if (!auth.currentUser) {
@@ -1004,32 +1035,43 @@
         }
 
         function setCalendarToToday() {
-            onGlobalDatePicked('2026-10-29');
+            // الوصول لأحدث حركة مسجلة فعلياً بدون أرقام يدوية
+            const sorted = [...movementData].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+            const latest = sorted[sorted.length - 1];
+            onGlobalDatePicked(latest ? latest.date : new Date().toLocaleDateString('sv'));
         }
 
         function updateCalendarMetrics(dateStr) {
             const inMatches = inboundData.filter(c => c.date === dateStr);
             const inTotal = inMatches.reduce((acc, c) => acc + (parseInt(c.qty, 10) || 0), 0);
-            
+
             const dispMatches = dispatchData.filter(d => d.date === dateStr);
             const dispTotal = dispMatches.reduce((acc, d) => acc + (parseInt(d.qty, 10) || 0), 0);
 
             const moveEntry = movementData.find(m => m.date === dateStr);
-            let openStock = 13779, closeStock = 15220;
 
+            // لا أرقام ثابتة مزيفة: تُشتق الأرصدة من بلمنت السجل، أو "—" إن غاب اليوم
+            let openStock = null, closeStock = null;
             if (moveEntry) {
                 openStock = moveEntry.open;
                 closeStock = moveEntry.close;
             } else {
-                closeStock = openStock + inTotal - dispTotal;
+                const sorted = [...movementData].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+                const prev = [...sorted].reverse().find(m => String(m.date) < dateStr);
+                const next = sorted.find(m => String(m.date) > dateStr);
+                openStock = prev ? prev.close : null;
+                closeStock = (openStock !== null)
+                    ? openStock + inTotal - dispTotal
+                    : (next ? next.open : null);
             }
 
-            document.getElementById('calOpenStock').textContent = openStock.toLocaleString();
+            const fmt = (v) => (v === null || v === undefined) ? '—' : Number(v).toLocaleString();
+            document.getElementById('calOpenStock').textContent = fmt(openStock);
             document.getElementById('calInboundQty').textContent = inTotal > 0 ? `+${inTotal.toLocaleString()}` : '0';
             document.getElementById('calInboundCount').textContent = `(${inMatches.length} حاوية)`;
             document.getElementById('calDispatchQty').textContent = dispTotal > 0 ? `-${dispTotal.toLocaleString()}` : '0';
             document.getElementById('calDispatchCount').textContent = `(${dispMatches.length} إرسالية)`;
-            document.getElementById('calCloseStock').textContent = closeStock.toLocaleString();
+            document.getElementById('calCloseStock').textContent = fmt(closeStock);
         }
 
         // ================= DRIVER & VEHICLE SELECTION AUTOMATION =================
@@ -1757,6 +1799,11 @@
             document.getElementById('kpiTotalReceived').textContent = "161,189";
             document.getElementById('kpiTotalDispatched').textContent = "156,243";
             document.getElementById('kpiTotalDispatchedTrans').textContent = "761";
+            // عدد أيام الحركة من البيانات الفعلية بدلاً من نص ثابت
+            const daysCountEl = document.getElementById('movementDaysCount');
+            if (daysCountEl) daysCountEl.textContent = movementData.length;
+            const badgeMovement = document.getElementById('badgeMovementCount');
+            if (badgeMovement) badgeMovement.textContent = `${movementData.length} يوماً`;
         }
 
         function renderAll() {
