@@ -352,7 +352,7 @@
                         <span id="kpiActiveRooms" class="text-2xl sm:text-3xl font-black text-amber-600 font-num">6 / 6</span>
                         <span class="text-xs font-bold text-slate-500">قاعات</span>
                     </div>
-                    <p class="text-[11px] text-amber-700 mt-2 font-medium">جميع القاعات (7 إلى 12) مشغولة بالكامل</p>
+                    <p id="kpiActiveRoomsNote" class="text-[11px] text-amber-700 mt-2 font-medium">جميع القاعات (7 إلى 12) مشغولة بالكامل</p>
                 </div>
             </div>
 
@@ -365,7 +365,7 @@
                 <div class="glass-panel p-6 rounded-2xl border border-slate-200 flex flex-col justify-between">
                     <div>
                         <h3 class="font-bold text-slate-900 text-base mb-1">توزيع الكراتين وحصص التجار</h3>
-                        <p class="text-xs text-slate-500 mb-5">توزيع الأصناف وحصص الأسواق (156,243 طرد)</p>
+                        <p class="text-xs text-slate-500 mb-5">توزيع الأصناف وحصص الأسواق (<span id="dashMerchantTotal" class="font-bold font-num">0</span> طرد)</p>
                         <div class="h-44 w-full relative flex items-center justify-center"><canvas id="merchantsSplitChart"></canvas></div>
                         <div id="merchantsBreakdownBox" class="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-xs"></div>
                     </div>
@@ -457,7 +457,7 @@
         <!-- 4. MOVEMENT -->
         <section id="tab-movement" class="hidden space-y-6">
             <div class="glass-panel p-5 rounded-2xl border border-slate-200">
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-cyan-500"></i> حركة مستودع نجها الشاملة (<span id="movementDaysCount">30</span> يوماً)</h2>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-cyan-500"></i> حركة مستودع نجها الشاملة (<span id="movementDaysCount">37</span> يوماً)</h2>
             </div>
             <!-- Movement Filter Bar -->
             <div class="glass-panel p-4 rounded-2xl border border-slate-200 bg-white/80 flex flex-wrap items-center justify-between gap-3">
@@ -505,8 +505,37 @@
 
         <!-- 6. INSPECTION -->
         <section id="tab-inspection" class="hidden space-y-6">
-            <div class="glass-panel p-5 rounded-2xl border border-slate-200">
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="camera" class="w-5 h-5 text-purple-600"></i> معرض وتقارير الفحص (143 حاوية)</h2>
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-wrap justify-between items-center gap-3">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="camera" class="w-5 h-5 text-purple-600"></i> معرض وتقارير الفحص (<span id="inspectionHeaderCount" class="font-num">0</span> حاوية)</h2>
+                    <p id="inspectionHeaderSub" class="text-xs text-slate-500 mt-1">إجمالي <span id="inspectionHeaderPhotos" class="font-bold text-purple-600 font-num">0</span> صورة توثيقية في المعارض</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="openNewInspectionModal()" class="admin-only px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> إضافة / تحديث تقرير فحص
+                    </button>
+                </div>
+            </div>
+
+            <!-- Inspection Filter Bar (Accessible to All Visitors) -->
+            <div class="glass-panel p-4 rounded-2xl border border-slate-200 bg-white/80 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4 text-purple-600"></i>
+                    <span class="text-xs font-bold text-[#45260a]">بحث في تقارير الفحص:</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <input type="text" id="inspectionSearchInput" oninput="filterInspectionGallery()" placeholder="ابحث برقم الحاوية أو الماركة أو الملاحظات..." class="text-xs bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold w-56 sm:w-64">
+                    <select id="inspectionBrandFilter" onchange="filterInspectionGallery()" class="text-xs bg-white border border-slate-300 rounded-xl px-2 py-1.5 font-bold cursor-pointer"></select>
+                    <button type="button" onclick="clearInspectionFilters()" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold">مسح ✕</button>
+                </div>
+            </div>
+
+            <div id="inspectionGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+            <div id="inspectionEmptyState" class="hidden glass-panel p-10 rounded-2xl border border-dashed border-slate-300 text-center">
+                <i data-lucide="camera-off" class="w-10 h-10 text-slate-300 mx-auto"></i>
+                <p class="text-sm font-bold text-slate-500 mt-3">لا توجد تقارير فحص بعد</p>
+                <p class="text-xs text-slate-400 mt-1">يمكن للمسؤول إضافة تقرير فحص مع صور توثيقية لكل حاوية من زر «إضافة / تحديث تقرير فحص» — والاطلاع متاح للزوار دون تسجيل</p>
             </div>
         </section>
 
@@ -620,7 +649,104 @@
             </div>
         </div>
 
-        <!-- Admin Comprehensive Room Modal (with Add Brand Button & Origin support) -->
+        <!-- Inspection Report Modal (Add / Update) -->
+        <div id="newInspectionModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-3">
+            <div class="glass-panel w-full max-w-2xl rounded-3xl border border-slate-300 bg-white shadow-2xl max-h-[92vh] overflow-y-auto">
+                <div class="sticky top-0 bg-white/95 backdrop-blur border-b border-slate-200 p-4 flex justify-between items-center rounded-t-3xl">
+                    <h3 id="newInspectionModalTitle" class="font-bold text-slate-900">تسجيل تقرير فحص ومعرض صور</h3>
+                    <button type="button" onclick="closeNewInspectionModal()" class="text-slate-400 hover:text-slate-800 font-bold text-lg">✕</button>
+                </div>
+                <form id="newInspectionForm" onsubmit="handleSaveInspection(event)" class="p-5 space-y-4">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] text-slate-500 font-bold mb-1">رقم الحاوية *</label>
+                            <input type="text" id="inspContNumber" required placeholder="مثال: 172042" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-mono font-bold text-slate-900">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 font-bold mb-1">تاريخ الفحص *</label>
+                            <input type="date" id="inspDate" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-slate-900">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] text-slate-500 font-bold mb-1">الماركة</label>
+                            <select id="inspBrand" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-slate-900"></select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 font-bold mb-1">المنشأ + الوزن</label>
+                            <select id="inspPack" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-slate-900"></select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[10px] text-slate-500 font-bold mb-1">الحرارة (°C)</label>
+                            <input type="number" step="0.1" min="0" max="30" id="inspTemp" placeholder="13.8" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-mono font-bold text-slate-900 text-center">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 font-bold mb-1">مرحلة اللون</label>
+                            <select id="inspColorStage" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-slate-900">
+                                <option value="أخضر">أخضر</option>
+                                <option value="نصف أصفر">نصف أصفر</option>
+                                <option value="أصفر">أصفر</option>
+                                <option value="أصفر مُعمّر" selected>أصفر مُعمّر</option>
+                                <option value="أصفر متبقع">أصفر متبقع</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 font-bold mb-1">قوام اللب</label>
+                            <select id="inspPulp" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-slate-900">
+                                <option value="صلب">صلب</option>
+                                <option value="متوسط" selected>متوسط</option>
+                                <option value="لطيف">لطيف</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-500 font-bold mb-1">العينات (عدد الطرود المفحوصة)</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <input type="number" min="0" id="inspYellow" placeholder="أصفر" class="w-full bg-white border border-slate-300 rounded-xl px-2 py-2 text-xs font-mono font-bold text-slate-900 text-center">
+                            <input type="number" min="0" id="inspSecond" placeholder="ثاني" class="w-full bg-white border border-slate-300 rounded-xl px-2 py-2 text-xs font-mono font-bold text-slate-900 text-center">
+                            <input type="number" min="0" id="inspSoft" placeholder="لين" class="w-full bg-white border border-slate-300 rounded-xl px-2 py-2 text-xs font-mono font-bold text-slate-900 text-center">
+                            <input type="number" min="0" id="inspDamage" placeholder="تلف" class="w-full bg-white border border-slate-300 rounded-xl px-2 py-2 text-xs font-mono font-bold text-slate-900 text-center">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-500 font-bold mb-1">ملاحظات الفحص</label>
+                        <textarea id="inspNotes" rows="2" placeholder="مثال: عيوب سحب جلدية في الصفوف السفلية — مناسب للصرف الفوري" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-500 font-bold mb-1">صور توثيقية (تضغط تلقائياً — حتى 8 صور للتقرير)</label>
+                        <input type="file" id="inspPhotoInput" accept="image/*" multiple onchange="handleInspectionPhotos(this.files)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-700">
+                        <div id="stagedPhotosPreview" class="grid grid-cols-4 gap-2 mt-2"></div>
+                    </div>
+                    <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                        <button type="button" onclick="closeNewInspectionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold">إلغاء</button>
+                        <button type="submit" id="btnSaveInspection" class="px-6 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold shadow-md transition-all">حفظ ونشر سحابياً</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Inspection Lightbox (Photo Preview) -->
+        <div id="inspectionLightbox" class="hidden fixed inset-0 z-[60] bg-slate-950/90 backdrop-blur-md flex flex-col">
+            <div class="p-3 sm:p-4 flex justify-between items-center border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="camera" class="w-4 h-4 text-purple-400"></i>
+                    <h3 id="lightboxTitle" class="text-white text-sm font-bold">معاينة الصورة التوثيقية</h3>
+                </div>
+                <button type="button" onclick="closeInspectionLightbox()" class="text-slate-300 hover:text-white font-bold text-xl">✕</button>
+            </div>
+            <div class="relative flex-1 min-h-[300px] flex items-center justify-center p-3 overflow-hidden">
+                <img id="lightboxImg" src="" alt="صورة الفحص التوثيقية" class="max-h-[68vh] w-auto max-w-full rounded-2xl border border-slate-800 shadow-2xl object-contain">
+                <button type="button" onclick="navigateLightbox(1)" class="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-2xl bg-slate-900/80 hover:bg-purple-600 text-white border border-slate-700 font-bold">‹</button>
+                <button type="button" onclick="navigateLightbox(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-2xl bg-slate-900/80 hover:bg-purple-600 text-white border border-slate-700 font-bold">›</button>
+            </div>
+            <div class="p-3 text-center">
+                <span id="lightboxCounter" class="text-xs text-slate-400 font-mono font-bold">—</span>
+            </div>
+        </div>
+
+<!-- Admin Comprehensive Room Modal (with Add Brand Button & Origin support) -->
         <div id="fullRoomModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
             <div class="glass-panel w-full max-w-xl bg-white border border-amber-500/40 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
                 <div class="flex items-center justify-between border-b border-slate-200 pb-3">
@@ -747,7 +873,7 @@
 
     <!-- JavaScript Complete Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-11-01-v63c-uid-corrected";
+        const APP_DATA_VERSION = "2026-11-07-v63d-nov-insp";
 
         function safeCreateIcons() {
             try {
@@ -806,20 +932,40 @@
         ];
 
         let inboundData = [
-            {"id": "170773", "date": "2026-10-31", "port": "موفق قاسم", "brand": "بانا كولد", "qty": 864, "car": "8219605", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.5, "pack": "اكوادور-20كغ"},
-            {"id": "170763", "date": "2026-10-31", "port": "عبد القادر خارووف", "brand": "روزيتا", "qty": 1098, "car": "8289112", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.3, "pack": "اكوادور-20كغ"},
-            {"id": "170775", "date": "2026-10-31", "port": "احمد طه", "brand": "بانا كولد", "qty": 1080, "car": "8157930", "driver": "باب الهوى", "country": "الإكوادور", "temp": 13.0, "pack": "اكوادور-20كغ"},
+            {"id": "170773", "date": "2026-10-31", "port": "باب الهوى", "brand": "بانا كولد", "qty": 864, "car": "8219605", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 14.5, "pack": "اكوادور-20كغ"},
+            {"id": "170763", "date": "2026-10-31", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8289112", "driver": "عبد القادر خارووف", "country": "الإكوادور", "temp": 14.3, "pack": "اكوادور-20كغ"},
+            {"id": "170775", "date": "2026-10-31", "port": "باب الهوى", "brand": "بانا كولد", "qty": 1080, "car": "8157930", "driver": "احمد طه", "country": "الإكوادور", "temp": 13.0, "pack": "اكوادور-20كغ"},
             {"id": "168975", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
             {"id": "168969", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8156884", "driver": "أحمد القش", "country": "الإكوادور", "temp": 14.5, "pack": "اكوادور-20كغ"},
             {"id": "168964", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8219605", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 14.3, "pack": "اكوادور-20كغ"},
-            {"id": "1274025", "date": "2026-10-30", "port": "محمد نعمة", "brand": "اكسترا بان", "qty": 1595, "car": "8217579", "driver": "المرفأ", "country": "الهند", "temp": 14.5, "pack": "هندي-14كغ"},
-            {"id": "6974999", "date": "2026-10-30", "port": "عيد موسى", "brand": "اكسترا بان", "qty": 1595, "car": "8181932", "driver": "المرفأ", "country": "الهند", "temp": 14.7, "pack": "هندي-14كغ"},
-            {"id": "8765154", "date": "2026-10-30", "port": "مهران ليلى", "brand": "اكسترا بان", "qty": 1595, "car": "8189427", "driver": "المرفأ", "country": "الهند", "temp": 15.3, "pack": "هندي-14كغ"},
-            {"id": "5432400", "date": "2026-10-30", "port": "محمد زعيتر", "brand": "اكسترا بان", "qty": 1595, "car": "81411573", "driver": "المرفأ", "country": "الهند", "temp": 14.6, "pack": "هندي-14كغ"},
-            {"id": "16975", "date": "2026-10-30", "port": "محمد إسماعيل", "brand": "روزيتا", "qty": 1098, "car": "008352", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.7, "pack": "اكوادور-20كغ"},
-            {"id": "169611", "date": "2026-10-30", "port": "عبد الرحمن نوادي", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.2, "pack": "اكوادور-20كغ"},
-            {"id": "169668", "date": "2026-10-30", "port": "مهند حاج ناصر", "brand": "روزيتا", "qty": 1098, "car": "003684", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
-            {"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "pack": "اكوادور-20كغ"}
+            {"id": "1274025", "date": "2026-10-30", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1595, "car": "8217579", "driver": "محمد نعمة", "country": "الهند", "temp": 14.5, "pack": "هندي-14كغ"},
+            {"id": "6974999", "date": "2026-10-30", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1595, "car": "8181932", "driver": "عيد موسى", "country": "الهند", "temp": 14.7, "pack": "هندي-14كغ"},
+            {"id": "8765154", "date": "2026-10-30", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1595, "car": "8189427", "driver": "مهران ليلى", "country": "الهند", "temp": 15.3, "pack": "هندي-14كغ"},
+            {"id": "5432400", "date": "2026-10-30", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1595, "car": "81411573", "driver": "محمد زعيتر", "country": "الهند", "temp": 14.6, "pack": "هندي-14كغ"},
+            {"id": "16975", "date": "2026-10-30", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "008352", "driver": "محمد إسماعيل", "country": "الإكوادور", "temp": 14.7, "pack": "اكوادور-20كغ"},
+            {"id": "169611", "date": "2026-10-30", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 14.2, "pack": "اكوادور-20كغ"},
+            {"id": "169668", "date": "2026-10-30", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "003684", "driver": "مهند حاج ناصر", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
+            {"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "pack": "اكوادور-20كغ"},
+            {"id": "172042", "date": "2026-11-02", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8289112", "driver": "عبد القادر خاروف", "country": "الإكوادور", "temp": 14.5, "pack": "اكوادور-20كغ"},
+            {"id": "172044", "date": "2026-11-02", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8156884", "driver": "أحمد القش", "country": "الإكوادور", "temp": 14.3, "pack": "اكوادور-20كغ"},
+            {"id": "6960932", "date": "2026-11-03", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8143173", "driver": "محمد يوسف", "country": "كوستاريكا", "temp": 14.6, "pack": "كوستريكا-19كغ"},
+            {"id": "7006636", "date": "2026-11-03", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8151980", "driver": "منير ادلبي", "country": "كوستاريكا", "temp": 16.9, "pack": "كوستريكا-19كغ"},
+            {"id": "7041278", "date": "2026-11-03", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8141932", "driver": "عيد موسى", "country": "كوستاريكا", "temp": 15.1, "pack": "كوستريكا-19كغ"},
+            {"id": "8013352", "date": "2026-11-03", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "8213753", "driver": "محمد رضوان", "country": "كوستاريكا", "temp": 14.4, "pack": "كوستريكا-19كغ"},
+            {"id": "5692120", "date": "2026-11-03", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "8125436", "driver": "اورانس إبراهيم", "country": "كوستاريكا", "temp": 15.4, "pack": "كوستريكا-19كغ"},
+            {"id": "6961489", "date": "2026-11-03", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8212743", "driver": "موسى الدكيلي", "country": "كوستاريكا", "temp": 14.4, "pack": "كوستريكا-19كغ"},
+            {"id": "7065346", "date": "2026-11-03", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8239122", "driver": "أحمد عيسى", "country": "كوستاريكا", "temp": 14.6, "pack": "كوستريكا-19كغ"},
+            {"id": "6986515", "date": "2026-11-04", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8191851", "driver": "سليم جاموس", "country": "كوستاريكا", "temp": 15.4, "pack": "كوستريكا-19كغ"},
+            {"id": "6559154", "date": "2026-11-04", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "8142458", "driver": "عمر رمو", "country": "كوستاريكا", "temp": 15.0, "pack": "كوستريكا-19كغ"},
+            {"id": "7046829", "date": "2026-11-04", "port": "المرفأ", "brand": "كوستا سول", "qty": 1098, "car": "8124722", "driver": "سعد زقزاق", "country": "كوستاريكا", "temp": 14.8, "pack": "كوستريكا-19كغ"},
+            {"id": "1046527", "date": "2026-11-04", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1260, "car": "8141716", "driver": "مصطفى نجار", "country": "الهند", "temp": 15.5, "pack": "هندي-14كغ"},
+            {"id": "9191132", "date": "2026-11-05", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "8159241", "driver": "محيميد محيميد", "country": "كوستاريكا", "temp": 13.8, "pack": "كوستريكا-19كغ"},
+            {"id": "6852031", "date": "2026-11-05", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "8192578", "driver": "علي صالح", "country": "كوستاريكا", "temp": 14.2, "pack": "كوستريكا-19كغ"},
+            {"id": "6539610", "date": "2026-11-05", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "8141932", "driver": "عيد موسى", "country": "كوستاريكا", "temp": 14.8, "pack": "كوستريكا-19كغ"},
+            {"id": "9833084", "date": "2026-11-05", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1260, "car": "8128166", "driver": "محمد جسري", "country": "الهند", "temp": 16.5, "pack": "هندي-14كغ"},
+            {"id": "9914416", "date": "2026-11-06", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "8293271", "driver": "خالد القاسم", "country": "كوستاريكا", "temp": 15.3, "pack": "كوستريكا-19كغ"},
+            {"id": "5445938", "date": "2026-11-06", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "22225", "driver": "احمد الأحمد", "country": "كوستاريكا", "temp": 14.6, "pack": "كوستريكا-19كغ"},
+            {"id": "8386496", "date": "2026-11-06", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "8262781", "driver": "محمد سمو", "country": "كوستاريكا", "temp": 14.9, "pack": "كوستريكا-19كغ"}
         ];
 
         let dispatchData = [
@@ -862,7 +1008,113 @@
             {"id": 9017, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1516", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 201, "pack": "كوستريكا-19كغ"},
             {"id": 9018, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1516", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 33, "pack": "هندي-14كغ"},
             {"id": 9019, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1517", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 229, "pack": "كوستريكا-19كغ"},
-            {"id": 9020, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1518", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "اكسترا بان", "qty": 2, "pack": "هندي-14كغ"}
+            {"id": 9020, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1518", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "اكسترا بان", "qty": 2, "pack": "هندي-14كغ"},
+            {"id": 9217, "date": "2026-11-01", "time": "09:00:00", "day": "الأحد", "receipt": "1531", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 128, "pack": "كوستريكا-19كغ"},
+            {"id": 9218, "date": "2026-11-01", "time": "09:00:00", "day": "الأحد", "receipt": "1531", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 232, "pack": "كوستريكا-19كغ"},
+            {"id": 9219, "date": "2026-11-01", "time": "09:00:00", "day": "الأحد", "receipt": "1532", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 160, "pack": "كوستريكا-19كغ"},
+            {"id": 9220, "date": "2026-11-01", "time": "09:00:00", "day": "الأحد", "receipt": "1532", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 279, "pack": "كوستريكا-19كغ"},
+            {"id": 9221, "date": "2026-11-01", "time": "12:00:00", "day": "الأحد", "receipt": "1533", "driver": "محمد", "car": "585855", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 160, "pack": "كوستريكا-19كغ"},
+            {"id": 9222, "date": "2026-11-01", "time": "12:00:00", "day": "الأحد", "receipt": "1533", "driver": "محمد", "car": "585855", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 264, "pack": "كوستريكا-19كغ"},
+            {"id": 9223, "date": "2026-11-01", "time": "12:00:00", "day": "الأحد", "receipt": "1534", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 170, "pack": "كوستريكا-19كغ"},
+            {"id": 9224, "date": "2026-11-01", "time": "12:00:00", "day": "الأحد", "receipt": "1534", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 280, "pack": "كوستريكا-19كغ"},
+            {"id": 9225, "date": "2026-11-01", "time": "15:00:00", "day": "الأحد", "receipt": "1535", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 253, "pack": "كوستريكا-19كغ"},
+            {"id": 9226, "date": "2026-11-01", "time": "15:00:00", "day": "الأحد", "receipt": "1535", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 153, "pack": "كوستريكا-19كغ"},
+            {"id": 9227, "date": "2026-11-01", "time": "15:00:00", "day": "الأحد", "receipt": "1536", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 14, "pack": "اكوادورر-20كغ"},
+            {"id": 9228, "date": "2026-11-01", "time": "15:00:00", "day": "الأحد", "receipt": "1536", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "بانا كولد", "qty": 4, "pack": "اكوادورر-20كغ"},
+            {"id": 9229, "date": "2026-11-01", "time": "16:00:00", "day": "الأحد", "receipt": "1537", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 330, "pack": "كوستريكا-19كغ"},
+            {"id": 9230, "date": "2026-11-01", "time": "16:00:00", "day": "الأحد", "receipt": "1537", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 148, "pack": "كوستريكا-19كغ"},
+            {"id": 9231, "date": "2026-11-01", "time": "16:00:00", "day": "الأحد", "receipt": "1538", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 2, "pack": "كوستريكا-19كغ"},
+            {"id": 9232, "date": "2026-11-01", "time": "16:00:00", "day": "الأحد", "receipt": "1538", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 15, "pack": "اكوادورر-20كغ"},
+            {"id": 9233, "date": "2026-11-01", "time": "18:00:00", "day": "الأحد", "receipt": "1539", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 212, "pack": "كوستريكا-19كغ"},
+            {"id": 9234, "date": "2026-11-01", "time": "18:00:00", "day": "الأحد", "receipt": "1540", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 212, "pack": "كوستريكا-19كغ"},
+            {"id": 9235, "date": "2026-11-01", "time": "", "day": "الأحد", "receipt": "1541", "driver": "nan", "car": "nan", "dest": "دمشق", "customer": "تلف", "brand": "روزيتا", "qty": 4, "pack": "اكوادورر-20كغ"},
+            {"id": 9236, "date": "2026-11-01", "time": "", "day": "الأحد", "receipt": "1541", "driver": "nan", "car": "nan", "dest": "دمشق", "customer": "تلف", "brand": "بانا كولد", "qty": 1, "pack": "اكوادورر-20كغ"},
+            {"id": 9237, "date": "2026-11-01", "time": "", "day": "الأحد", "receipt": "1541", "driver": "nan", "car": "nan", "dest": "دمشق", "customer": "تلف", "brand": "كوستا سول", "qty": 1, "pack": "كوستريكا-19كغ"},
+            {"id": 9238, "date": "2026-11-02", "time": "07:00:00", "day": "الاثنين", "receipt": "1542", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 313, "pack": "اكوادور-20كغ"},
+            {"id": 9239, "date": "2026-11-02", "time": "07:00:00", "day": "الاثنين", "receipt": "1542", "driver": "فارس", "car": "852658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 135, "pack": "كوستريكا-19كغ"},
+            {"id": 9240, "date": "2026-11-02", "time": "07:00:00", "day": "الاثنين", "receipt": "1543", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 270, "pack": "اكوادور-20كغ"},
+            {"id": 9241, "date": "2026-11-02", "time": "07:00:00", "day": "الاثنين", "receipt": "1543", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 100, "pack": "كوستريكا-19كغ"},
+            {"id": 9242, "date": "2026-11-02", "time": "11:00:00", "day": "الاثنين", "receipt": "1544", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 160, "pack": "اكوادور-20كغ"},
+            {"id": 9243, "date": "2026-11-02", "time": "11:00:00", "day": "الاثنين", "receipt": "1544", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 264, "pack": "كوستريكا-19كغ"},
+            {"id": 9244, "date": "2026-11-02", "time": "15:00:00", "day": "الاثنين", "receipt": "1547", "driver": "محمد", "car": "585855", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 190, "pack": "كوستريكا-19كغ"},
+            {"id": 9245, "date": "2026-11-02", "time": "15:00:00", "day": "الاثنين", "receipt": "1547", "driver": "محمد", "car": "585855", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 323, "pack": "اكوادور-20كغ"},
+            {"id": 9246, "date": "2026-11-02", "time": "16:00:00", "day": "الاثنين", "receipt": "1548", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 170, "pack": "اكوادور-20كغ"},
+            {"id": 9247, "date": "2026-11-02", "time": "16:00:00", "day": "الاثنين", "receipt": "1548", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 295, "pack": "كوستريكا-19كغ"},
+            {"id": 9248, "date": "2026-11-02", "time": "16:00:00", "day": "الاثنين", "receipt": "1549", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 324, "pack": "اكوادور-20كغ"},
+            {"id": 9249, "date": "2026-11-02", "time": "16:00:00", "day": "الاثنين", "receipt": "1550", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 192, "pack": "كوستريكا-19كغ"},
+            {"id": 9250, "date": "2026-11-02", "time": "16:00:00", "day": "الاثنين", "receipt": "1550", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 3, "pack": "كوستريكا-19كغ"},
+            {"id": 9251, "date": "2026-11-02", "time": "16:00:00", "day": "الاثنين", "receipt": "1550", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 4, "pack": "هندي-14كغ"},
+            {"id": 9252, "date": "2026-11-02", "time": "17:00:00", "day": "الاثنين", "receipt": "1551", "driver": "أبو فارس", "car": "762845", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 285, "pack": "اكوادور-20كغ"},
+            {"id": 9253, "date": "2026-11-02", "time": "18:00:00", "day": "الاثنين", "receipt": "1552", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 298, "pack": "اكوادور-20كغ"},
+            {"id": 9254, "date": "2026-11-02", "time": "18:00:00", "day": "الاثنين", "receipt": "1552", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 126, "pack": "كوستريكا-19كغ"},
+            {"id": 9255, "date": "2026-11-02", "time": "", "day": "الاثنين", "receipt": "1553", "driver": "nan", "car": "nan", "dest": "دمشق", "customer": "تلف", "brand": "روزيتا", "qty": 9, "pack": "اكوادور-20كغ"},
+            {"id": 9256, "date": "2026-11-03", "time": "08:00:00", "day": "الثلاثاء", "receipt": "1554", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 380, "pack": "اكوادور-20كغ"},
+            {"id": 9257, "date": "2026-11-03", "time": "08:00:00", "day": "الثلاثاء", "receipt": "1554", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 4, "pack": "كوستريكا-19كغ"},
+            {"id": 9258, "date": "2026-11-03", "time": "08:00:00", "day": "الثلاثاء", "receipt": "1555", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 424, "pack": "اكوادور-20كغ"},
+            {"id": 9259, "date": "2026-11-03", "time": "12:00:00", "day": "الثلاثاء", "receipt": "1556", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 160, "pack": "اكوادور-20كغ"},
+            {"id": 9260, "date": "2026-11-03", "time": "12:00:00", "day": "الثلاثاء", "receipt": "1556", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 368, "pack": "هندي-14كغ"},
+            {"id": 9261, "date": "2026-11-03", "time": "12:00:00", "day": "الثلاثاء", "receipt": "1557", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 160, "pack": "اكوادور-20كغ"},
+            {"id": 9262, "date": "2026-11-03", "time": "12:00:00", "day": "الثلاثاء", "receipt": "1557", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "اكسترا بان", "qty": 384, "pack": "هندي-14كغ"},
+            {"id": 9263, "date": "2026-11-03", "time": "15:00:00", "day": "الثلاثاء", "receipt": "1558", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 520, "pack": "اكوادور-20كغ"},
+            {"id": 9264, "date": "2026-11-03", "time": "16:00:00", "day": "الثلاثاء", "receipt": "1559", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 377, "pack": "اكوادور-20كغ"},
+            {"id": 9265, "date": "2026-11-03", "time": "16:00:00", "day": "الثلاثاء", "receipt": "1559", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 5, "pack": "هندي-14كغ"},
+            {"id": 9266, "date": "2026-11-03", "time": "16:00:00", "day": "الثلاثاء", "receipt": "1560", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 16, "pack": "كوستريكا-19كغ"},
+            {"id": 9267, "date": "2026-11-03", "time": "16:00:00", "day": "الثلاثاء", "receipt": "1560", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 1, "pack": "كوستريكا-19كغ"},
+            {"id": 9268, "date": "2026-11-03", "time": "17:00:00", "day": "الثلاثاء", "receipt": "1561", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 377, "pack": "اكوادور-20كغ"},
+            {"id": 9269, "date": "2026-11-03", "time": "17:00:00", "day": "الثلاثاء", "receipt": "1561", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 18, "pack": "كوستريكا-19كغ"},
+            {"id": 9270, "date": "2026-11-03", "time": "19:00:00", "day": "الثلاثاء", "receipt": "1562", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 450, "pack": "اكوادور-20كغ"},
+            {"id": 9271, "date": "2026-11-03", "time": "19:00:00", "day": "الثلاثاء", "receipt": "1562", "driver": "أبو شادي", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 55, "pack": "كوستريكا-19كغ"},
+            {"id": 9272, "date": "2026-11-03", "time": "19:00:00", "day": "الثلاثاء", "receipt": "1563", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 395, "pack": "اكوادور-20كغ"},
+            {"id": 9273, "date": "2026-11-03", "time": "19:00:00", "day": "الثلاثاء", "receipt": "1563", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "اكسترا بان", "qty": 78, "pack": "هندي-14كغ"},
+            {"id": 9274, "date": "2026-11-03", "time": "", "day": "الثلاثاء", "receipt": "1564", "driver": "nan", "car": "nan", "dest": "دمشق", "customer": "تلف", "brand": "كوستا سول", "qty": 2, "pack": "كوستريكا-19كغ"},
+            {"id": 9275, "date": "2026-11-03", "time": "", "day": "الثلاثاء", "receipt": "1564", "driver": "nan", "car": "nan", "dest": "دمشق", "customer": "تلف", "brand": "اكسترا بان", "qty": 1, "pack": "هندي-14كغ"},
+            {"id": 9276, "date": "2026-11-04", "time": "08:00:00", "day": "الأربعاء", "receipt": "1565", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "بانا كولد", "qty": 292, "pack": "اكوادور-20كغ"},
+            {"id": 9277, "date": "2026-11-04", "time": "08:00:00", "day": "الأربعاء", "receipt": "1565", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 132, "pack": "اكوادور-20كغ"},
+            {"id": 9278, "date": "2026-11-04", "time": "08:00:00", "day": "الأربعاء", "receipt": "1566", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "بانا كولد", "qty": 256, "pack": "اكوادور-20كغ"},
+            {"id": 9279, "date": "2026-11-04", "time": "08:00:00", "day": "الأربعاء", "receipt": "1566", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 126, "pack": "اكوادور-20كغ"},
+            {"id": 9280, "date": "2026-11-04", "time": "08:00:00", "day": "الأربعاء", "receipt": "1566", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 2, "pack": "كوستريكا-19كغ"},
+            {"id": 9281, "date": "2026-11-04", "time": "11:00:00", "day": "الأربعاء", "receipt": "1567", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 184, "pack": "اكوادور-20كغ"},
+            {"id": 9282, "date": "2026-11-04", "time": "11:00:00", "day": "الأربعاء", "receipt": "1567", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 384, "pack": "هندي-14كغ"},
+            {"id": 9283, "date": "2026-11-04", "time": "11:00:00", "day": "الأربعاء", "receipt": "1569", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "اكسترا بان", "qty": 395, "pack": "هندي-14كغ"},
+            {"id": 9284, "date": "2026-11-04", "time": "11:00:00", "day": "الأربعاء", "receipt": "1569", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 160, "pack": "اكوادور-20كغ"},
+            {"id": 9285, "date": "2026-11-04", "time": "14:00:00", "day": "الأربعاء", "receipt": "1570", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 330, "pack": "اكوادور-20كغ"},
+            {"id": 9286, "date": "2026-11-04", "time": "14:00:00", "day": "الأربعاء", "receipt": "1571", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "عمر العقاد", "brand": "بانا كولد", "qty": 165, "pack": "اكوادور-20كغ"},
+            {"id": 9287, "date": "2026-11-04", "time": "15:00:00", "day": "الأربعاء", "receipt": "1572", "driver": "عبدالله حمود", "car": "687015", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 244, "pack": "اكوادور-20كغ"},
+            {"id": 9288, "date": "2026-11-04", "time": "15:00:00", "day": "الأربعاء", "receipt": "1572", "driver": "عبدالله حمود", "car": "687015", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "بانا كولد", "qty": 16, "pack": "اكوادور-20كغ"},
+            {"id": 9289, "date": "2026-11-04", "time": "17:00:00", "day": "الأربعاء", "receipt": "1573", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "بانا كولد", "qty": 413, "pack": "اكوادور-20كغ"},
+            {"id": 9290, "date": "2026-11-04", "time": "17:00:00", "day": "الأربعاء", "receipt": "1573", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 3, "pack": "كوستريكا-19كغ"},
+            {"id": 9291, "date": "2026-11-04", "time": "17:00:00", "day": "الأربعاء", "receipt": "1573", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 8, "pack": "اكوادور-20كغ"},
+            {"id": 9292, "date": "2026-11-04", "time": "17:00:00", "day": "الأربعاء", "receipt": "1574", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "بانا كولد", "qty": 417, "pack": "اكوادور-20كغ"},
+            {"id": 9293, "date": "2026-11-04", "time": "17:00:00", "day": "الأربعاء", "receipt": "1574", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 2, "pack": "كوستريكا-19كغ"},
+            {"id": 9294, "date": "2026-11-04", "time": "17:00:00", "day": "الأربعاء", "receipt": "1574", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 5, "pack": "اكوادور-20كغ"},
+            {"id": 9295, "date": "2026-11-04", "time": "17:00:00", "day": "الأربعاء", "receipt": "1574", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 3, "pack": "هندي-14كغ"},
+            {"id": 9296, "date": "2026-11-04", "time": "", "day": "الأربعاء", "receipt": "1575", "driver": "nan", "car": "nan", "dest": "دمشق", "customer": "تلف", "brand": "ديلمونتي", "qty": 2, "pack": "كوستريكا-19كغ"},
+            {"id": 9297, "date": "2026-11-04", "time": "", "day": "الأربعاء", "receipt": "1575", "driver": "nan", "car": "nan", "dest": "دمشق", "customer": "تلف", "brand": "روزيتا", "qty": 1, "pack": "اكوادور-20كغ"},
+            {"id": 9298, "date": "2026-11-05", "time": "12:00:00", "day": "الخميس", "receipt": "1576", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 275, "pack": "اكوادور-20كغ"},
+            {"id": 9299, "date": "2026-11-05", "time": "12:00:00", "day": "الخميس", "receipt": "1576", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "عمر العقاد", "brand": "بانا كولد", "qty": 165, "pack": "اكوادور-20كغ"},
+            {"id": 9300, "date": "2026-11-05", "time": "13:00:00", "day": "الخميس", "receipt": "1577", "driver": "أبو عدي", "car": "854193", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 275, "pack": "اكوادور-20كغ"},
+            {"id": 9301, "date": "2026-11-05", "time": "13:00:00", "day": "الخميس", "receipt": "1577", "driver": "أبو عدي", "car": "854193", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "بانا كولد", "qty": 165, "pack": "اكوادور-20كغ"},
+            {"id": 9302, "date": "2026-11-05", "time": "16:00:00", "day": "الخميس", "receipt": "1578", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 305, "pack": "اكوادور-20كغ"},
+            {"id": 9303, "date": "2026-11-05", "time": "16:00:00", "day": "الخميس", "receipt": "1578", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "عمر العقاد", "brand": "بانا كولد", "qty": 47, "pack": "اكوادور-20كغ"},
+            {"id": 9304, "date": "2026-11-05", "time": "17:00:00", "day": "الخميس", "receipt": "1579", "driver": "فادي", "car": "624756", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 398, "pack": "اكوادور-20كغ"},
+            {"id": 9305, "date": "2026-11-05", "time": "17:00:00", "day": "الخميس", "receipt": "1580", "driver": "فادي", "car": "624756", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 17, "pack": "كوستريكا-19كغ"},
+            {"id": 9306, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1581", "driver": "محمد", "car": "585855", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 210, "pack": "اكوادور-20كغ"},
+            {"id": 9307, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1581", "driver": "محمد", "car": "585855", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 414, "pack": "هندي-14كغ"},
+            {"id": 9308, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1582", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 175, "pack": "اكوادور-20كغ"},
+            {"id": 9309, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1582", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "اكسترا بان", "qty": 384, "pack": "هندي-14كغ"},
+            {"id": 9310, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1583", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 160, "pack": "اكوادور-20كغ"},
+            {"id": 9311, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1583", "driver": "عجاج", "car": "43993", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 384, "pack": "هندي-14كغ"},
+            {"id": 9312, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1584", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 184, "pack": "اكوادور-20كغ"},
+            {"id": 9313, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1584", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "اكسترا بان", "qty": 384, "pack": "هندي-14كغ"},
+            {"id": 9314, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1585", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 440, "pack": "اكوادور-20كغ"},
+            {"id": 9315, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1586", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 440, "pack": "اكوادور-20كغ"},
+            {"id": 9316, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1587", "driver": "علي حمود", "car": "83851", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 339, "pack": "اكوادور-20كغ"},
+            {"id": 9317, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1588", "driver": "علي حمود", "car": "83851", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 54, "pack": "كوستريكا-19كغ"},
+            {"id": 9318, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1589", "driver": "علي حمود", "car": "83851", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 32, "pack": "كوستريكا-19كغ"},
+            {"id": 9319, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1589", "driver": "علي حمود", "car": "83851", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 96, "pack": "هندي-14كغ"},
+            {"id": 9320, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1590", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 352, "pack": "كوستريكا-19كغ"},
+            {"id": 9321, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1590", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 45, "pack": "هندي-14كغ"},
+            {"id": 9322, "date": "2026-11-06", "time": "", "day": "الجمعة", "receipt": "1591", "driver": "nan", "car": "nan", "dest": "دمشق", "customer": "تلف", "brand": "ديلمونتي", "qty": 3, "pack": "كوستريكا-19كغ"}
         ];
 
         let movementData = [
@@ -896,16 +1148,22 @@
             {"date": "2026-10-28", "date_short": "28/10", "day": "الأربعاء", "open": 16988, "inQty": 0, "outQty": 3209, "net": -3209, "close": 13779, "notes": "توزيع 3,209 طرد (لا استلام)"},
             {"date": "2026-10-29", "date_short": "29/10", "day": "الخميس", "open": 13779, "inQty": 3294, "outQty": 1853, "net": 1441, "close": 15220, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 1,853 طرد"},
             {"date": "2026-10-30", "date_short": "30/10", "day": "الجمعة", "open": 15220, "inQty": 9674, "outQty": 4167, "net": 5507, "close": 20727, "notes": "استلام 7 حاويات (9,674 كرتونة) وتوزيع 4,167 طرد"},
-            {"date": "2026-10-31", "date_short": "31/10", "day": "السبت", "open": 20727, "inQty": 3042, "outQty": 3489, "net": -447, "close": 20280, "notes": "استلام 3 حاويات (3,042 كرتونة) وتوزيع 3,489 طرد"}
+            {"date": "2026-10-31", "date_short": "31/10", "day": "السبت", "open": 20727, "inQty": 3042, "outQty": 3489, "net": -447, "close": 20280, "notes": "استلام 3 حاويات (3,042 كرتونة) وتوزيع 3,489 طرد"},
+            {"date": "2026-11-01", "date_short": "1/11", "day": "الأحد", "open": 20280, "inQty": 0, "outQty": 3022, "net": -3022, "close": 17258, "notes": "توزيع 3,022 طرد (لا استلام)"},
+            {"date": "2026-11-02", "date_short": "2/11", "day": "الإثنين", "open": 17258, "inQty": 2196, "outQty": 3461, "net": -1265, "close": 15993, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 3,461 طرد"},
+            {"date": "2026-11-03", "date_short": "3/11", "day": "الثلاثاء", "open": 15993, "inQty": 7890, "outQty": 4175, "net": 3715, "close": 19708, "notes": "استلام 7 حاويتين (7,890 كرتونة) وتوزيع 4,175 طرد"},
+            {"date": "2026-11-04", "date_short": "4/11", "day": "الأربعاء", "open": 19708, "inQty": 4656, "outQty": 3540, "net": 1116, "close": 20824, "notes": "استلام 4 حاويتين (4,656 كرتونة) وتوزيع 3,540 طرد"},
+            {"date": "2026-11-05", "date_short": "5/11", "day": "الخميس", "open": 20824, "inQty": 4860, "outQty": 1647, "net": 3213, "close": 24037, "notes": "استلام 4 حاويتين (4,860 كرتونة) وتوزيع 1,647 طرد"},
+            {"date": "2026-11-06", "date_short": "6/11", "day": "الجمعة", "open": 24037, "inQty": 3600, "outQty": 4096, "net": -496, "close": 23541, "notes": "استلام 3 حاويتين (3,600 كرتونة) وتوزيع 4,096 طرد"}
         ];
 
         let roomsData = [
-            { room: 7, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "اكسترا بان", origin: "هندي-14كغ", qty: 5530 }] },
-            { room: 8, status: "ripening", temp: 16.9, hours: "تخمير 24 ساعة", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2169 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1062 }] },
-            { room: 9, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2196 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 815 }] },
-            { room: 10, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2196 }] },
-            { room: 11, status: "ripening", temp: 17.0, hours: "تخمير 24 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 1086 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 2347 }] },
-            { room: 12, status: "cooled", temp: 14.0, hours: "مبردة جاهزة (صرف)", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2157 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1169 }] }
+            { room: 7, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1200 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 2850 }] },
+            { room: 8, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2196 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1200 }] },
+            { room: 9, status: "ripening", temp: 17.0, hours: "تخمير 48 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 3140 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 750 }] },
+            { room: 10, status: "ripening", temp: 17.0, hours: "تخمير 24 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2196 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1200 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 800 }] },
+            { room: 11, status: "cooled", temp: 11.0, hours: "مبردة جاهزة (صرف)", items: [{ brand: "بانا كولد", origin: "اكوادور-20كغ", qty: 200 }, { brand: "روزيتا", origin: "اكوادور-20كغ", qty: 1098 }] },
+            { room: 12, status: "cooled", temp: 13.0, hours: "مبردة جاهزة (صرف)", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2196 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 1600 }] }
         ];
 
         let driversData = [
@@ -921,10 +1179,11 @@
             {"name": "اكسترا بان", "origin": "كوستريكا-19كغ"},
             {"name": "كوستا سول", "origin": "كوستريكا-19كغ"},
             {"name": "اكسترا", "origin": "كوستريكا-19كغ"},
-            {"name": "بانا غولد", "origin": "اكوادور-20كغ"}
+            {"name": "بانا غولد", "origin": "اكوادور-20كغ"},
+            {"name": "بانا كولد", "origin": "اكوادور-20كغ"}
         ];
 
-        let originsList = ["اكوادور-20كغ", "كوستريكا-19كغ", "هندي-14كغ", "اكوادور-13.5كغ", "كوستريكي-20كغ"];
+        let originsList = ["اكوادور-20كغ", "كوستريكا-19كغ", "هندي-14كغ", "اكوادور-13.5كغ", "كوستريكا-20كغ", "كوستريكا-13كغ"];
 
         const SEED_DATA = { inbound: inboundData.slice(), dispatch: dispatchData.slice(), movement: movementData.slice() };
 
@@ -993,18 +1252,18 @@
         let roomsMigrationDone = false;
         function migrateRoomsIfNeeded(docData) {
             if (roomsMigrationDone || !auth.currentUser) return;
-            if (docData && Number(docData.roomsSeedV || 0) >= 2) { roomsMigrationDone = true; return; }
+            if (docData && Number(docData.roomsSeedV || 0) >= 3) { roomsMigrationDone = true; return; }
             roomsMigrationDone = true; // منع تكرار المحاولة
             db.runTransaction(async (tx) => {
                 const ds = await tx.get(WAREHOUSE_DOC_REF);
                 const st = ds.exists ? ds.data() : {};
-                if (Number(st.roomsSeedV || 0) >= 2) return; // مسؤول آخر قام بها
+                if (Number(st.roomsSeedV || 0) >= 3) return; // مسؤول آخر قام بها
                 st.roomsData = roomsData; // أرقام المستخدم الصحيحة المضمنة في هذه النسخة
                 st.roomsSeedV = 2;
                 st.lastUpdated = firebase.firestore.FieldValue.serverTimestamp();
                 st.updatedBy = auth.currentUser.email;
                 tx.set(WAREHOUSE_DOC_REF, st);
-            }).then(() => showToast('تم تثبيت بيانات القاعات الصحيحة (20,727 طرد) في السحابة'))
+            }).then(() => showToast('تم تثبيت بذرة القاعات (حالة 5/11 — 20,630 طرد) في السحابة'))
               .catch(err => console.warn('rooms migration skipped:', err));
         }
 
@@ -1016,7 +1275,7 @@
                 if (Array.isArray(data.dispatchData)) dispatchData = unionByKey(data.dispatchData, SEED_DATA.dispatch, it => `${String(it.id)}|${it.date}|${it.qty}|${it.receipt}`);
                 if (Array.isArray(data.movementData)) movementData = unionByKey(data.movementData, SEED_DATA.movement, it => it.date);
                 // القاعات: بذرة المستخدم الصحيحة تبقى معتمدة حتى يثبت التثبيت السحابي (roomsSeedV)
-                if (Array.isArray(data.roomsData) && data.roomsData.length && Number(data.roomsSeedV || 0) >= 2) roomsData = data.roomsData;
+                if (Array.isArray(data.roomsData) && data.roomsData.length && Number(data.roomsSeedV || 0) >= 3) roomsData = data.roomsData;
                 migrateRoomsIfNeeded(data);
                 if (Array.isArray(data.driversData)) driversData = data.driversData;
                 if (Array.isArray(data.brandsData)) brandsData = data.brandsData;
@@ -1439,7 +1698,360 @@
             }
         }
 
-        // ================= ROOM EDITING MODAL (MULTI-BRAND & ORIGIN LOGIC) =================
+        // ================= INSPECTION REPORTS & PHOTO GALLERY =================
+// تقارير فحص الحاويات: حفظ محلي فوري + مزامنة سحابية على مجموعة inspections
+// (الاطلاع متاح للزوار، والكتابة للمسؤول فقط — انظر firestore.rules)
+let inspectionsData = [];
+let filteredInspectionList = [];
+let currentLightboxRecId = null;
+let currentLightboxPhotoIdx = 0;
+let stagedInspectionPhotos = [];
+let inspectionBindDone = false;
+const INSPECTIONS_KEY = 'najha_inspections_data';
+const MAX_INSPECTION_PHOTOS = 8;
+
+// ---- التخزين المحلي (مفتاح سابق التوافق مع النسخة v19 حتى لا تُفقد التقارير القديمة) ----
+function loadInspectionsLocal() {
+    try {
+        const saved = localStorage.getItem(INSPECTIONS_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed)) inspectionsData = parsed;
+        }
+    } catch (e) { console.warn('تعذّر قراءة تقارير الفحص المحلية:', e); }
+}
+function saveInspectionsLocal() {
+    try { localStorage.setItem(INSPECTIONS_KEY, JSON.stringify(inspectionsData)); }
+    catch (e) { console.warn('تعذّر حفظ تقارير الفحص محلياً (مساحة ممتلئة؟):', e); }
+}
+
+// ---- المزامنة السحابية: السحابة أولاً + التقارير المحلية غير المنشورة ----
+function subscribeInspections() {
+    if (typeof db === 'undefined' || !db || typeof db.collection !== 'function') return;
+    db.collection('inspections').onSnapshot(snap => {
+        const cloud = snap.docs.map(d => { const r = d.data(); r.id = String(d.id); return r; });
+        const cloudIds = new Set(cloud.map(r => String(r.id)));
+        const localOnly = inspectionsData.filter(r => !cloudIds.has(String(r.id)));
+        inspectionsData = cloud.concat(localOnly);
+        saveInspectionsLocal();
+        renderInspectionGallery();
+        updateGlobalStats();
+    }, err => {
+        console.warn('inspections snapshot error:', err);
+        renderInspectionGallery();
+        updateGlobalStats();
+    });
+}
+
+// ---- ضغط الصور في المتصفح (حد Firestore: 1MB لكل مستند) ----
+function compressInspectionImage(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            const img = new Image();
+            img.onload = () => {
+                const MAX = 880; // أقصى بُعد بالبكسل
+                let w = img.width, h = img.height;
+                if (w > MAX || h > MAX) {
+                    const k = MAX / Math.max(w, h);
+                    w = Math.round(w * k); h = Math.round(h * k);
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = w; canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                resolve(canvas.toDataURL('image/jpeg', 0.55));
+            };
+            img.onerror = () => reject(new Error('image load'));
+            img.src = e.target.result;
+        };
+        reader.onerror = () => reject(new Error('file read'));
+        reader.readAsDataURL(file);
+    });
+}
+
+async function handleInspectionPhotos(fileList) {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+    const room = MAX_INSPECTION_PHOTOS - stagedInspectionPhotos.length;
+    if (room <= 0) { showToast(`الحد الأقصى ${MAX_INSPECTION_PHOTOS} صور للتقرير الواحد`, false); return; }
+    if (files.length > room) showToast(`سيُضاف ${room} صور فقط (الحد ${MAX_INSPECTION_PHOTOS})`, false);
+    showToast('جارٍ ضغط الصور...', true);
+    for (const f of files.slice(0, room)) {
+        try {
+            const url = await compressInspectionImage(f);
+            stagedInspectionPhotos.push({
+                id: 'p' + Date.now() + Math.random().toString(36).slice(2, 7),
+                title: '', tag: 'صورة حية', url
+            });
+        } catch (e) { showToast('تعذّر قراءة إحدى الصور — قُفّزت', false); }
+    }
+    renderStagedPhotosPreview();
+}
+function removeStagedPhoto(idx) {
+    stagedInspectionPhotos.splice(idx, 1);
+    renderStagedPhotosPreview();
+}
+function renderStagedPhotosPreview() {
+    const div = document.getElementById('stagedPhotosPreview');
+    if (!div) return;
+    div.innerHTML = stagedInspectionPhotos.map((p, i) => `
+        <div class="relative h-20 rounded-xl overflow-hidden border border-slate-200">
+            <img src="${p.url}" alt="صورة مُدرجة" class="w-full h-full object-cover">
+            <button type="button" onclick="removeStagedPhoto(${i})" class="absolute top-1 right-1 p-1 rounded-lg bg-slate-900/70 hover:bg-red-600 text-white text-[10px] font-bold">✕</button>
+        </div>`).join('');
+}
+
+// ---- نافذة الإضافة / التحديث ----
+function openNewInspectionModalFor(contId) {
+    if (!auth?.currentUser) {
+        showToast('يرجى تسجيل الدخول كمسؤول أولاً', false);
+        openLoginModal();
+        return;
+    }
+    stagedInspectionPhotos = [];
+    renderStagedPhotosPreview();
+    const brandSel = document.getElementById('inspBrand');
+    brandSel.innerHTML = '<option value="">— اختر الماركة —</option>' +
+        brandsData.map(b => `<option value="${escapeHtml(String(b.name))}">${escapeHtml(String(b.name))}</option>`).join('');
+    const packSel = document.getElementById('inspPack');
+    packSel.innerHTML = '<option value="">— اختر المنشأ والوزن —</option>' +
+        (originsList || []).map(o => `<option value="${escapeHtml(String(o))}">${escapeHtml(String(o))}</option>`).join('');
+    if (contId) {
+        const rec = inspectionsData.find(r => String(r.id) === String(contId));
+        if (rec) {
+            document.getElementById('inspContNumber').value = rec.id || contId;
+            document.getElementById('inspDate').value = rec.date || '';
+            brandSel.value = rec.brand || '';
+            packSel.value = rec.pack || '';
+            document.getElementById('inspTemp').value = rec.temp ?? '';
+            document.getElementById('inspColorStage').value = rec.colorStage || 'أصفر مُعمّر';
+            document.getElementById('inspPulp').value = rec.pulp || 'متوسط';
+            document.getElementById('inspYellow').value = rec.yellow ?? '';
+            document.getElementById('inspSecond').value = rec.second ?? '';
+            document.getElementById('inspSoft').value = rec.soft ?? '';
+            document.getElementById('inspDamage').value = rec.damage ?? '';
+            document.getElementById('inspNotes').value = rec.notes || '';
+            stagedInspectionPhotos = Array.from(rec.photos || []).map((p, i) =>
+                typeof p === 'string' ? { id: 'p' + i, url: p } : { id: p.id || 'p' + i, title: p.title || '', tag: p.tag || '', url: p.url || '' });
+            renderStagedPhotosPreview();
+            document.getElementById('newInspectionModalTitle').textContent = `تحديث تقرير الحاوية ${contId}`;
+            document.getElementById('newInspectionModal')?.classList.remove('hidden');
+            return;
+        }
+    }
+    document.getElementById('newInspectionForm')?.reset();
+    document.getElementById('inspDate').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('newInspectionModalTitle').textContent = 'تسجيل تقرير فحص ومعرض صور';
+    document.getElementById('newInspectionModal')?.classList.remove('hidden');
+    safeCreateIcons();
+}
+function openNewInspectionModal() { openNewInspectionModalFor(null); }
+function closeNewInspectionModal() {
+    document.getElementById('newInspectionModal')?.classList.add('hidden');
+    stagedInspectionPhotos = [];
+}
+
+// ---- الحفظ (سحابي + محلي) ----
+async function handleSaveInspection(event) {
+    event.preventDefault();
+    if (!auth?.currentUser) {
+        showToast('سجّل الدخول كمسؤول أولاً لحفظ التقرير', false);
+        openLoginModal();
+        return;
+    }
+    const contId = document.getElementById('inspContNumber').value.trim();
+    if (!contId) { showToast('أدخل رقم الحاوية', false); return; }
+    const rec = {
+        id: contId,
+        date: document.getElementById('inspDate').value || new Date().toISOString().slice(0, 10),
+        brand: document.getElementById('inspBrand').value || '',
+        pack: document.getElementById('inspPack').value || '',
+        temp: parseFloat(document.getElementById('inspTemp').value) || null,
+        colorStage: document.getElementById('inspColorStage').value || '',
+        pulp: document.getElementById('inspPulp').value || '',
+        yellow: parseInt(document.getElementById('inspYellow').value, 10) || 0,
+        second: parseInt(document.getElementById('inspSecond').value, 10) || 0,
+        soft: parseInt(document.getElementById('inspSoft').value, 10) || 0,
+        damage: parseInt(document.getElementById('inspDamage').value, 10) || 0,
+        notes: document.getElementById('inspNotes').value.trim(),
+        photos: stagedInspectionPhotos.map(p => ({ id: p.id, title: p.title || '', tag: p.tag || 'صورة حية', url: p.url })),
+        savedAt: new Date().toISOString()
+    };
+    // حماية حد المستند السحابي (1MB) — نرفض قبل 950 ألف حرف
+    const size = JSON.stringify(rec).length;
+    if (size > 950000) {
+        showToast(`حجم التقرير مع الصور كبير جداً (>${Math.round(size / 1000)} ألف حرف) — قلّص عدد الصور`, false);
+        return;
+    }
+    const btn = document.getElementById('btnSaveInspection');
+    btn.disabled = true; btn.textContent = 'جارٍ الحفظ...';
+    try {
+        await db.collection('inspections').doc(String(contId)).set(Object.assign({}, rec, {
+            lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedBy: auth.currentUser.email
+        }));
+        inspectionsData = inspectionsData.filter(r => String(r.id) !== String(contId));
+        inspectionsData.push(rec);
+        saveInspectionsLocal();
+        showToast(`تم حفظ تقرير الحاوية ${contId} ونشره سحابياً`, true);
+        closeNewInspectionModal();
+        renderInspectionGallery();
+        updateGlobalStats();
+    } catch (err) {
+        console.error('inspection save failed:', err);
+        inspectionsData = inspectionsData.filter(r => String(r.id) !== String(contId));
+        inspectionsData.push(rec);
+        saveInspectionsLocal();
+        showToast('فشل النشر السحابي — بقي التقرير على هذا الجهاز (' + (err.code || err.message || '') + ')', false);
+        closeNewInspectionModal();
+        renderInspectionGallery();
+        updateGlobalStats();
+    } finally {
+        btn.disabled = false; btn.textContent = 'حفظ ونشر سحابياً';
+    }
+}
+
+// ---- الحذف (مسؤول فقط) ----
+async function deleteInspectionReport(id) {
+    if (!auth?.currentUser) {
+        showToast('يرجى تسجيل الدخول كمسؤول أولاً', false);
+        openLoginModal();
+        return;
+    }
+    if (!confirm(`حذف تقرير الحاوية ${id} ومعرض صوره نهائياً؟`)) return;
+    try {
+        await db.collection('inspections').doc(String(id)).delete();
+        showToast(`تم حذف تقرير الحاوية ${id} سحابياً`, true);
+    } catch (err) {
+        console.error('inspection delete failed:', err);
+        showToast('فشل الحذف السحابي — حُذف التقرير محلياً فقط (' + (err.code || '') + ')', false);
+    }
+    inspectionsData = inspectionsData.filter(r => String(r.id) !== String(id));
+    saveInspectionsLocal();
+    renderInspectionGallery();
+    updateGlobalStats();
+}
+
+// ---- العرض / التصفية ----
+function inspectionPhotoUrl(p) { return typeof p === 'string' ? p : (p && p.url) || ''; }
+
+function renderInspectionGallery() {
+    const grid = document.getElementById('inspectionGrid');
+    if (!grid) return;
+    let list = [...inspectionsData];
+    list.sort((a, b) => String(b.savedAt || b.date || '').localeCompare(String(a.savedAt || a.date || '')));
+    // خيارات ماركة التصفية (بدون فقدان الاختيار الحالي)
+    const brandFilter = document.getElementById('inspectionBrandFilter');
+    if (brandFilter) {
+        const prev = brandFilter.value;
+        const brands = [...new Set(inspectionsData.map(r => r.brand).filter(Boolean))];
+        brandFilter.innerHTML = '<option value="">كل الماركات</option>' +
+            brands.map(b => `<option value="${escapeHtml(String(b))}">${escapeHtml(String(b))}</option>`).join('');
+        if (brands.includes(prev)) brandFilter.value = prev;
+    }
+    const q = (document.getElementById('inspectionSearchInput')?.value || '').toLowerCase().trim();
+    const bf = brandFilter?.value || '';
+    if (q) list = list.filter(r => [r.id, r.brand, r.pack, r.notes, r.colorStage].join(' ').toLowerCase().includes(q));
+    if (bf) list = list.filter(r => r.brand === bf);
+    filteredInspectionList = list;
+    const emptyEl = document.getElementById('inspectionEmptyState');
+    if (emptyEl) emptyEl.classList.toggle('hidden', list.length > 0);
+    grid.innerHTML = list.map(r => {
+        const photos = r.photos || [];
+        const thumb = inspectionPhotoUrl(photos[0]);
+        const defects = (r.yellow ? `أصفر ${r.yellow}` : '') + (r.second ? ` · ثاني ${r.second}` : '') +
+            (r.soft ? ` · لين ${r.soft}` : '') + (r.damage ? ` · تلف ${r.damage}` : '') || '—';
+        return `
+        <div class="glass-panel p-4 rounded-2xl border border-slate-200 flex flex-col gap-3">
+            <div class="flex justify-between items-start border-b border-slate-100 pb-2">
+                <div>
+                    <span class="font-mono font-black text-sm text-[#45260a]">حاوية ${escapeHtml(String(r.id))}</span>
+                    <span class="block text-[11px] text-slate-500 font-bold mt-0.5">${escapeHtml(r.brand || '—')} · ${escapeHtml(r.pack || '—')}</span>
+                </div>
+                <span class="text-[10px] bg-purple-100 text-purple-700 rounded-lg px-2 py-1 font-bold font-mono">${escapeHtml(r.date || '')}</span>
+            </div>
+            <div class="flex gap-3 items-center">
+                ${thumb ? `<button type="button" data-insp-open="${escapeHtml(String(r.id))}" data-insp-photo="0" class="shrink-0 w-16 h-16 rounded-xl overflow-hidden border border-slate-200 hover:border-purple-400 transition-all"><img src="${thumb}" alt="صورة الحاوية" class="w-full h-full object-cover"></button>`
+                    : `<button type="button" data-insp-open="${escapeHtml(String(r.id))}" data-insp-photo="0" class="shrink-0 w-16 h-16 rounded-xl bg-purple-500/10 border border-purple-200 flex items-center justify-center"><i data-lucide="camera" class="w-5 h-5 text-purple-400"></i></button>`}
+                <div class="text-[11px] text-slate-600 font-semibold leading-5">
+                    <span>الحرارة: <b class="font-mono">${r.temp != null ? r.temp + '°' : '—'}</b> · اللون: <b>${escapeHtml(r.colorStage || '—')}</b></span>
+                    <span class="block text-slate-400">عيوب: ${escapeHtml(defects)}</span>
+                </div>
+            </div>
+            ${r.notes ? `<p class="text-[11px] text-slate-500 leading-5 border-r-2 border-purple-300 pr-2">${escapeHtml(r.notes)}</p>` : ''}
+            <div class="flex justify-between items-center">
+                <span class="text-[10px] font-bold text-slate-400 font-mono">${photos.length} صورة</span>
+                <div class="flex gap-1.5">
+                    <button type="button" data-insp-open="${escapeHtml(String(r.id))}" data-insp-photo="${photos.length > 0 ? 0 : -1}" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-[11px] font-bold">المعرض</button>
+                    <button type="button" onclick="openNewInspectionModalFor('${escapeHtml(String(r.id))}')" class="admin-only px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 text-[11px] font-bold">تعديل</button>
+                    <button type="button" data-insp-del="${escapeHtml(String(r.id))}" class="admin-only px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 text-[11px] font-bold">حذف</button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+    safeCreateIcons();
+}
+function filterInspectionGallery() { renderInspectionGallery(); }
+function clearInspectionFilters() {
+    const si = document.getElementById('inspectionSearchInput');
+    const bf = document.getElementById('inspectionBrandFilter');
+    if (si) si.value = '';
+    if (bf) bf.value = '';
+    renderInspectionGallery();
+}
+
+// ---- إضاءة الصور (Lightbox) ----
+function openInspectionLightbox(id, idx) {
+    const rec = inspectionsData.find(r => String(r.id) === String(id));
+    if (!rec || !(rec.photos || []).length) {
+        showToast('لا توجد صور بهذا التقرير — يمكن للمسؤول تعديله وإضافتها', false);
+        return;
+    }
+    currentLightboxRecId = String(id);
+    currentLightboxPhotoIdx = Math.max(0, parseInt(idx, 10) || 0);
+    document.getElementById('inspectionLightbox')?.classList.remove('hidden');
+    updateLightboxPhoto();
+}
+function updateLightboxPhoto() {
+    const rec = inspectionsData.find(r => String(r.id) === String(currentLightboxRecId));
+    if (!rec) { closeInspectionLightbox(); return; }
+    const photos = rec.photos || [];
+    if (!photos.length) { closeInspectionLightbox(); return; }
+    if (currentLightboxPhotoIdx < 0) currentLightboxPhotoIdx = photos.length - 1;
+    if (currentLightboxPhotoIdx >= photos.length) currentLightboxPhotoIdx = 0;
+    document.getElementById('lightboxImg').src = inspectionPhotoUrl(photos[currentLightboxPhotoIdx]);
+    document.getElementById('lightboxTitle').textContent = `حاوية ${rec.id} — ${rec.brand || ''}`;
+    document.getElementById('lightboxCounter').textContent = `صورة ${currentLightboxPhotoIdx + 1} من ${photos.length}`;
+}
+function navigateLightbox(dir) { currentLightboxPhotoIdx += dir; updateLightboxPhoto(); }
+function closeInspectionLightbox() {
+    document.getElementById('inspectionLightbox')?.classList.add('hidden');
+    document.getElementById('lightboxImg').src = '';
+    currentLightboxRecId = null;
+}
+
+// ---- ربط أحدث الشبكة (تفويض: يعمل لكل البطاقات الجديدة) ----
+function bindInspectionHandlers() {
+    if (inspectionBindDone) return;
+    const grid = document.getElementById('inspectionGrid');
+    if (!grid) return;
+    inspectionBindDone = true;
+    grid.addEventListener('click', ev => {
+        const del = ev.target.closest('[data-insp-del]');
+        if (del) { deleteInspectionReport(del.getAttribute('data-insp-del')); return; }
+        const open = ev.target.closest('[data-insp-open]');
+        if (open) openInspectionLightbox(open.getAttribute('data-insp-open'), open.getAttribute('data-insp-photo'));
+    });
+    const filterSel = document.getElementById('inspectionSearchInput');
+    if (filterSel) {
+        filterSel.addEventListener('keydown', ev => {
+            if (ev.key === 'Escape') clearInspectionFilters();
+        });
+    }
+}
+// ================= END INSPECTION =================
+
+// ================= ROOM EDITING MODAL (MULTI-BRAND & ORIGIN LOGIC) =================
         let activeFullRoomNum = null;
         let modalRoomItems = [];
 
@@ -1755,11 +2367,13 @@
             const canvas = document.getElementById('movementChart');
             if (!canvas) return;
             if (movementChartInstance) movementChartInstance.destroy();
+            // الترتيب الزمني الصحيح بدل اعتماد ترتيب المصفوفة الحرفي
+            const sorted = [...movementData].sort((a, b) => String(a.date).localeCompare(String(b.date)));
             movementChartInstance = new Chart(canvas.getContext('2d'), {
                 type: 'line',
                 data: {
-                    labels: [...movementData].reverse().map(m => m.date_short || m.date),
-                    datasets: [{ label: 'رصيد المستودع (طرد)', data: [...movementData].reverse().map(m => m.close), borderColor: '#e67e22', backgroundColor: 'rgba(230,126,34,0.12)', fill: true, tension: 0.35, borderWidth: 3 }]
+                    labels: sorted.map(m => m.date_short || m.date),
+                    datasets: [{ label: 'رصيد المستودع (طرد)', data: sorted.map(m => m.close), borderColor: '#e67e22', backgroundColor: 'rgba(230,126,34,0.12)', fill: true, tension: 0.35, borderWidth: 3 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
@@ -1799,13 +2413,22 @@
             }
         }
 
+        // حساب حقيقي من سجلات التوزيع (بلا أرقام ثابتة)
         function initMerchantsSplitChart() {
             const canvas = document.getElementById('merchantsSplitChart');
             if (!canvas) return;
             if (merchantsChartInstance) merchantsChartInstance.destroy();
+            const per = { a: 0, b: 0 };
+            let others = 0;
+            dispatchData.forEach(d => {
+                const q = parseInt(d.qty, 10) || 0;
+                if (d.customer === 'عمر العقاد') per.a += q;
+                else if (d.customer === 'أحمد الطالب') per.b += q;
+                else others += q;
+            });
             merchantsChartInstance = new Chart(canvas.getContext('2d'), {
                 type: 'doughnut',
-                data: { labels: ['عمر العقاد', 'أحمد الطالب'], datasets: [{ data: [36366, 35809], backgroundColor: ['#e67e22', '#2563eb'], borderWidth: 2 }] },
+                data: { labels: ['عمر العقاد', 'أحمد الطالب', 'آخرون'], datasets: [{ data: [per.a, per.b, others], backgroundColor: ['#e67e22', '#2563eb', '#94a3b8'], borderWidth: 2 }] },
                 options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: false } } }
             });
         }
@@ -1967,6 +2590,25 @@
             if (daysCountEl) daysCountEl.textContent = movementData.length;
             const badgeMovement = document.getElementById('badgeMovementCount');
             if (badgeMovement) badgeMovement.textContent = `${movementData.length} يوماً`;
+            // عُدّاد تقارير الفحص (حسب البيانات الفعلية لا نص ثابت)
+            const inspCount = inspectionsData.length;
+            const inspPhotos = inspectionsData.reduce((a, r) => a + ((r.photos || []).length), 0);
+            setTxt('badgeInspectionCount', inspCount > 0 ? `${inspCount} تقرير` : 'فارغ');
+            setTxt('inspectionHeaderCount', inspCount);
+            setTxt('inspectionHeaderPhotos', inspPhotos);
+            setTxt('dashMerchantTotal', dispatchedQty.toLocaleString());
+            // القاعات العاملة: محسوبة من وجود بنود فعلياً
+            const activeRooms = roomsData.filter(r => (r.items || []).some(it => (parseInt(it.qty, 10) || 0) > 0));
+            setTxt('kpiActiveRooms', `${activeRooms.length} / ${roomsData.length}`);
+            const roomsNote = document.getElementById('kpiActiveRoomsNote');
+            if (roomsNote) {
+                const nums = roomsData.map(r => r.room).sort((a, b) => a - b);
+                const firstRoom = nums.length ? nums[0] : 7;
+                const lastRoom = nums.length ? nums[nums.length - 1] : 12;
+                roomsNote.textContent = activeRooms.length === roomsData.length
+                    ? `جميع القاعات (${firstRoom} إلى ${lastRoom}) مشغولة بالكامل`
+                    : `القاعات العاملة حالياً: ${activeRooms.map(r => r.room).join('، ')}`;
+            }
         }
 
         function renderAll() {
@@ -1976,6 +2618,7 @@
             renderRipeningRooms();
             renderBrandsListTable();
             renderDriverListTable();
+            renderInspectionGallery();
             updateGlobalStats();
             updateMerchantBreakdown();
             safeCreateIcons();
@@ -1984,6 +2627,9 @@
         window.addEventListener('DOMContentLoaded', () => {
             renderAll();
             bindDeleteHandlers();
+            bindInspectionHandlers();
+            loadInspectionsLocal();
+            subscribeInspections();
             setCalendarToToday();
             initMovementChart();
             initMerchantsSplitChart();

@@ -43,6 +43,21 @@ service cloud.firestore {
         && request.resource.data.get('updatedBy', null) != null;
     }
 
+    // ============ تقارير الفحص ومعرض الصور (كل حاوية = مستند) ============
+    match /inspections/{docId} {
+      // الاطلاع متاح للجميع (معرض تقارير الفحص للزوار)
+      allow read: if true;
+
+      // الإضافة/التعديل/الحذف للمسؤول فقط (Claim أو القائمة البيضاء)
+      allow create, update, delete: if isAdmin();
+
+      // أي كتابة يجب أن تحفظ حقول التتبع (ودّي حتى نشر تقرير بالحجم المسموح —
+      // حدّ Firestore 1MB يُحرس في واجهة الموقع برفض أكبر من 950 ألف حرف)
+      allow create, update: if isAdmin()
+        && request.resource.data.get('lastUpdated', null) != null
+        && request.resource.data.get('updatedBy', null) != null;
+    }
+
     // ============ حجب كل ما عدا ذلك بشكل صريح ============
     match /{document=**} {
       allow read, write: if false;

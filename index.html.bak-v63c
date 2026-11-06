@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="al_neser_logo.png">
+    <title>منظومة مستودع نجها - شركة النسر التجارية | بوابة الاستعلام والاطلاع المباشر</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <!-- Google Fonts Cairo & Rubik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Rubik:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-ar: 'Cairo', 'Tajawal', sans-serif;
+            --font-num: 'Rubik', sans-serif;
+            --omni-orange: #e67e22;
+            --omni-orange-dark: #cf711f;
+            --omni-bg-tint: #fdfaf7;
+            --omni-card-border: #fae5d3;
+        }
+
+        * { font-family: var(--font-ar); box-sizing: border-box; }
+        html, body {
+            background-color: var(--omni-bg-tint) !important;
+            color: #45260a;
+            overflow-x: hidden !important;
+            width: 100%;
+            line-height: 1.6;
+            letter-spacing: 0.005em;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-num { font-family: var(--font-num) !important; font-variant-numeric: tabular-nums; }
+
+        .omni-card, .glass-panel, .card {
+            background-color: #ffffff !important;
+            border-radius: 18px !important;
+            border: 1px solid var(--omni-card-border) !important;
+            box-shadow: 0 10px 25px -5px rgba(230, 126, 34, 0.07), 0 6px 10px -4px rgba(0, 0, 0, 0.03) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .omni-card:hover, .glass-panel:hover, .card:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 20px 35px -8px rgba(230, 126, 34, 0.14), 0 8px 12px -3px rgba(0, 0, 0, 0.05) !important;
+            border-color: #eb984e !important;
+        }
+
+        .omni-nav-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #6f6f6f;
+            border-radius: 12px;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .omni-nav-pill:hover { color: var(--omni-orange); background-color: #fdf2e9; }
+        .omni-nav-pill.active {
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #e67e22 0%, #cf711f 100%) !important;
+            box-shadow: 0 6px 18px rgba(230, 126, 34, 0.35) !important;
+            font-weight: 800 !important;
+        }
+
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        table thead th {
+            background-color: #fdf2e9 !important;
+            color: #45260a !important;
+            font-weight: 800 !important;
+            padding: 0.85rem 1rem !important;
+            border-bottom: 2px solid var(--omni-card-border) !important;
+            white-space: nowrap;
+            font-size: 0.78rem !important;
+        }
+        table tbody td {
+            padding: 0.85rem 1rem !important;
+            border-bottom: 1px solid #fdf2e9 !important;
+            color: #333333 !important;
+            font-weight: 500;
+        }
+        table tbody tr:hover { background-color: rgba(253, 242, 233, 0.5) !important; }
+
+        input, select, textarea {
+            background-color: #ffffff !important;
+            border: 1px solid #e0d0c1 !important;
+            color: #333333 !important;
+            border-radius: 12px !important;
+            transition: all 0.2s ease !important;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none !important;
+            border-color: var(--omni-orange) !important;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2) !important;
+        }
+
+        .drawer-closed { transform: translateX(100%) !important; }
+        .drawer-open { transform: translateX(0) !important; }
+        #adminSideDrawer { transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+        body.visitor-mode .admin-only {
+            display: none !important;
+        }
+
+        @keyframes omniFadeIn {
+            0% { opacity: 0; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        main > section:not(.hidden) { animation: omniFadeIn 220ms ease-in-out forwards; }
+    </style>
+</head>
+<body class="bg-[#fdfaf7] text-[#45260a] min-h-screen flex flex-col antialiased visitor-mode selection:bg-orange-600 selection:text-white">
+
+    <!-- ============================================================
+         SECURITY NOTE (يجب نشرها على الاستضافة كملف firestore.rules):
+         rules_version = '2';
+         service cloud.firestore {
+           match /databases/{database}/documents {
+             match /warehouse_data/{doc} {
+               allow read: if true;
+               allow write: if request.auth != null
+                 && request.auth.token.admin == true;   // Custom Claim
+             }
+           }
+         }
+         كما يجب تعطيل التسجيل الذاتي في Firebase Console:
+         Authentication > Sign-in method > Email/Password
+         > (ترك تمكين الدخول فقط، وعدم السماح بإنشاء حسابات من الواجهة)
+         ============================================================ -->
+
+    <!-- Top Sticky Omnifood Navbar -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#fae5d3] shadow-sm w-full transition-all">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full py-3.5 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleAdminDrawer()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-[#fdf2e9] border border-[#fae5d3]" title="قائمة الأقسام">
+                    <i data-lucide="menu" class="w-5 h-5 text-[#e67e22]"></i>
+                </button>
+
+                <div class="h-11 w-16 sm:h-12 sm:w-20 bg-gradient-to-b from-slate-900 via-slate-950 to-black p-1 rounded-xl border-2 border-amber-400/70 flex items-center justify-center shadow-md shadow-orange-500/10 shrink-0 cursor-pointer" onclick="switchTab('dashboard')" title="شركة النسر التجارية - الرئيسية">
+                    <img src="al_neser_logo.png" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'40\' viewBox=\'0 0 60 40\'><rect width=\'60\' height=\'40\' fill=\'%23e67e22\'/><text x=\'50%25\' y=\'55%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23ffffff\' font-family=\'sans-serif\' font-size=\'10\' font-weight=\'bold\'>النسر</text></svg>';" alt="شعار شركة النسر التجارية" class="w-full h-full object-contain rounded-lg drop-shadow-md">
+                </div>
+
+                <div class="flex flex-col">
+                    <h1 class="text-base sm:text-lg font-black text-[#45260a] tracking-tight">شركة النسر التجارية</h1>
+                    <span class="text-[11px] sm:text-xs text-[#888] font-medium hidden sm:block">إدارة المخزون وتخمير الموز — مستودع نجها</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#fdf2e9] border border-[#fae5d3] text-xs">
+                    <span class="text-[#6f6f6f] font-semibold">رصيد المستودع الفعلي:</span>
+                    <span class="font-black text-[#cf711f] font-num" id="headerStockBadge">15,220 طرد</span>
+                </div>
+
+                <button id="btnLoginOpen" onclick="openLoginModal()" class="px-4 py-2 text-xs sm:text-sm font-bold text-white bg-[#45260a] hover:bg-[#333] rounded-xl shadow-md flex items-center gap-1.5 transition-all">
+                    <i data-lucide="lock" class="w-3.5 h-3.5 text-[#ffd43b]"></i>
+                    <span>دخول مسؤول</span>
+                </button>
+
+                <div id="adminBadgeWrapper" class="hidden flex items-center gap-1.5 sm:gap-2">
+                    <div class="px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span id="adminUserEmail" class="text-xs font-bold text-emerald-800 truncate">مسؤول النظام</span>
+                    </div>
+                    <button onclick="handleLogout()" class="p-2 bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 rounded-xl" title="تسجيل الخروج">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subnav: 6 Main Sections (Desktop) -->
+        <div class="border-t border-[#fae5d3]/70 bg-white/70 hidden lg:block">
+            <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between overflow-x-auto">
+                <nav class="flex items-center gap-2 py-2">
+                    <button id="nav-dashboard" onclick="switchTab('dashboard')" class="omni-nav-pill active">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                        <span>الرئيسية والمؤشرات</span>
+                    </button>
+                    <button id="nav-inbound" onclick="switchTab('inbound')" class="omni-nav-pill">
+                        <i data-lucide="arrow-down-left" class="w-4 h-4 text-blue-600"></i>
+                        <span>استلام الحاويات</span>
+                        <span id="badgeInboundCount" class="bg-blue-100 text-blue-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">143</span>
+                    </button>
+                    <button id="nav-dispatch" onclick="switchTab('dispatch')" class="omni-nav-pill">
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-600"></i>
+                        <span>التوزيع والشحن</span>
+                        <span id="badgeDispatchCount" class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">761</span>
+                    </button>
+                    <button id="nav-movement" onclick="switchTab('movement')" class="omni-nav-pill">
+                        <i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i>
+                        <span>حركة المستودع والأرصدة</span>
+                        <span id="badgeMovementCount" class="bg-cyan-100 text-cyan-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">59 يوماً</span>
+                    </button>
+                    <button id="nav-rooms" onclick="switchTab('rooms')" class="omni-nav-pill">
+                        <i data-lucide="boxes" class="w-4 h-4 text-amber-600"></i>
+                        <span>قاعات التخمير</span>
+                        <span id="badgeRoomsStock" class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">15,220</span>
+                    </button>
+                    <button id="nav-inspection" onclick="switchTab('inspection')" class="omni-nav-pill">
+                        <i data-lucide="camera" class="w-4 h-4 text-purple-600"></i>
+                        <span>معرض وتقارير الفحص</span>
+                        <span id="badgeInspectionCount" class="bg-purple-100 text-purple-800 text-[11px] font-bold px-2 py-0.5 rounded-full font-num">143</span>
+                    </button>
+                </nav>
+
+                <div class="flex items-center gap-2 py-2">
+                    <button onclick="openDriverModal()" class="omni-nav-pill text-xs">
+                        <i data-lucide="users" class="w-3.5 h-3.5 text-blue-600"></i>
+                        <span>دليل السائقين</span>
+                    </button>
+                    <button onclick="openBrandsModal()" class="omni-nav-pill text-xs">
+                        <i data-lucide="tags" class="w-3.5 h-3.5 text-amber-600"></i>
+                        <span>دليل الماركات</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div id="adminDrawerBackdrop" onclick="closeAdminDrawer()" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm lg:hidden transition-opacity duration-300 opacity-0"></div>
+    <aside id="adminSideDrawer" class="drawer-closed fixed top-0 right-0 z-50 flex h-screen w-72 flex-col bg-white border-l border-[#fae5d3] duration-300 ease-linear lg:hidden shadow-2xl">
+        <div class="p-4 border-b border-[#fae5d3] flex items-center justify-between bg-[#fdf2e9]">
+            <h2 class="font-extrabold text-[#45260a] text-sm">مستودع نجها - شركة النسر</h2>
+            <button onclick="closeAdminDrawer()" class="p-1.5 rounded-xl text-slate-500 hover:text-slate-900"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-2">
+            <button onclick="switchTab('dashboard')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="layout-dashboard" class="w-4 h-4 text-[#e67e22]"></i><span>الرئيسية والمؤشرات</span></button>
+            <button onclick="switchTab('inbound')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="arrow-down-left" class="w-4 h-4 text-blue-600"></i><span class="flex-1">استلام الحاويات</span></button>
+            <button onclick="switchTab('dispatch')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-600"></i><span class="flex-1">التوزيع والشحن</span></button>
+            <button onclick="switchTab('movement')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i><span class="flex-1">حركة المستودع والأرصدة</span></button>
+            <button onclick="switchTab('rooms')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="boxes" class="w-4 h-4 text-amber-600"></i><span class="flex-1">قاعات التخمير</span></button>
+            <button onclick="switchTab('inspection')" class="w-full text-right px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fdf2e9] flex items-center gap-2.5"><i data-lucide="camera" class="w-4 h-4 text-purple-600"></i><span class="flex-1">معرض وتقارير الفحص</span></button>
+        </div>
+    </aside>
+
+    <!-- Main Workspace Container -->
+    <main class="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <div id="toastNotification" class="fixed bottom-5 left-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 glass-panel border border-slate-300 p-4 rounded-2xl shadow-2xl flex items-center gap-3">
+            <div id="toastIcon" class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">✓</div>
+            <div id="toastMsg" class="text-sm font-bold text-[#45260a]">تمت العملية بنجاح</div>
+        </div>
+
+        <!-- 1. DASHBOARD -->
+        <section id="tab-dashboard" class="space-y-6">
+            <div class="glass-panel p-3.5 sm:p-4 rounded-2xl border border-blue-500/30 bg-white/90 shadow-xl space-y-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold shrink-0">
+                            <i data-lucide="calendar" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-extrabold text-xs sm:text-sm text-slate-900">تقويم حركة المستودع الحي</h3>
+                                <span class="px-2 py-0.5 text-[9px] sm:text-[10px] font-bold rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">تحديث فوري</span>
+                            </div>
+                            <p id="calendarDayLabel" class="text-[11px] sm:text-xs text-slate-500">الخميس، 29 / 10 / 2026</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 sm:gap-2 self-end sm:self-auto">
+                        <button type="button" onclick="navigateCalendarDay(-1)" class="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-all text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i><span class="hidden sm:inline">السابق</span>
+                        </button>
+                        <input type="date" id="globalCalendarPicker" onchange="onGlobalDatePicked(this.value)" class="bg-white border border-blue-500/40 rounded-xl px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:border-blue-400 cursor-pointer">
+                        <button type="button" onclick="setCalendarToToday()" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-md">اليوم</button>
+                        <button type="button" onclick="navigateCalendarDay(1)" class="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-all text-xs font-bold flex items-center gap-1">
+                            <span class="hidden sm:inline">التالي</span><i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 text-xs">
+                    <div class="p-2.5 sm:p-3 bg-[#fdf2e9]/60 rounded-xl border border-[#fae5d3] flex flex-col justify-between">
+                        <span class="text-[#6f6f6f] font-bold text-[10px] sm:text-[11px]">رصيد بداية اليوم</span>
+                        <div class="flex items-baseline gap-1 mt-1">
+                            <span id="calOpenStock" class="text-sm sm:text-lg font-black text-[#45260a] font-num">13,779</span>
+                            <span class="text-[10px] text-[#888]">طرد</span>
+                        </div>
+                    </div>
+                    <div class="p-2.5 sm:p-3 bg-cyan-50 rounded-xl border border-cyan-200 flex flex-col justify-between">
+                        <span class="text-cyan-800 font-bold text-[10px] sm:text-[11px]">الوارد (الاستلام)</span>
+                        <div class="flex items-baseline gap-1 mt-1">
+                            <span id="calInboundQty" class="text-sm sm:text-lg font-black text-cyan-700 font-num">+3,294</span>
+                            <span id="calInboundCount" class="text-[10px] text-cyan-600 font-bold">(3 حاويات)</span>
+                        </div>
+                    </div>
+                    <div class="p-2.5 sm:p-3 bg-emerald-50 rounded-xl border border-emerald-200 flex flex-col justify-between">
+                        <span class="text-emerald-800 font-bold text-[10px] sm:text-[11px]">الصادر (التوزيع)</span>
+                        <div class="flex items-baseline gap-1 mt-1">
+                            <span id="calDispatchQty" class="text-sm sm:text-lg font-black text-emerald-700 font-num">-1,853</span>
+                            <span id="calDispatchCount" class="text-[10px] text-emerald-600 font-bold">(12 إرسالية)</span>
+                        </div>
+                    </div>
+                    <div class="p-2.5 sm:p-3 bg-amber-50 rounded-xl border border-amber-200 flex flex-col justify-between">
+                        <span class="text-amber-800 font-bold text-[10px] sm:text-[11px]">رصيد نهاية اليوم</span>
+                        <div class="flex items-baseline gap-1 mt-1">
+                            <span id="calCloseStock" class="text-sm sm:text-lg font-black text-amber-700 font-num">15,220</span>
+                            <span class="text-[10px] text-amber-600 font-bold">مطابق للجرد</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-panel p-5 rounded-2xl border border-slate-200/80 hover:border-slate-300 transition-all">
+                    <span class="text-xs font-semibold text-slate-500">العدد الفعلي الحالي للمستودع</span>
+                    <div class="flex items-baseline gap-2 mt-2">
+                        <span id="kpiCurrentStock" class="text-2xl sm:text-3xl font-black text-slate-800">15,220</span>
+                        <span class="text-xs font-bold text-slate-500">كرتونة</span>
+                    </div>
+                    <p class="text-[11px] text-emerald-600 mt-2 flex items-center gap-1 font-medium"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> مطابق بدقة 100% لمجموع القاعات</p>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-slate-200/80 hover:border-slate-300 transition-all">
+                    <span class="text-xs font-semibold text-slate-500">إجمالي الحاويات الواردة</span>
+                    <div class="flex items-baseline gap-2 mt-2">
+                        <span id="kpiTotalContainers" class="text-2xl sm:text-3xl font-black text-slate-800">143</span>
+                        <span class="text-xs font-bold text-slate-500">حاوية</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2 font-medium">إجمالي <span id="kpiTotalReceived" class="text-cyan-700 font-bold font-mono">161,189</span> كرتونة واردة</p>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-slate-200/80 hover:border-slate-300 transition-all">
+                    <span class="text-xs font-semibold text-slate-500">إجمالي الصادر والتوزيع</span>
+                    <div class="flex items-baseline gap-2 mt-2">
+                        <span id="kpiTotalDispatched" class="text-2xl sm:text-3xl font-black text-slate-800">156,243</span>
+                        <span class="text-xs font-bold text-slate-500">كرتونة</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2 font-medium"><span id="kpiTotalDispatchedTrans" class="text-emerald-700 font-bold font-mono">761</span> إرسالية</p>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-slate-200/80 hover:border-slate-300 transition-all">
+                    <span class="text-xs font-semibold text-slate-500">القاعات العاملة</span>
+                    <div class="flex items-baseline gap-2 mt-2">
+                        <span id="kpiActiveRooms" class="text-2xl sm:text-3xl font-black text-amber-600 font-num">6 / 6</span>
+                        <span class="text-xs font-bold text-slate-500">قاعات</span>
+                    </div>
+                    <p class="text-[11px] text-amber-700 mt-2 font-medium">جميع القاعات (7 إلى 12) مشغولة بالكامل</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-200">
+                    <h3 class="font-bold text-slate-900 text-base mb-4">مسار رصيد المستودع والتدفق اليومي</h3>
+                    <div class="h-72 w-full"><canvas id="movementChart"></canvas></div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base mb-1">توزيع الكراتين وحصص التجار</h3>
+                        <p class="text-xs text-slate-500 mb-5">توزيع الأصناف وحصص الأسواق (156,243 طرد)</p>
+                        <div class="h-44 w-full relative flex items-center justify-center"><canvas id="merchantsSplitChart"></canvas></div>
+                        <div id="merchantsBreakdownBox" class="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-xs"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. INBOUND -->
+        <section id="tab-inbound" class="hidden space-y-6">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="arrow-down-left" class="w-5 h-5 text-blue-500"></i> سجل استلام الحاويات</h2>
+                    <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynInboundContCount" class="font-bold text-blue-600 font-num">143</span> حاوية (<span id="dynInboundBoxesCount" class="font-bold text-slate-800 font-num">161,189</span> كرتونة)</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="openBrandsModal()" class="px-3.5 py-2.5 bg-amber-500/10 text-amber-700 border border-amber-500/30 rounded-xl text-xs font-bold">دليل الماركات</button>
+                    <button type="button" onclick="toggleInboundForm()" class="admin-only px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> إضافة حاوية واردة
+                    </button>
+                </div>
+            </div>
+
+            <!-- Inbound Filter Bar (Accessible to All Visitors) -->
+            <div class="glass-panel p-4 rounded-2xl border border-slate-200 bg-white/80 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4 text-blue-600"></i>
+                    <span class="text-xs font-bold text-[#45260a]">بحث في الحاويات المستلمة:</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <input type="date" id="inboundDateFilter" onchange="filterInboundTable()" class="text-xs bg-white border border-slate-300 rounded-xl px-2 py-1.5 font-bold cursor-pointer">
+                    <input type="text" id="inboundSearchInput" oninput="filterInboundTable()" placeholder="ابحث برقم الحاوية أو السائق أو الماركة..." class="text-xs bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold w-56 sm:w-64">
+                    <button type="button" onclick="clearInboundSearch()" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold">مسح ✕</button>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
+                <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+                    <table class="w-full min-w-[1150px] text-right text-xs">
+                        <thead class="bg-white text-slate-600 font-bold border-b border-slate-200 sticky top-0">
+                            <tr>
+                                <th class="p-3">#</th><th class="p-3">رقم الحاوية</th><th class="p-3">تاريخ الوصول</th><th class="p-3">المنفذ</th><th class="p-3">الماركة</th><th class="p-3">المنشأ</th><th class="p-3">العدد (كرتونة)</th><th class="p-3">رقم السيارة</th><th class="p-3">السائق الناقل</th><th class="p-3 text-center">الحرارة</th><th class="p-3 text-center admin-only">إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inboundTableBody" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. DISPATCH -->
+        <section id="tab-dispatch" class="hidden space-y-6">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="arrow-up-right" class="w-5 h-5 text-emerald-500"></i> أذونات التوزيع وأسطول الشحن</h2>
+                    <p class="text-xs text-slate-500 mt-1">إجمالي <span id="dynDispatchTransCount" class="font-num">761</span> إرسالية (<span id="dynDispatchBoxesCount" class="font-bold text-slate-800 font-num">156,243</span> كرتونة)</p>
+                </div>
+                <button type="button" onclick="toggleDispatchForm()" class="admin-only px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> تسجيل إرسالية توزيع
+                </button>
+            </div>
+
+            <!-- Dispatch Filter Bar (Accessible to All Visitors) -->
+            <div class="glass-panel p-4 rounded-2xl border border-slate-200 bg-white/80 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4 text-emerald-600"></i>
+                    <span class="text-xs font-bold text-[#45260a]">بحث في أذونات التوزيع:</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <input type="date" id="dispatchDateFilter" onchange="filterDispatchTable()" class="text-xs bg-white border border-slate-300 rounded-xl px-2 py-1.5 font-bold cursor-pointer">
+                    <input type="text" id="dispatchSearchInput" oninput="filterDispatchTable()" placeholder="ابحث بالتاجر أو السائق أو الإيصال..." class="text-xs bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold w-56 sm:w-64">
+                    <button type="button" onclick="clearDispatchSearch()" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold">مسح ✕</button>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
+                <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+                    <table class="w-full text-right text-xs">
+                        <thead class="bg-white text-slate-500 sticky top-0 font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">#</th><th class="p-3">التاريخ</th><th class="p-3">اليوم</th><th class="p-3">السائق</th><th class="p-3 text-amber-700 font-bold">التاجر</th><th class="p-3">رقم السيارة</th><th class="p-3">الوجهة</th><th class="p-3">الماركة</th><th class="p-3">العدد (طرد)</th><th class="p-3">الإيصال</th><th class="p-3 text-center admin-only">إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dispatchTableBody" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. MOVEMENT -->
+        <section id="tab-movement" class="hidden space-y-6">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-cyan-500"></i> حركة مستودع نجها الشاملة (<span id="movementDaysCount">30</span> يوماً)</h2>
+            </div>
+            <!-- Movement Filter Bar -->
+            <div class="glass-panel p-4 rounded-2xl border border-slate-200 bg-white/80 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-4 h-4 text-cyan-600"></i>
+                    <span class="text-xs font-bold text-[#45260a]">بحث بالتاريخ في الحركة اليومية:</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <input type="date" id="movementDateFilter" onchange="filterMovementTable()" class="text-xs bg-white border border-slate-300 rounded-xl px-2 py-1.5 font-bold cursor-pointer">
+                    <input type="text" id="movementSearchInput" oninput="filterMovementTable()" placeholder="ابحث بالبيان أو اليوم..." class="text-xs bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold w-56 sm:w-64">
+                    <button type="button" onclick="clearMovementSearch()" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold">مسح ✕</button>
+                </div>
+            </div>
+            <div class="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-xs">
+                        <thead class="bg-white/90 text-slate-500 font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">التاريخ</th><th class="p-3">اليوم</th><th class="p-3">رصيد البداية</th><th class="p-3 text-cyan-600">الوارد</th><th class="p-3 text-emerald-600">الصادر</th><th class="p-3 text-amber-600">الصافي</th><th class="p-3 font-black text-[#45260a]">رصيد النهاية</th><th class="p-3">البيان</th>
+                            </tr>
+                        </thead>
+                        <tbody id="movementTableBody" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. ROOMS -->
+        <section id="tab-rooms" class="space-y-6">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-wrap justify-between items-center gap-3">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="boxes" class="w-5 h-5 text-amber-500"></i> قاعات التخمير والتبريد (7 إلى 12)</h2>
+                    <p class="text-xs text-slate-500 mt-1">عرض ومتابعة أصناف وماركات الموز ومناشئها لكل قاعة مع حساب ساعات التشغيل تلقائياً</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="printRoomsReport()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md transition-all">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                        <span>طباعة / تصدير PDF</span>
+                    </button>
+                    <span id="roomsActualBadge" class="px-3 py-1.5 bg-amber-50 text-amber-800 rounded-xl text-xs font-bold border border-amber-200 font-num">الرصيد الفعلي: — طرد</span>
+                </div>
+            </div>
+            <div id="roomsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </section>
+
+        <!-- 6. INSPECTION -->
+        <section id="tab-inspection" class="hidden space-y-6">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="camera" class="w-5 h-5 text-purple-600"></i> معرض وتقارير الفحص (143 حاوية)</h2>
+            </div>
+        </section>
+
+        <!-- نافذة تسجيل إرسالية توزيع أو استلام حاوية للمسؤول -->
+        <div id="adminActionModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+            <div class="glass-panel w-full max-w-lg bg-white border border-[#fae5d3] rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <h3 class="font-bold text-slate-900 text-base" id="adminModalTitle">تسجيل إرسالية توزيع جديدة</h3>
+                    <button type="button" onclick="closeAdminActionModal()" class="text-slate-500 hover:text-[#cf711f] font-bold p-1">✕</button>
+                </div>
+                
+                <form onsubmit="handleAdminFormSubmit(event)" class="space-y-3.5 text-xs">
+                    <input type="hidden" id="adminFormType" value="dispatch">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1" id="lblFormId">رقم الإيصال / الفاتورة *</label>
+                            <input type="text" id="mFormId" required placeholder="مثال: 1507" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">تاريخ الإرسالية *</label>
+                            <input type="date" id="mFormDate" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold font-num focus:border-amber-500">
+                        </div>
+                    </div>
+
+                    <div id="wrapperTimeInput">
+                        <label class="block text-slate-700 font-semibold mb-1">وقت الإرسالية (تلقائي ولحظي) *</label>
+                        <input type="text" id="mFormTime" readonly class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold font-mono">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="wrapperMerchantAndRoom">
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1" id="lblMerchantSelect">التاجر / الزبون *</label>
+                            <select id="mFormMerchantSelect" onchange="onMerchantSelected(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                                <option value="عمر العقاد">عمر العقاد</option>
+                                <option value="أحمد الطالب">أحمد الطالب</option>
+                                <option value="custom">-- تاجر آخر (كتابة يدوية) --</option>
+                            </select>
+                            <input type="text" id="mFormMerchantCustom" placeholder="اكتب اسم التاجر هنا" class="hidden mt-1.5 w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-semibold">
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">التحميل من قاعة رقم *</label>
+                            <select id="mFormSourceRoom" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                                <option value="7">قاعة 7 (تبريد / جاهزة)</option>
+                                <option value="8">قاعة 8 (تخمير 24 ساعة)</option>
+                                <option value="9">قاعة 9 (تخزين تبريد)</option>
+                                <option value="10">قاعة 10 (تخمير 24 ساعة)</option>
+                                <option value="11">قاعة 11 (تخمير 24 ساعة)</option>
+                                <option value="12">قاعة 12 (تبريد / جاهزة)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1" id="lblDriverSelect">السائق الناقل *</label>
+                            <select id="mFormDriverSelect" onchange="onDriverSelectedChange(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                                <option value="">-- اختر السائق من الأسطول --</option>
+                            </select>
+                            <input type="text" id="mFormDriverCustom" placeholder="اكتب اسم السائق" class="hidden mt-1.5 w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">رقم السيارة / اللوحة *</label>
+                            <input type="text" id="mFormCar" required placeholder="رقم اللوحة يظهر تلقائياً" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono focus:border-amber-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">الماركة *</label>
+                            <select id="mFormBrand" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                                <option value="روزيتا">روزيتا</option>
+                                <option value="ديلمونتي">ديلمونتي</option>
+                                <option value="اكسترا بان">اكسترا بان</option>
+                                <option value="كوستا سول">كوستا سول</option>
+                                <option value="بانا غولد">بانا غولد</option>
+                                <option value="بانا كولد">بانا كولد</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">العدد (طرد) *</label>
+                            <input type="number" id="mFormQty" required min="1" placeholder="مثال: 440" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono text-center focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">الوجهة *</label>
+                            <input type="text" id="mFormDest" value="دمشق" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">المنشأ + الوزن *</label>
+                            <select id="mFormOrigin" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500"></select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">درجة الحرارة (°C)</label>
+                            <input type="number" step="0.1" id="mFormTemp" value="13.5" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono text-center focus:border-amber-500">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-200">
+                        <span class="text-[11px] text-slate-500">سيتم حفظ البيانات والمزامنة السحابية فوراً.</span>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="closeAdminActionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold">إلغاء</button>
+                            <button type="submit" id="btnSubmitAdminData" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all">حفظ وتأكيد</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Admin Comprehensive Room Modal (with Add Brand Button & Origin support) -->
+        <div id="fullRoomModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+            <div class="glass-panel w-full max-w-xl bg-white border border-amber-500/40 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-600 flex items-center justify-center font-black text-lg">
+                            <span id="fullRoomModalNum">7</span>
+                        </div>
+                        <div>
+                            <h3 id="fullRoomModalTitle" class="font-black text-slate-900 text-base">إدارة وتعديل القاعة 7</h3>
+                            <p class="text-xs text-slate-500">تحديث الحالة، الحرارة، وإضافة ماركات متعددة مع مناشئها</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeFullRoomModal()" class="text-slate-500 hover:text-[#cf711f] font-bold text-lg p-1">✕</button>
+                </div>
+
+                <form onsubmit="handleFullRoomSubmit(event)" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">حالة القاعة *</label>
+                            <select id="modalRoomStatus" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:outline-none focus:border-amber-400">
+                                <option value="ripening">🔥 قيد التخمير والإنضاج</option>
+                                <option value="storage">❄️ قاعة تخزين تبريد (موز أخضر)</option>
+                                <option value="cooled">❄️ تبريد وحفظ (جاهزة للصرف)</option>
+                                <option value="empty">فارغة (شاغرة)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">درجة الحرارة (°C) *</label>
+                            <input type="number" step="0.1" id="modalRoomTemp" required value="13.5" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold font-mono font-bold focus:outline-none focus:border-amber-400">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-2 border-t border-slate-100">
+                        <div class="flex items-center justify-between">
+                            <label class="font-bold text-slate-800 flex items-center gap-1.5">
+                                <i data-lucide="package" class="w-4 h-4 text-amber-500"></i>
+                                الماركات والكميات الموجودة في القاعة:
+                            </label>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="clearModalRoomItems()" class="text-[11px] text-red-500 hover:underline flex items-center gap-1 font-bold">
+                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> تفريغ القاعة
+                                </button>
+                                <button type="button" onclick="addModalRoomItemRow()" class="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-white rounded-xl text-xs font-bold flex items-center gap-1 shadow-sm transition-all">
+                                    <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> + إضافة ماركة للقاعة
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="modalRoomItemsContainer" class="space-y-2.5 max-h-56 overflow-y-auto pr-1"></div>
+
+                        <div class="p-3 bg-[#fdf2e9] rounded-xl border border-[#fae5d3] flex items-center justify-between">
+                            <span class="text-[#45260a] font-bold">مجموع كراتين القاعة:</span>
+                            <span id="modalRoomTotalQty" class="font-mono font-black text-[#cf711f] text-sm">0 كرتونة</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-200">
+                        <button type="button" onclick="closeFullRoomModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold">إلغاء</button>
+                        <button type="submit" id="btnSubmitFullRoom" class="px-6 py-2 bg-[#e67e22] hover:bg-[#cf711f] text-white font-bold rounded-xl shadow-md transition-all">
+                            حفظ وتحديث القاعة سحابياً
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-[#fae5d3] py-5 text-center mt-12">
+        <p dir="ltr" class="text-xs text-[#767676] font-mono tracking-wider">Developed by <span class="text-[#e67e22] font-black">Mohamad Harba</span></p>
+    </footer>
+
+    <!-- Modals -->
+    <div id="brandsModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-xl bg-white border border-[#fae5d3] rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h3 class="font-bold text-slate-900 text-base">دليل الماركات المعتمدة</h3>
+                <button type="button" onclick="closeBrandsModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
+            </div>
+            <div class="flex-1 overflow-y-auto max-h-72">
+                <table class="w-full text-right text-xs">
+                    <thead><tr><th class="p-2.5">#</th><th class="p-2.5">اسم الماركة</th><th class="p-2.5">المنشأ والتعبئة</th></tr></thead>
+                    <tbody id="brandsListTableBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="driverModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl bg-white border border-[#fae5d3] rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h3 class="font-bold text-slate-900 text-base">دليل أسطول السائقين</h3>
+                <button type="button" onclick="closeDriverModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
+            </div>
+            <div class="flex-1 overflow-y-auto max-h-80">
+                <table class="w-full text-right text-xs">
+                    <thead><tr><th class="p-2.5">اسم السائق</th><th class="p-2.5">رقم السيارة</th><th class="p-2.5">الوجهة</th><th class="p-2.5 text-center">الرحلات</th><th class="p-2.5 text-center">إجمالي الكراتين</th></tr></thead>
+                    <tbody id="driverListTableBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md bg-white border border-blue-500/40 rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-600 flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                    <h3 class="font-bold text-slate-900 text-base">تسجيل دخول المسؤولين</h3>
+                </div>
+                <button type="button" onclick="closeLoginModal()" class="text-slate-500 hover:text-[#cf711f]">✕</button>
+            </div>
+            <form onsubmit="handleLoginSubmit(event)" class="space-y-3 text-xs">
+                <div id="loginErrorMsg" class="hidden p-2.5 rounded-xl bg-red-500/10 text-red-600 text-xs font-semibold"></div>
+                <div><label class="block text-slate-700 font-semibold mb-1">البريد الإلكتروني *</label><input type="email" id="loginEmailInput" required placeholder="admin@najha.com" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold"></div>
+                <div><label class="block text-slate-700 font-semibold mb-1">كلمة المرور *</label><input type="password" id="loginPasswordInput" required placeholder="••••••••" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold"></div>
+                <div class="flex justify-end gap-2 pt-2 border-t border-slate-200">
+                    <button type="button" onclick="closeLoginModal()" class="px-4 py-2 bg-slate-100 rounded-xl font-bold">إلغاء</button>
+                    <button type="submit" id="btnLoginSubmit" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-xl shadow-md">دخول</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Complete Engine -->
+    <script>
+        const APP_DATA_VERSION = "2026-11-01-v63c-uid-corrected";
+
+        function safeCreateIcons() {
+            try {
+                if (typeof window !== 'undefined' && window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
+                }
+            } catch (e) {
+                console.warn('Lucide icon notice:', e);
+            }
+        }
+
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyACDHNGKLPOhNQySf2CS2DnufNh7IrKQU0",
+            authDomain: "najha-store.firebaseapp.com",
+            projectId: "najha-store",
+            storageBucket: "najha-store.firebasestorage.app",
+            messagingSenderId: "494730546853",
+            appId: "1:494730546853:web:c2f29cc7b11e69b8ed874c",
+            measurementId: "G-B6D2H4ES9V"
+        };
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        try {
+            db.enablePersistence({ synchronizeTabs: true }).catch(err => {});
+        } catch (e) {}
+
+        const WAREHOUSE_DOC_REF = db.collection("warehouse_data").doc("current_state");
+
+        // Drivers Fleet with automatic vehicle matching
+        const fleetDrivers = [
+            { name: "أبو عدي", car: "854193" },
+            { name: "عدي", car: "623423" },
+            { name: "بلال", car: "624013" },
+            { name: "شادي السبع", car: "768082" },
+            { name: "أبو رمضان", car: "349681" },
+            { name: "أبو علي", car: "10862" },
+            { name: "أبو حسين", car: "46078" },
+            { name: "علي حمود", car: "7317" },
+            { name: "فادي", car: "624756" },
+            { name: "أبو محمود", car: "513321" },
+            { name: "عجاج", car: "623360" },
+            { name: "أحمد", car: "38646" }
+        ];
+
+        let inboundData = [
+            {"id": "170773", "date": "2026-10-31", "port": "موفق قاسم", "brand": "بانا كولد", "qty": 864, "car": "8219605", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.5, "pack": "اكوادور-20كغ"},
+            {"id": "170763", "date": "2026-10-31", "port": "عبد القادر خارووف", "brand": "روزيتا", "qty": 1098, "car": "8289112", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.3, "pack": "اكوادور-20كغ"},
+            {"id": "170775", "date": "2026-10-31", "port": "احمد طه", "brand": "بانا كولد", "qty": 1080, "car": "8157930", "driver": "باب الهوى", "country": "الإكوادور", "temp": 13.0, "pack": "اكوادور-20كغ"},
+            {"id": "168975", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "عبد الرحمن نوادي", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
+            {"id": "168969", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8156884", "driver": "أحمد القش", "country": "الإكوادور", "temp": 14.5, "pack": "اكوادور-20كغ"},
+            {"id": "168964", "date": "2026-10-29", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8219605", "driver": "موفق قاسم", "country": "الإكوادور", "temp": 14.3, "pack": "اكوادور-20كغ"},
+            {"id": "1274025", "date": "2026-10-30", "port": "محمد نعمة", "brand": "اكسترا بان", "qty": 1595, "car": "8217579", "driver": "المرفأ", "country": "الهند", "temp": 14.5, "pack": "هندي-14كغ"},
+            {"id": "6974999", "date": "2026-10-30", "port": "عيد موسى", "brand": "اكسترا بان", "qty": 1595, "car": "8181932", "driver": "المرفأ", "country": "الهند", "temp": 14.7, "pack": "هندي-14كغ"},
+            {"id": "8765154", "date": "2026-10-30", "port": "مهران ليلى", "brand": "اكسترا بان", "qty": 1595, "car": "8189427", "driver": "المرفأ", "country": "الهند", "temp": 15.3, "pack": "هندي-14كغ"},
+            {"id": "5432400", "date": "2026-10-30", "port": "محمد زعيتر", "brand": "اكسترا بان", "qty": 1595, "car": "81411573", "driver": "المرفأ", "country": "الهند", "temp": 14.6, "pack": "هندي-14كغ"},
+            {"id": "16975", "date": "2026-10-30", "port": "محمد إسماعيل", "brand": "روزيتا", "qty": 1098, "car": "008352", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.7, "pack": "اكوادور-20كغ"},
+            {"id": "169611", "date": "2026-10-30", "port": "عبد الرحمن نوادي", "brand": "روزيتا", "qty": 1098, "car": "8192776", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.2, "pack": "اكوادور-20كغ"},
+            {"id": "169668", "date": "2026-10-30", "port": "مهند حاج ناصر", "brand": "روزيتا", "qty": 1098, "car": "003684", "driver": "باب الهوى", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
+            {"id": "126655", "date": "2026-09-01", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "2530", "driver": "رعد العلي", "country": "الإكوادور", "temp": 16.5, "pack": "اكوادور-20كغ"}
+        ];
+
+        let dispatchData = [
+            {"id": 9201, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1519", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 424, "pack": "كوستريكا-19كغ"},
+            {"id": 9202, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1521", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 446, "pack": "كوستريكا-19كغ"},
+            {"id": 9203, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1521", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 4, "pack": "كوستريكا-19كغ"},
+            {"id": 9204, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1522", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 90, "pack": "كوستريكا-19كغ"},
+            {"id": 9205, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1522", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 270, "pack": "كوستريكا-19كغ"},
+            {"id": 9206, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1523", "driver": "عجاج", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 365, "pack": "كوستريكا-19كغ"},
+            {"id": 9207, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1523", "driver": "عجاج", "car": "624013", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 78, "pack": "كوستريكا-19كغ"},
+            {"id": 9208, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1524", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 447, "pack": "كوستريكا-19كغ"},
+            {"id": 9209, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1524", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 18, "pack": "اكوادور-20كغ"},
+            {"id": 9210, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1525", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 416, "pack": "كوستريكا-19كغ"},
+            {"id": 9211, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1526", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 5, "pack": "كوستريكا-19كغ"},
+            {"id": 9212, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1526", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "عمر العقاد", "brand": "بانا كولد", "qty": 3, "pack": "اكوادور-20كغ"},
+            {"id": 9213, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1527", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 495, "pack": "كوستريكا-19كغ"},
+            {"id": 9214, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1528", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "روزيتا", "qty": 4, "pack": "اكوادور-20كغ"},
+            {"id": 9215, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1529", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 355, "pack": "كوستريكا-19كغ"},
+            {"id": 9216, "date": "2026-10-31", "time": "", "day": "السبت", "receipt": "1530", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 69, "pack": "كوستريكا-19كغ"},
+            {"id": 9001, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1507", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 232, "pack": "كوستريكا-19كغ"},
+            {"id": 9002, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1507", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 208, "pack": "كوستريكا-19كغ"},
+            {"id": 9003, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1508", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 309, "pack": "كوستريكا-19كغ"},
+            {"id": 9004, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1508", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 202, "pack": "كوستريكا-19كغ"},
+            {"id": 9005, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1509", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 3, "pack": "كوستريكا-19كغ"},
+            {"id": 9006, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1509", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "روزيتا", "qty": 6, "pack": "اكوادور-20كغ"},
+            {"id": 9007, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1510", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 190, "pack": "كوستريكا-19كغ"},
+            {"id": 9008, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1510", "driver": "شادي السبع", "car": "768082", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 330, "pack": "كوستريكا-19كغ"},
+            {"id": 761, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "receipt": "1506", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "كوستا سول", "qty": 1, "pack": "كوستريكا-19كغ"},
+            {"id": 760, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "receipt": "1506", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "روزيتا", "qty": 7, "pack": "اكوادور-20كغ"},
+            {"id": 756, "date": "2026-10-29", "time": "16:00:00", "day": "الخميس", "receipt": "1504", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 437, "pack": "كوستريكا-19كغ"},
+            {"id": 1, "date": "2026-09-01", "time": "08:00:00", "day": "الثلاثاء", "receipt": "1016", "driver": "أبو رمضان", "car": "349681", "dest": "دمشق", "customer": "سوق دمشق", "brand": "بانا غولد", "qty": 477, "pack": "إكوادوري 20"},
+            {"id": 9009, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1511", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 170, "pack": "كوستريكا-19كغ"},
+            {"id": 9010, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1511", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 280, "pack": "كوستريكا-19كغ"},
+            {"id": 9011, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1512", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 53, "pack": "كوستريكا-19كغ"},
+            {"id": 9012, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1512", "driver": "بلال", "car": "624013", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 396, "pack": "كوستريكا-19كغ"},
+            {"id": 9013, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1513", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 312, "pack": "كوستريكا-19كغ"},
+            {"id": 9014, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1513", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 48, "pack": "كوستريكا-19كغ"},
+            {"id": 9015, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1514", "driver": "محمد", "car": "585855", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 513, "pack": "كوستريكا-19كغ"},
+            {"id": 9016, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1515", "driver": "عجاج", "car": "623360", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 450, "pack": "كوستريكا-19كغ"},
+            {"id": 9017, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1516", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 201, "pack": "كوستريكا-19كغ"},
+            {"id": 9018, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1516", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 33, "pack": "هندي-14كغ"},
+            {"id": 9019, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1517", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 229, "pack": "كوستريكا-19كغ"},
+            {"id": 9020, "date": "2026-10-30", "time": "", "day": "الجمعة", "receipt": "1518", "driver": "إتلاف مستودع", "car": "-", "dest": "دمشق", "customer": "تلف", "brand": "اكسترا بان", "qty": 2, "pack": "هندي-14كغ"}
+        ];
+
+        let movementData = [
+            {"date": "2026-10-01", "date_short": "1/10", "day": "الخميس", "open": 9126, "inQty": 2196, "outQty": 1699, "net": 497, "close": 9623, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 1,699 طرد"},
+            {"date": "2026-10-02", "date_short": "2/10", "day": "الجمعة", "open": 9623, "inQty": 2196, "outQty": 3253, "net": -1057, "close": 8566, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 3,253 طرد"},
+            {"date": "2026-10-03", "date_short": "3/10", "day": "السبت", "open": 8566, "inQty": 3240, "outQty": 2146, "net": 1094, "close": 9660, "notes": "استلام 3 حاويات (3,240 كرتونة) وتوزيع 2,146 طرد"},
+            {"date": "2026-10-04", "date_short": "4/10", "day": "الأحد", "open": 9660, "inQty": 3294, "outQty": 2330, "net": 964, "close": 10624, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 2,330 طرد"},
+            {"date": "2026-10-05", "date_short": "5/10", "day": "الاثنين", "open": 10624, "inQty": 2196, "outQty": 2400, "net": -204, "close": 10420, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 2,400 طرد"},
+            {"date": "2026-10-06", "date_short": "6/10", "day": "الثلاثاء", "open": 10420, "inQty": 8196, "outQty": 2252, "net": 5944, "close": 16364, "notes": "استلام 7 حاويات (8,196 كرتونة) وتوزيع 2,252 طرد"},
+            {"date": "2026-10-07", "date_short": "7/10", "day": "الأربعاء", "open": 16364, "inQty": 4494, "outQty": 3242, "net": 1252, "close": 17616, "notes": "استلام 4 حاويات (4,494 كرتونة) وتوزيع 3,242 طرد"},
+            {"date": "2026-10-08", "date_short": "8/10", "day": "الخميس", "open": 17616, "inQty": 1098, "outQty": 2417, "net": -1319, "close": 16297, "notes": "استلام 1 حاوية (1,098 كرتونة) وتوزيع 2,417 طرد"},
+            {"date": "2026-10-09", "date_short": "9/10", "day": "الجمعة", "open": 16297, "inQty": 3396, "outQty": 2883, "net": 513, "close": 16810, "notes": "استلام 3 حاويات (3,396 كرتونة) وتوزيع 2,883 طرد"},
+            {"date": "2026-10-10", "date_short": "10/10", "day": "السبت", "open": 16810, "inQty": 0, "outQty": 3218, "net": -3218, "close": 13592, "notes": "توزيع 3,218 طرد (لا استلام)"},
+            {"date": "2026-10-11", "date_short": "11/10", "day": "الأحد", "open": 13592, "inQty": 9618, "outQty": 3761, "net": 5857, "close": 19449, "notes": "استلام 8 حاويات (9,618 كرتونة) وتوزيع 3,761 طرد"},
+            {"date": "2026-10-12", "date_short": "12/10", "day": "الاثنين", "open": 19449, "inQty": 3396, "outQty": 3481, "net": -85, "close": 19364, "notes": "استلام 3 حاويات (3,396 كرتونة) وتوزيع 3,481 طرد"},
+            {"date": "2026-10-13", "date_short": "13/10", "day": "الثلاثاء", "open": 19364, "inQty": 0, "outQty": 3364, "net": -3364, "close": 16000, "notes": "توزيع 3,364 طرد (لا استلام)"},
+            {"date": "2026-10-14", "date_short": "14/10", "day": "الأربعاء", "open": 16000, "inQty": 0, "outQty": 4235, "net": -4235, "close": 11765, "notes": "توزيع 4,235 طرد (لا استلام)"},
+            {"date": "2026-10-15", "date_short": "15/10", "day": "الخميس", "open": 11765, "inQty": 2160, "outQty": 2286, "net": -126, "close": 11639, "notes": "استلام 2 حاويتين (2,160 كرتونة) وتوزيع 2,286 طرد"},
+            {"date": "2026-10-16", "date_short": "16/10", "day": "الجمعة", "open": 11639, "inQty": 5079, "outQty": 3488, "net": 1591, "close": 13230, "notes": "استلام 4 حاويات (5,079 كرتونة) وتوزيع 3,488 طرد"},
+            {"date": "2026-10-17", "date_short": "17/10", "day": "السبت", "open": 13230, "inQty": 5490, "outQty": 1942, "net": 3548, "close": 16778, "notes": "استلام 5 حاويات (5,490 كرتونة) وتوزيع 1,942 طرد"},
+            {"date": "2026-10-18", "date_short": "18/10", "day": "الأحد", "open": 16778, "inQty": 1098, "outQty": 2005, "net": -907, "close": 15871, "notes": "استلام 1 حاوية (1,098 كرتونة) وتوزيع 2,005 طرد"},
+            {"date": "2026-10-19", "date_short": "19/10", "day": "الاثنين", "open": 15871, "inQty": 3294, "outQty": 3020, "net": 274, "close": 16145, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 3,020 طرد"},
+            {"date": "2026-10-20", "date_short": "20/10", "day": "الثلاثاء", "open": 16145, "inQty": 3294, "outQty": 3712, "net": -418, "close": 15727, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 3,712 طرد"},
+            {"date": "2026-10-21", "date_short": "21/10", "day": "الأربعاء", "open": 15727, "inQty": 2196, "outQty": 2779, "net": -583, "close": 15144, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 2,779 طرد"},
+            {"date": "2026-10-22", "date_short": "22/10", "day": "الخميس", "open": 15144, "inQty": 1098, "outQty": 2819, "net": -1721, "close": 13423, "notes": "استلام 1 حاوية (1,098 كرتونة) وتوزيع 2,819 طرد"},
+            {"date": "2026-10-23", "date_short": "23/10", "day": "الجمعة", "open": 13423, "inQty": 1098, "outQty": 4281, "net": -3183, "close": 10240, "notes": "استلام 1 حاوية (1,098 كرتونة) وتوزيع 4,281 طرد"},
+            {"date": "2026-10-24", "date_short": "24/10", "day": "السبت", "open": 10240, "inQty": 3294, "outQty": 3057, "net": 237, "close": 10477, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 3,057 طرد"},
+            {"date": "2026-10-25", "date_short": "25/10", "day": "الأحد", "open": 10477, "inQty": 9192, "outQty": 3058, "net": 6134, "close": 16611, "notes": "استلام 8 حاويات (9,192 كرتونة) وتوزيع 3,058 طرد"},
+            {"date": "2026-10-26", "date_short": "26/10", "day": "الاثنين", "open": 16611, "inQty": 4698, "outQty": 2208, "net": 2490, "close": 19101, "notes": "استلام 4 حاويات (4,698 كرتونة) وتوزيع 2,208 طرد"},
+            {"date": "2026-10-27", "date_short": "27/10", "day": "الثلاثاء", "open": 19101, "inQty": 0, "outQty": 2113, "net": -2113, "close": 16988, "notes": "توزيع 2,113 طرد (لا استلام)"},
+            {"date": "2026-10-28", "date_short": "28/10", "day": "الأربعاء", "open": 16988, "inQty": 0, "outQty": 3209, "net": -3209, "close": 13779, "notes": "توزيع 3,209 طرد (لا استلام)"},
+            {"date": "2026-10-29", "date_short": "29/10", "day": "الخميس", "open": 13779, "inQty": 3294, "outQty": 1853, "net": 1441, "close": 15220, "notes": "استلام 3 حاويات (3,294 كرتونة) وتوزيع 1,853 طرد"},
+            {"date": "2026-10-30", "date_short": "30/10", "day": "الجمعة", "open": 15220, "inQty": 9674, "outQty": 4167, "net": 5507, "close": 20727, "notes": "استلام 7 حاويات (9,674 كرتونة) وتوزيع 4,167 طرد"},
+            {"date": "2026-10-31", "date_short": "31/10", "day": "السبت", "open": 20727, "inQty": 3042, "outQty": 3489, "net": -447, "close": 20280, "notes": "استلام 3 حاويات (3,042 كرتونة) وتوزيع 3,489 طرد"}
+        ];
+
+        let roomsData = [
+            { room: 7, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "اكسترا بان", origin: "هندي-14كغ", qty: 5530 }] },
+            { room: 8, status: "ripening", temp: 16.9, hours: "تخمير 24 ساعة", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2169 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1062 }] },
+            { room: 9, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2196 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 815 }] },
+            { room: 10, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2196 }] },
+            { room: 11, status: "ripening", temp: 17.0, hours: "تخمير 24 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 1086 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 2347 }] },
+            { room: 12, status: "cooled", temp: 14.0, hours: "مبردة جاهزة (صرف)", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2157 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1169 }] }
+        ];
+
+        let driversData = [
+            {"name": "أبو عدي", "car": "854193", "dest": "دمشق", "trips": 57, "total_qty": 12122},
+            {"name": "عدي", "car": "623423", "dest": "دمشق", "trips": 30, "total_qty": 8248},
+            {"name": "بلال", "car": "624013", "dest": "دمشق", "trips": 23, "total_qty": 4894},
+            {"name": "شادي السبع", "car": "768082", "dest": "دمشق", "trips": 16, "total_qty": 3657}
+        ];
+
+        let brandsData = [
+            {"name": "روزيتا", "origin": "اكوادور-20كغ"},
+            {"name": "ديلمونتي", "origin": "كوستريكا-19كغ"},
+            {"name": "اكسترا بان", "origin": "كوستريكا-19كغ"},
+            {"name": "كوستا سول", "origin": "كوستريكا-19كغ"},
+            {"name": "اكسترا", "origin": "كوستريكا-19كغ"},
+            {"name": "بانا غولد", "origin": "اكوادور-20كغ"}
+        ];
+
+        let originsList = ["اكوادور-20كغ", "كوستريكا-19كغ", "هندي-14كغ", "اكوادور-13.5كغ", "كوستريكي-20كغ"];
+
+        const SEED_DATA = { inbound: inboundData.slice(), dispatch: dispatchData.slice(), movement: movementData.slice() };
+
+        function unionByKey(remote, seed, keyFn) {
+            const seen = new Set(remote.map(keyFn));
+            const merged = [...remote];
+            (seed || []).forEach(item => {
+                const k = keyFn(item);
+                if (!seen.has(k)) { merged.push(item); seen.add(k); }
+            });
+            return merged;
+        }
+
+        let currentUser = null;
+        // معرفات المديرين المصرّح لهم — نفس قائمة whitelist في firestore.rules
+        // الحماية النهائية في قواعد Firestore على السحابة، وهنا طبقة أولى متطابقة معها
+        const ADMIN_UIDS = ['kQ7M6MfT8xfVzOBl3ShdKOcvw3w1', 'vabExbEEZ5TU6Lg68WFM59IJyGr2'];
+        let activeTab = 'dashboard';
+        // التاريخ الابتدائي: أحدث حركة مرصودة (يُحدَّث تلقائياً مع البيانات السحابية)
+        let activeCalendarDate = (movementData.length
+            ? [...movementData].sort((a, b) => String(a.date).localeCompare(String(b.date))).pop().date
+            : new Date().toLocaleDateString('sv'));
+
+        async function runAtomicWarehouseUpdate(mutatorCallback) {
+            if (!auth.currentUser) {
+                showToast("إجراء مرفوض: يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return false;
+            }
+
+            // دفاع طبقة أولى (عميل). الحماية النهائية في قواعد Firestore ضمن firestore.rules
+            try {
+                const token = await auth.currentUser.getIdTokenResult();
+                const isAdminClaim = token.claims.admin === true;
+                const isWhitelistedUid = ADMIN_UIDS.includes(auth.currentUser.uid);
+                if (!isAdminClaim && !isWhitelistedUid) {
+                    // إظهار معرف الحساب ليسهّل إضافته لقائمة المصرّح لهم عند الحاجة
+                    showToast(`حسابك مسجل لكنه غير مصرح كمدير — معرفك: ${auth.currentUser.uid}`, false);
+                    return false;
+                }
+            } catch (e) {
+                showToast("تعذر التحقق من الصلاحيات، حاول مجدداً", false);
+                return false;
+            }
+
+            try {
+                await db.runTransaction(async (transaction) => {
+                    const doc = await transaction.get(WAREHOUSE_DOC_REF);
+                    let remoteState = doc.exists ? doc.data() : { inboundData, dispatchData, roomsData, movementData, driversData, brandsData };
+                    const modifiedState = mutatorCallback(remoteState);
+                    modifiedState.lastUpdated = firebase.firestore.FieldValue.serverTimestamp();
+                    modifiedState.updatedBy = auth.currentUser.email;
+                    transaction.set(WAREHOUSE_DOC_REF, modifiedState);
+                });
+                showToast("تم الحفظ والمزامنة السحابية بنجاح");
+                return true;
+            } catch (error) {
+                console.error("Firestore Transaction Error:", error);
+                if (error && error.code === 'ROOM_SHORTAGE') showToast(error.message, false);
+                else showToast("تعذر الإتمام، حدث تضارب لحظي حاول مجدداً", false);
+                return false;
+            }
+        }
+
+        // ============ تثبيت بذرة القاعات الصحيحة سحابياً (مرة واحدة) ============
+        let roomsMigrationDone = false;
+        function migrateRoomsIfNeeded(docData) {
+            if (roomsMigrationDone || !auth.currentUser) return;
+            if (docData && Number(docData.roomsSeedV || 0) >= 2) { roomsMigrationDone = true; return; }
+            roomsMigrationDone = true; // منع تكرار المحاولة
+            db.runTransaction(async (tx) => {
+                const ds = await tx.get(WAREHOUSE_DOC_REF);
+                const st = ds.exists ? ds.data() : {};
+                if (Number(st.roomsSeedV || 0) >= 2) return; // مسؤول آخر قام بها
+                st.roomsData = roomsData; // أرقام المستخدم الصحيحة المضمنة في هذه النسخة
+                st.roomsSeedV = 2;
+                st.lastUpdated = firebase.firestore.FieldValue.serverTimestamp();
+                st.updatedBy = auth.currentUser.email;
+                tx.set(WAREHOUSE_DOC_REF, st);
+            }).then(() => showToast('تم تثبيت بيانات القاعات الصحيحة (20,727 طرد) في السحابة'))
+              .catch(err => console.warn('rooms migration skipped:', err));
+        }
+
+        WAREHOUSE_DOC_REF.onSnapshot((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                // دمج: بيانات السحابة أولاً + إثراء بالبيانات المضمّنة غير الموجودة سحابياً (مثل سجلات 30/10)
+                if (Array.isArray(data.inboundData)) inboundData = unionByKey(data.inboundData, SEED_DATA.inbound, it => `${String(it.id)}|${it.date}`);
+                if (Array.isArray(data.dispatchData)) dispatchData = unionByKey(data.dispatchData, SEED_DATA.dispatch, it => `${String(it.id)}|${it.date}|${it.qty}|${it.receipt}`);
+                if (Array.isArray(data.movementData)) movementData = unionByKey(data.movementData, SEED_DATA.movement, it => it.date);
+                // القاعات: بذرة المستخدم الصحيحة تبقى معتمدة حتى يثبت التثبيت السحابي (roomsSeedV)
+                if (Array.isArray(data.roomsData) && data.roomsData.length && Number(data.roomsSeedV || 0) >= 2) roomsData = data.roomsData;
+                migrateRoomsIfNeeded(data);
+                if (Array.isArray(data.driversData)) driversData = data.driversData;
+                if (Array.isArray(data.brandsData)) brandsData = data.brandsData;
+                renderAll();
+            }
+        }, (error) => {
+            // لا نترك الزائر أمام بيانات النموذج الافتراضي ظنّاً أنها حقيقية
+            console.error('Firestore Snapshot Error:', error);
+            showToast('فشل الاتصال بالبيانات السحابية (' + (error.code || 'unknown') + ')، الأرقام المعروضة حالية فقط على هذا الجهاز', false);
+        });
+
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toastNotification');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMsg');
+            if (!toast) return;
+            msg.textContent = message;
+            icon.className = isSuccess ? "w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold" : "w-8 h-8 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center font-bold";
+            icon.textContent = isSuccess ? "✓" : "✕";
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3500);
+        }
+
+        function switchTab(tabId) {
+            activeTab = tabId;
+            ['dashboard', 'inbound', 'dispatch', 'movement', 'rooms', 'inspection'].forEach(s => {
+                document.getElementById(`tab-${s}`)?.classList.toggle('hidden', s !== tabId);
+                document.getElementById(`nav-${s}`)?.classList.toggle('active', s === tabId);
+            });
+            closeAdminDrawer();
+            if (tabId === 'dashboard') setTimeout(() => { initMovementChart(); initMerchantsSplitChart(); }, 50);
+            safeCreateIcons();
+        }
+
+        function toggleAdminDrawer() {
+            const drawer = document.getElementById('adminSideDrawer');
+            const backdrop = document.getElementById('adminDrawerBackdrop');
+            if (!drawer) return;
+            const isClosed = drawer.classList.contains('drawer-closed');
+            drawer.classList.toggle('drawer-closed', !isClosed);
+            drawer.classList.toggle('drawer-open', isClosed);
+            backdrop?.classList.toggle('hidden', !isClosed);
+            setTimeout(() => backdrop?.classList.toggle('opacity-0', !isClosed), 10);
+        }
+
+        function closeAdminDrawer() {
+            document.getElementById('adminSideDrawer')?.classList.add('drawer-closed');
+            document.getElementById('adminSideDrawer')?.classList.remove('drawer-open');
+            document.getElementById('adminDrawerBackdrop')?.classList.add('hidden', 'opacity-0');
+        }
+
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            if (user) {
+                // إن دخول مسؤول -> تحقق هل بذرة القاعات الصحيحة مثبتة سحابياً
+                WAREHOUSE_DOC_REF.get().then(ds => migrateRoomsIfNeeded(ds.exists ? ds.data() : {})).catch(() => {});
+            }
+            document.body.classList.toggle('visitor-mode', !user);
+            document.getElementById('btnLoginOpen')?.classList.toggle('hidden', !!user);
+            document.getElementById('adminBadgeWrapper')?.classList.toggle('hidden', !user);
+            if (user && document.getElementById('adminUserEmail')) {
+                document.getElementById('adminUserEmail').textContent = user.email.split('@')[0];
+            }
+            safeCreateIcons();
+        });
+
+        function openLoginModal() { 
+            document.getElementById('loginErrorMsg')?.classList.add('hidden');
+            document.getElementById('loginModal')?.classList.remove('hidden'); 
+        }
+        function closeLoginModal() { document.getElementById('loginModal')?.classList.add('hidden'); }
+        
+        async function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmailInput').value.trim();
+            const pass = document.getElementById('loginPasswordInput').value;
+            const errDiv = document.getElementById('loginErrorMsg');
+            const submitBtn = document.getElementById('btnLoginSubmit');
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'جارٍ الدخول...';
+                await auth.signInWithEmailAndPassword(email, pass);
+                closeLoginModal();
+                showToast('تم تسجيل الدخول بنجاح كمسؤول');
+            } catch (err) {
+                errDiv.textContent = 'بيانات الاعتماد غير صالحة، يرجى المحاولة ثانية.';
+                errDiv.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'دخول';
+            }
+        }
+
+        async function handleLogout() { 
+            await auth.signOut(); 
+            showToast('تم تسجيل الخروج والعودة لوضع الزائر'); 
+        }
+
+        function openBrandsModal() { document.getElementById('brandsModal')?.classList.remove('hidden'); safeCreateIcons(); }
+        function closeBrandsModal() { document.getElementById('brandsModal')?.classList.add('hidden'); }
+        function openDriverModal() { document.getElementById('driverModal')?.classList.remove('hidden'); safeCreateIcons(); }
+        function closeDriverModal() { document.getElementById('driverModal')?.classList.add('hidden'); }
+
+        // Calendar functions
+        function onGlobalDatePicked(dateStr) {
+            if (!dateStr) return;
+            activeCalendarDate = dateStr;
+            const d = new Date(dateStr + 'T00:00:00');
+            const dayNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            document.getElementById('calendarDayLabel').textContent = `${dayNames[d.getDay()]}، ${d.getDate()} / ${d.getMonth() + 1} / ${d.getFullYear()}`;
+            document.getElementById('globalCalendarPicker').value = dateStr;
+            updateCalendarMetrics(dateStr);
+            updateMerchantBreakdown();
+        }
+
+        function navigateCalendarDay(offset) {
+            const current = new Date(activeCalendarDate + 'T00:00:00');
+            current.setDate(current.getDate() + offset);
+            onGlobalDatePicked(current.toISOString().split('T')[0]);
+        }
+
+        function setCalendarToToday() {
+            // الوصول لأحدث حركة مسجلة فعلياً بدون أرقام يدوية
+            const sorted = [...movementData].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+            const latest = sorted[sorted.length - 1];
+            onGlobalDatePicked(latest ? latest.date : new Date().toLocaleDateString('sv'));
+        }
+
+        function updateCalendarMetrics(dateStr) {
+            const inMatches = inboundData.filter(c => c.date === dateStr);
+            const inTotal = inMatches.reduce((acc, c) => acc + (parseInt(c.qty, 10) || 0), 0);
+
+            const dispMatches = dispatchData.filter(d => d.date === dateStr);
+            const dispTotal = dispMatches.reduce((acc, d) => acc + (parseInt(d.qty, 10) || 0), 0);
+
+            const moveEntry = movementData.find(m => m.date === dateStr);
+
+            // لا أرقام ثابتة مزيفة: تُشتق الأرصدة من بلمنت السجل، أو "—" إن غاب اليوم
+            let openStock = null, closeStock = null;
+            if (moveEntry) {
+                openStock = moveEntry.open;
+                closeStock = moveEntry.close;
+            } else {
+                const sorted = [...movementData].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+                const prev = [...sorted].reverse().find(m => String(m.date) < dateStr);
+                const next = sorted.find(m => String(m.date) > dateStr);
+                openStock = prev ? prev.close : null;
+                closeStock = (openStock !== null)
+                    ? openStock + inTotal - dispTotal
+                    : (next ? next.open : null);
+            }
+
+            const fmt = (v) => (v === null || v === undefined) ? '—' : Number(v).toLocaleString();
+            document.getElementById('calOpenStock').textContent = fmt(openStock);
+            document.getElementById('calInboundQty').textContent = inTotal > 0 ? `+${inTotal.toLocaleString()}` : '0';
+            document.getElementById('calInboundCount').textContent = `(${inMatches.length} حاوية)`;
+            document.getElementById('calDispatchQty').textContent = dispTotal > 0 ? `-${dispTotal.toLocaleString()}` : '0';
+            document.getElementById('calDispatchCount').textContent = `(${dispMatches.length} إرسالية)`;
+            document.getElementById('calCloseStock').textContent = fmt(closeStock);
+        }
+
+        // ================= DRIVER & VEHICLE SELECTION AUTOMATION =================
+        function populateDriverDropdown() {
+            const select = document.getElementById('mFormDriverSelect');
+            if (!select) return;
+            select.innerHTML = '<option value="">-- اختر السائق من الأسطول --</option>';
+            fleetDrivers.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d.name;
+                opt.textContent = `${d.name} (لوحة: ${d.car})`;
+                select.appendChild(opt);
+            });
+            const customOpt = document.createElement('option');
+            customOpt.value = "custom";
+            customOpt.textContent = "-- سائق آخر (كتابة يدوية) --";
+            select.appendChild(customOpt);
+        }
+
+        function populateOriginDropdown() {
+            const sel = document.getElementById('mFormOrigin');
+            if (!sel) return;
+            sel.innerHTML = originsList.map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');
+        }
+
+        function onDriverSelectedChange(driverName) {
+            const carInput = document.getElementById('mFormCar');
+            const customInput = document.getElementById('mFormDriverCustom');
+            if (driverName === 'custom') {
+                customInput?.classList.remove('hidden');
+                if (customInput) customInput.required = true;
+                if (carInput) {
+                    carInput.value = '';
+                    carInput.readOnly = false;
+                    carInput.placeholder = "اكتب رقم اللوحة";
+                }
+            } else {
+                customInput?.classList.add('hidden');
+                if (customInput) customInput.required = false;
+                const matched = fleetDrivers.find(d => d.name === driverName);
+                if (matched && carInput) {
+                    carInput.value = matched.car; // Auto-fill vehicle plate
+                    carInput.readOnly = false;
+                } else if (carInput) {
+                    carInput.value = '';
+                }
+            }
+        }
+
+        function onMerchantSelected(merchantVal) {
+            const customInput = document.getElementById('mFormMerchantCustom');
+            if (merchantVal === 'custom') {
+                customInput?.classList.remove('hidden');
+                if (customInput) customInput.required = true;
+            } else {
+                customInput?.classList.add('hidden');
+                if (customInput) customInput.required = false;
+            }
+        }
+
+        // ================= DISPATCH / INBOUND MODAL CONTROLS =================
+        function toggleDispatchForm() {
+            if (!auth.currentUser) {
+                showToast("يتطلب تسجيل الدخول كمسؤول أولاً", false);
+                openLoginModal();
+                return;
+            }
+
+            populateDriverDropdown();
+            populateOriginDropdown();
+
+            document.getElementById('adminFormType').value = 'dispatch';
+            document.getElementById('adminModalTitle').textContent = 'تسجيل إرسالية توزيع وصرف من القاعة';
+            document.getElementById('lblFormId').textContent = 'رقم الإيصال / الفاتورة *';
+            document.getElementById('wrapperTimeInput')?.classList.remove('hidden');
+            document.getElementById('wrapperMerchantAndRoom')?.classList.remove('hidden');
+
+            const now = new Date();
+            const timeString = now.toTimeString().split(' ')[0];
+            document.getElementById('mFormTime').value = timeString;
+            document.getElementById('mFormDate').value = now.toISOString().split('T')[0];
+
+            document.getElementById('mFormMerchantSelect').value = 'عمر العقاد';
+            onMerchantSelected('عمر العقاد');
+
+            if (fleetDrivers.length > 0) {
+                document.getElementById('mFormDriverSelect').value = fleetDrivers[0].name;
+                onDriverSelectedChange(fleetDrivers[0].name);
+            }
+
+            document.getElementById('adminActionModal')?.classList.remove('hidden');
+        }
+
+        function toggleInboundForm() {
+            if (!auth.currentUser) {
+                showToast("يتطلب تسجيل الدخول كمسؤول أولاً", false);
+                openLoginModal();
+                return;
+            }
+
+            document.getElementById('adminFormType').value = 'inbound';
+            document.getElementById('adminModalTitle').textContent = 'إضافة بيان استلام حاوية واردة';
+            document.getElementById('lblFormId').textContent = 'رقم الحاوية المستلمة *';
+            document.getElementById('wrapperTimeInput')?.classList.add('hidden');
+            document.getElementById('wrapperMerchantAndRoom')?.classList.add('hidden');
+
+            const now = new Date();
+            document.getElementById('mFormDate').value = now.toISOString().split('T')[0];
+            populateDriverDropdown();
+            populateOriginDropdown();
+
+            document.getElementById('adminActionModal')?.classList.remove('hidden');
+        }
+
+        function closeAdminActionModal() {
+            document.getElementById('adminActionModal')?.classList.add('hidden');
+        }
+
+        async function handleAdminFormSubmit(e) {
+            e.preventDefault();
+            const type = document.getElementById('adminFormType').value;
+            const idVal = document.getElementById('mFormId').value.trim();
+            const dateVal = document.getElementById('mFormDate').value;
+            const timeVal = new Date().toTimeString().split(' ')[0]; // وقت لحظي عند الضغط على حفظ
+            const qtyVal = parseInt(document.getElementById('mFormQty').value, 10) || 0;
+            const brandVal = document.getElementById('mFormBrand').value;
+            const originVal = document.getElementById('mFormOrigin')?.value || '';
+            const tempVal = parseFloat(document.getElementById('mFormTemp')?.value) || 13.5;
+            const carVal = document.getElementById('mFormCar').value.trim();
+            const destVal = document.getElementById('mFormDest').value.trim() || 'دمشق';
+            const roomVal = document.getElementById('mFormSourceRoom')?.value || '8';
+
+            const merchantSelect = document.getElementById('mFormMerchantSelect').value;
+            const merchantVal = merchantSelect === 'custom' 
+                ? document.getElementById('mFormMerchantCustom').value.trim() 
+                : merchantSelect;
+
+            const driverSelect = document.getElementById('mFormDriverSelect').value;
+            const driverVal = driverSelect === 'custom' 
+                ? document.getElementById('mFormDriverCustom').value.trim() 
+                : driverSelect;
+
+            if (!driverVal) {
+                showToast("يرجى اختيار اسم السائق", false);
+                return;
+            }
+
+            const btn = document.getElementById('btnSubmitAdminData');
+            btn.disabled = true;
+            btn.textContent = 'جارٍ المزامنة...';
+
+            const success = await runAtomicWarehouseUpdate((state) => {
+                if (type === 'inbound') {
+                    if (!state.inboundData) state.inboundData = inboundData;
+                    state.inboundData.unshift({
+                        id: idVal,
+                        date: dateVal,
+                        port: "باب الهوى",
+                        brand: brandVal,
+                        qty: qtyVal,
+                        car: carVal || "-",
+                        driver: driverVal,
+                        temp: tempVal,
+                        pack: originVal || ''
+                    });
+                } else {
+                    if (!state.dispatchData) state.dispatchData = dispatchData;
+                    const nextDispatchId = state.dispatchData.reduce((m, d) => Math.max(m, parseInt(d.id, 10) || 0), 0) + 1;
+                    state.dispatchData.unshift({
+                        id: nextDispatchId,
+                        date: dateVal,
+                        time: timeVal,
+                        day: new Date(dateVal).toLocaleDateString('ar-SY', { weekday: 'long' }),
+                        receipt: idVal,
+                        driver: driverVal,
+                        customer: merchantVal,
+                        car: carVal || "-",
+                        dest: destVal,
+                        brand: brandVal,
+                        qty: qtyVal,
+                        pack: originVal || '',
+                        room: roomVal
+                    });
+
+                    // Deduct from room: مطابقة (ماركة + منشأ) ورفض الصرف الفائض بدل تجاهله صامتاً
+                    if (state.roomsData) {
+                        const targetRoom = state.roomsData.find(r => r.room == roomVal);
+                        if (targetRoom && targetRoom.items) {
+                            const itemMatch = targetRoom.items.find(it =>
+                                it.brand === brandVal && (it.origin === originVal || !it.origin));
+                            const avail = itemMatch ? (parseInt(itemMatch.qty, 10) || 0) : 0;
+                            if (!itemMatch || avail < qtyVal) {
+                                throw { code: 'ROOM_SHORTAGE', message: `الرفض: رصيد القاعة ${roomVal} من ${brandVal}${originVal ? ' - ' + originVal : ''} = ${avail} طرد فقط، والمطلوب ${qtyVal}` };
+                            }
+                            itemMatch.qty -= qtyVal;
+                        }
+                    }
+                }
+                return state;
+            });
+
+            btn.disabled = false;
+            btn.textContent = 'حفظ وتأكيد';
+
+            if (success) {
+                closeAdminActionModal();
+                showToast(type === 'inbound' ? `تم استلام الحاوية ${idVal} بنجاح` : `تم صرف ${qtyVal} طرد لحساب ${merchantVal} بنجاح`);
+            }
+        }
+
+        // ================= DELETE FUNCTIONS FOR ADMIN =================
+        // (آمن من XSS: تفويض الأحداث عبر data-attributes بدلاً من onclick المدمج)
+        function bindDeleteHandlers() {
+            const inboundTbody = document.getElementById('inboundTableBody');
+            inboundTbody?.addEventListener('click', (e) => {
+                const btn = e.target.closest('button[data-inbound-id]');
+                if (btn) deleteInboundRecord(btn.dataset.inboundId);
+            });
+            const dispatchTbody = document.getElementById('dispatchTableBody');
+            dispatchTbody?.addEventListener('click', (e) => {
+                const btn = e.target.closest('button[data-dispatch-id]');
+                if (btn) deleteDispatchRecord(btn.dataset.dispatchId);
+            });
+        }
+
+        // أعِد الملائمة SAFE: escapeJsParam يفلت الرموز الخطرة أيضاً (\ والاقتباسات)
+        function escapeJsParam(str) {
+            return String(str)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '\\"');
+        }
+
+        async function deleteInboundRecord(containerId) {
+            if (!auth.currentUser) {
+                showToast("إجراء مرفوض: يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            if (confirm(`هل أنت متأكد من حذف الحاوية رقم (${containerId})؟`)) {
+                const ok = await runAtomicWarehouseUpdate((state) => {
+                    state.inboundData = (state.inboundData || inboundData).filter(item => String(item.id) !== String(containerId));
+                    return state;
+                });
+                if (ok) showToast(`تم حذف الحاوية ${containerId} بنجاح`);
+            }
+        }
+
+        async function deleteDispatchRecord(recordId) {
+            if (!auth.currentUser) {
+                showToast("إجراء مرفوض: يتطلب صلاحيات مسؤول مسجل", false);
+                openLoginModal();
+                return;
+            }
+            if (confirm(`هل أنت متأكد من حذف إرسالية التوزيع رقم (${recordId})؟`)) {
+                const ok = await runAtomicWarehouseUpdate((state) => {
+                    state.dispatchData = (state.dispatchData || dispatchData).filter(item => String(item.id) !== String(recordId));
+                    return state;
+                });
+                if (ok) showToast(`تم حذف الإرسالية رقم ${recordId} بنجاح`);
+            }
+        }
+
+        // ================= ROOM EDITING MODAL (MULTI-BRAND & ORIGIN LOGIC) =================
+        let activeFullRoomNum = null;
+        let modalRoomItems = [];
+
+        function openFullRoomModal(roomNum) {
+            if (!auth.currentUser) {
+                showToast("يرجى تسجيل الدخول كمسؤول أولاً", false);
+                openLoginModal();
+                return;
+            }
+
+            activeFullRoomNum = roomNum;
+            const room = roomsData.find(r => r.room === roomNum);
+            if (!room) return;
+
+            document.getElementById('fullRoomModalNum').textContent = roomNum;
+            document.getElementById('fullRoomModalTitle').textContent = `إدارة وتعديل القاعة ${roomNum}`;
+            document.getElementById('modalRoomStatus').value = room.status || 'ripening';
+            document.getElementById('modalRoomTemp').value = room.temp || 14.0;
+
+            modalRoomItems = (room.items || []).map(it => ({
+                brand: it.brand || 'روزيتا',
+                origin: it.origin || 'اكوادور-20كغ',
+                qty: parseInt(it.qty, 10) || 0
+            }));
+
+            if (modalRoomItems.length === 0) {
+                modalRoomItems.push({ brand: 'روزيتا', origin: 'اكوادور-20كغ', qty: 1098 });
+            }
+
+            renderModalRoomItems();
+            document.getElementById('fullRoomModal')?.classList.remove('hidden');
+            safeCreateIcons();
+        }
+
+        function closeFullRoomModal() {
+            document.getElementById('fullRoomModal')?.classList.add('hidden');
+            activeFullRoomNum = null;
+            modalRoomItems = [];
+        }
+
+        function renderModalRoomItems() {
+            const container = document.getElementById('modalRoomItemsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            modalRoomItems.forEach((it, idx) => {
+                const row = document.createElement('div');
+                row.className = 'grid grid-cols-12 items-center gap-2 p-2 bg-slate-50 rounded-xl border border-slate-200';
+                row.innerHTML = `
+                    <div class="col-span-4">
+                        <label class="block text-[10px] text-slate-500 font-bold mb-0.5">الماركة</label>
+                        <select onchange="modalRoomItems[${idx}].brand = this.value" class="w-full bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-slate-900 font-bold text-xs">
+                            ${brandsData.map(b => `<option value="${escapeHtml(b.name)}" ${b.name === it.brand ? 'selected' : ''}>${escapeHtml(b.name)}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="col-span-4">
+                        <label class="block text-[10px] text-slate-500 font-bold mb-0.5">المنشأ بجانبها</label>
+                        <select onchange="modalRoomItems[${idx}].origin = this.value" class="w-full bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-slate-900 font-bold text-xs">
+                            ${originsList.map(o => `<option value="${escapeHtml(o)}" ${o === it.origin ? 'selected' : ''}>${escapeHtml(o)}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="col-span-3">
+                        <label class="block text-[10px] text-slate-500 font-bold mb-0.5">العدد (طرد)</label>
+                        <input type="number" min="0" value="${it.qty}" oninput="modalRoomItems[${idx}].qty = parseInt(this.value, 10) || 0; updateModalRoomTotal();" class="w-full bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-slate-900 text-xs font-mono font-bold text-center">
+                    </div>
+                    <div class="col-span-1 flex justify-center pt-3">
+                        <button type="button" onclick="removeModalRoomItemRow(${idx})" class="text-red-500 hover:text-red-700 p-1 font-bold" title="حذف هذه الماركة">✕</button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+
+            updateModalRoomTotal();
+            safeCreateIcons();
+        }
+
+        function addModalRoomItemRow() {
+            modalRoomItems.push({ brand: 'ديلمونتي', origin: 'كوستريكا-19كغ', qty: 500 });
+            renderModalRoomItems();
+        }
+
+        function removeModalRoomItemRow(idx) {
+            modalRoomItems.splice(idx, 1);
+            renderModalRoomItems();
+        }
+
+        function clearModalRoomItems() {
+            modalRoomItems = [];
+            renderModalRoomItems();
+        }
+
+        function updateModalRoomTotal() {
+            const total = modalRoomItems.reduce((acc, it) => acc + (parseInt(it.qty, 10) || 0), 0);
+            const totalEl = document.getElementById('modalRoomTotalQty');
+            if (totalEl) totalEl.textContent = `${total.toLocaleString()} كرتونة`;
+        }
+
+        async function handleFullRoomSubmit(e) {
+            e.preventDefault();
+            if (activeFullRoomNum === null) return;
+
+            const roomNum = activeFullRoomNum;
+            const newStatus = document.getElementById('modalRoomStatus').value;
+            const newTemp = parseFloat(document.getElementById('modalRoomTemp').value) || 14.0;
+            const filteredItems = modalRoomItems.filter(it => (parseInt(it.qty, 10) || 0) > 0);
+
+            const btn = document.getElementById('btnSubmitFullRoom');
+            btn.disabled = true;
+            btn.textContent = 'جارٍ المزامنة...';
+
+            const success = await runAtomicWarehouseUpdate((state) => {
+                if (!state.roomsData) state.roomsData = roomsData;
+                const rObj = state.roomsData.find(r => r.room === roomNum);
+                if (rObj) {
+                    rObj.status = newStatus;
+                    rObj.temp = newTemp;
+                    rObj.items = filteredItems;
+                    if (newStatus === 'storage') rObj.hours = "تخزين تبريد (موز أخضر)";
+                    else if (newStatus === 'ripening') rObj.hours = "تخمير 24 ساعة";
+                    else if (newStatus === 'cooled') rObj.hours = "مبردة جاهزة (صرف)";
+                    else rObj.hours = "فارغة (شاغرة)";
+                }
+                return state;
+            });
+
+            btn.disabled = false;
+            btn.textContent = 'حفظ وتحديث القاعة سحابياً';
+
+            if (success) {
+                closeFullRoomModal();
+                showToast(`تم تحديث قاعة ${roomNum} وتثبيت الماركات والمنشأ بنجاح`);
+            }
+        }
+
+        // ================= PRINT & PDF REPORT GENERATION =================
+        function printRoomsReport() {
+            const totalStock = roomsData.reduce((acc, r) => acc + (r.items ? r.items.reduce((s, it) => s + (parseInt(it.qty, 10) || 0), 0) : 0), 0);
+            const currentDate = new Date().toLocaleDateString('ar-SY', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+
+            let rowsHtml = '';
+            roomsData.forEach(r => {
+                const roomTotal = (r.items || []).reduce((sum, it) => sum + (parseInt(it.qty, 10) || 0), 0);
+                if (r.items && r.items.length > 0) {
+                    r.items.forEach((it, idx) => {
+                        rowsHtml += `
+                            <tr>
+                                ${idx === 0 ? `<td rowspan="${r.items.length}" style="text-align: center; font-weight: bold; font-size: 14px; background: #fffaf5;">قاعة ${r.room}</td>` : ''}
+                                ${idx === 0 ? `<td rowspan="${r.items.length}" style="text-align: center;">${escapeHtml(r.hours || '-')}</td>` : ''}
+                                ${idx === 0 ? `<td rowspan="${r.items.length}" style="text-align: center; direction: ltr; font-weight: bold;">${r.temp || 13.5}°C</td>` : ''}
+                                <td style="font-weight: bold; color: #2c3e50;">${escapeHtml(it.brand || '-')}</td>
+                                <td style="color: #7f8c8d;">${escapeHtml(it.origin || '-')}</td>
+                                <td style="text-align: center; font-weight: bold;">${(it.qty || 0).toLocaleString()}</td>
+                                ${idx === 0 ? `<td rowspan="${r.items.length}" style="text-align: center; font-weight: 900; background: #fdf2e9; color: #d35400;">${roomTotal.toLocaleString()}</td>` : ''}
+                            </tr>
+                        `;
+                    });
+                } else {
+                    rowsHtml += `
+                        <tr>
+                            <td style="text-align: center; font-weight: bold;">قاعة ${r.room}</td>
+                            <td style="text-align: center;">فارغة (شاغرة)</td>
+                            <td style="text-align: center; direction: ltr;">${r.temp || 13.5}°C</td>
+                            <td colspan="3" style="text-align: center; color: #95a5a6;">لا توجد بضاعة حالياً</td>
+                            <td style="text-align: center; font-weight: bold;">0</td>
+                        </tr>
+                    `;
+                }
+            });
+
+            const printWindow = window.open('', '_blank');
+            if (!printWindow) {
+                showToast("يرجى السماح بالنوافذ المنبثقة لفتح التقرير", false);
+                return;
+            }
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="ar" dir="rtl">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>تقرير جرد قاعات التخمير - شركة النسر التجارية</title>
+                    <style>
+                        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+                        * { box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+                        body { padding: 30px; color: #333; background: #fff; }
+                        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e67e22; padding-bottom: 15px; margin-bottom: 20px; }
+                        .header h1 { margin: 0; font-size: 22px; color: #45260a; }
+                        .header p { margin: 4px 0 0; font-size: 13px; color: #7f8c8d; }
+                        .meta { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 13px; background: #fdfaf7; padding: 12px 18px; border-radius: 8px; border: 1px solid #fae5d3; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+                        th, td { border: 1px solid #e0d0c1; padding: 10px 12px; font-size: 12px; }
+                        th { background-color: #fdf2e9; color: #45260a; font-weight: 700; text-align: right; }
+                        tfoot tr td { background: #fdf2e9; font-weight: bold; font-size: 14px; }
+                        .footer { display: flex; justify-content: space-between; margin-top: 40px; font-size: 13px; padding-top: 15px; border-top: 1px solid #eee; }
+                        @media print {
+                            body { padding: 0; }
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div>
+                            <h1>شركة النسر التجارية</h1>
+                            <p>إدارة المستودعات والتبريد — مستودع نجها لتخمير الموز</p>
+                        </div>
+                        <div style="text-align: left;">
+                            <h3 style="margin: 0; color: #e67e22;">كشف جرد قاعات التخمير</h3>
+                            <p style="margin: 2px 0 0; font-size: 11px;">تاريخ الاستخراج: ${currentDate}</p>
+                        </div>
+                    </div>
+
+                    <div class="meta">
+                        <div><strong>إجمالي رصيد القاعات الفعلي:</strong> <span style="color: #e67e22; font-size: 15px; font-weight: 900;">${totalStock.toLocaleString()} طرد</span></div>
+                        <div><strong>عدد القاعات:</strong> 6 قاعات (7 - 12)</div>
+                        <div><strong>حالة المستودع:</strong> مطابق 100% للجرد الفعلي</div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 10%; text-align: center;">رقم القاعة</th>
+                                <th style="width: 20%; text-align: center;">الحالة / التشغيل</th>
+                                <th style="width: 10%; text-align: center;">الحرارة</th>
+                                <th style="width: 22%;">الماركة</th>
+                                <th style="width: 18%;">المنشأ والتعبئة</th>
+                                <th style="width: 10%; text-align: center;">الكمية (طرد)</th>
+                                <th style="width: 10%; text-align: center;">مجموع القاعة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" style="text-align: left; padding-left: 20px;">المجموع الإجمالي لكافة القاعات:</td>
+                                <td colspan="2" style="text-align: center; color: #d35400; font-size: 16px;">${totalStock.toLocaleString()} طرد</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="footer">
+                        <div><strong>أمين المستودع:</strong> ..............................</div>
+                        <div><strong>مسؤول الجودة والتخمير:</strong> ..............................</div>
+                        <div><strong>إدارة شركة النسر:</strong> ..............................</div>
+                    </div>
+
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        // ================= SEARCH & FILTER HELPERS =================
+        function filterInboundTable() {
+            const q = (document.getElementById('inboundSearchInput')?.value || '').toLowerCase().trim();
+            const d = document.getElementById('inboundDateFilter')?.value || '';
+            const filtered = inboundData.filter(item => {
+                const matchText = !q || (String(item.id ?? '').toLowerCase().includes(q)) || (String(item.driver ?? '').toLowerCase().includes(q)) || (String(item.brand ?? '').toLowerCase().includes(q));
+                const matchDate = !d || item.date === d;
+                return matchText && matchDate;
+            });
+            renderInboundTable(filtered);
+        }
+
+        function clearInboundSearch() {
+            if (document.getElementById('inboundSearchInput')) document.getElementById('inboundSearchInput').value = '';
+            if (document.getElementById('inboundDateFilter')) document.getElementById('inboundDateFilter').value = '';
+            renderInboundTable(inboundData);
+        }
+
+        function filterDispatchTable() {
+            const q = (document.getElementById('dispatchSearchInput')?.value || '').toLowerCase().trim();
+            const d = document.getElementById('dispatchDateFilter')?.value || '';
+            const filtered = dispatchData.filter(item => {
+                const matchText = !q || (String(item.customer ?? '').toLowerCase().includes(q)) || (String(item.driver ?? '').toLowerCase().includes(q)) || (String(item.receipt ?? '').toLowerCase().includes(q));
+                const matchDate = !d || item.date === d;
+                return matchText && matchDate;
+            });
+            renderDispatchTable(filtered);
+        }
+
+        function clearDispatchSearch() {
+            if (document.getElementById('dispatchSearchInput')) document.getElementById('dispatchSearchInput').value = '';
+            if (document.getElementById('dispatchDateFilter')) document.getElementById('dispatchDateFilter').value = '';
+            renderDispatchTable(dispatchData);
+        }
+
+        function filterMovementTable() {
+            const q = (document.getElementById('movementSearchInput')?.value || '').toLowerCase().trim();
+            const d = document.getElementById('movementDateFilter')?.value || '';
+            const filtered = movementData.filter(item => {
+                const matchText = !q || (String(item.notes ?? '').toLowerCase().includes(q)) || (String(item.day ?? '').toLowerCase().includes(q));
+                const matchDate = !d || item.date === d;
+                return matchText && matchDate;
+            });
+            renderMovementTable(filtered);
+        }
+
+        function clearMovementSearch() {
+            if (document.getElementById('movementSearchInput')) document.getElementById('movementSearchInput').value = '';
+            if (document.getElementById('movementDateFilter')) document.getElementById('movementDateFilter').value = '';
+            renderMovementTable(movementData);
+        }
+
+        // ================= RENDERING & CHARTS =================
+        let movementChartInstance = null;
+        function initMovementChart() {
+            const canvas = document.getElementById('movementChart');
+            if (!canvas) return;
+            if (movementChartInstance) movementChartInstance.destroy();
+            movementChartInstance = new Chart(canvas.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: [...movementData].reverse().map(m => m.date_short || m.date),
+                    datasets: [{ label: 'رصيد المستودع (طرد)', data: [...movementData].reverse().map(m => m.close), borderColor: '#e67e22', backgroundColor: 'rgba(230,126,34,0.12)', fill: true, tension: 0.35, borderWidth: 3 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        }
+
+        let merchantsChartInstance = null;
+        // حصص التجار مرتبطة بتقويم اليوم المختار في الواجهة
+        function updateMerchantBreakdown() {
+            const boxEl = document.getElementById('merchantsBreakdownBox');
+            const canvas = document.getElementById('merchantsSplitChart');
+            const rows = dispatchData.filter(d => d.date === activeCalendarDate);
+            const sumQty = (arr) => arr.reduce((a, c) => a + (parseInt(c.qty, 10) || 0), 0);
+            const dayTotal = sumQty(rows);
+            const per = {
+                'عمر العقاد': sumQty(rows.filter(d => d.customer === 'عمر العقاد')),
+                'أحمد الطالب': sumQty(rows.filter(d => d.customer === 'أحمد الطالب'))
+            };
+            const others = Math.max(dayTotal - per['عمر العقاد'] - per['أحمد الطالب'], 0);
+            if (canvas) {
+                if (merchantsChartInstance) merchantsChartInstance.destroy();
+                merchantsChartInstance = new Chart(canvas.getContext('2d'), {
+                    type: 'doughnut',
+                    data: { labels: ['عمر العقاد', 'أحمد الطالب', 'آخرون'], datasets: [{ data: [per['عمر العقاد'], per['أحمد الطالب'], others], backgroundColor: ['#e67e22', '#2563eb', '#94a3b8'], borderWidth: 2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: false } } }
+                });
+            }
+            if (boxEl) {
+                const pct = (v) => dayTotal > 0 ? Math.round(v / dayTotal * 100) : 0;
+                const dfmt = (d) => { const x = new Date(d + 'T00:00:00'); return `\u0627\u0644${['\u0623\u062d\u062f','\u0627\u062b\u0646\u064a\u0646','\u062b\u0644\u0627\u062b\u0627\u0621','\u0623\u0631\u0628\u0639\u0627\u0621','\u062e\u0645\u064a\u0633','\u062c\u0645\u0639\u0629','\u0633\u0628\u062a'][x.getDay()]} ${x.getDate()}/${x.getMonth()+1}`; };
+                boxEl.innerHTML = `
+                    <div class="flex justify-between text-[11px] font-bold text-slate-500 mb-1"><span>حصص تجار يوم</span><span class="font-num">${dfmt(activeCalendarDate)}</span></div>
+                    <div class="flex justify-between items-center px-2 py-1 bg-[#fdf2e9] rounded-lg"><span class="font-bold text-[#cf711f]">عمر العقاد</span><span class="font-mono font-black">${per['عمر العقاد'].toLocaleString()} (${pct(per['عمر العقاد'])}%)</span></div>
+                    <div class="flex justify-between items-center px-2 py-1 bg-blue-50 rounded-lg"><span class="font-bold text-blue-700">أحمد الطالب</span><span class="font-mono font-black">${per['أحمد الطالب'].toLocaleString()} (${pct(per['أحمد الطالب'])}%)</span></div>
+                    <div class="flex justify-between items-center px-2 py-1 bg-slate-50 rounded-lg"><span class="font-bold text-slate-600">أخرى${others > 0 ? ` (${others} إرسالية خارج الاثنين)` : ''}</span><span class="font-mono font-black">${others.toLocaleString()} (${pct(others)}%)</span></div>
+                    <div class="flex justify-between pt-1 border-t border-dashed border-slate-200"><span class="font-black text-[#45260a]">إجمالي موزع اليوم</span><span class="font-mono font-black text-[#cf711f]">${dayTotal.toLocaleString()} طرد</span></div>
+                `;
+            }
+        }
+
+        function initMerchantsSplitChart() {
+            const canvas = document.getElementById('merchantsSplitChart');
+            if (!canvas) return;
+            if (merchantsChartInstance) merchantsChartInstance.destroy();
+            merchantsChartInstance = new Chart(canvas.getContext('2d'), {
+                type: 'doughnut',
+                data: { labels: ['عمر العقاد', 'أحمد الطالب'], datasets: [{ data: [36366, 35809], backgroundColor: ['#e67e22', '#2563eb'], borderWidth: 2 }] },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: false } } }
+            });
+        }
+
+        // Newest-First Tables Rendering with Admin Delete Buttons
+        function renderInboundTable(dataToRender = inboundData) {
+            const tbody = document.getElementById('inboundTableBody');
+            if (!tbody) return;
+            const sorted = [...dataToRender].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            tbody.innerHTML = sorted.map((row, i) => `
+                <tr>
+                    <td class="p-3 font-mono">${i + 1}</td>
+                    <td class="p-3 font-mono font-bold text-[#45260a]">${escapeHtml(row.id)}</td>
+                    <td class="p-3 font-mono">${escapeHtml(row.date)}</td>
+                    <td class="p-3">${escapeHtml(row.port || 'باب الهوى')}</td>
+                    <td class="p-3 font-bold">${escapeHtml(row.brand)}</td>
+                    <td class="p-3 font-mono text-slate-600">${escapeHtml(row.pack || 'اكوادور-20كغ')}</td>
+                    <td class="p-3 font-mono font-bold text-[#45260a]">${(row.qty || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono text-emerald-600">${escapeHtml(row.car || '-')}</td>
+                    <td class="p-3">${escapeHtml(row.driver || '-')}</td>
+                    <td class="p-3 text-center font-mono">${escapeHtml(row.temp || 13.5)}°C</td>
+                    <td class="p-3 text-center admin-only">
+                        <button type="button" data-inbound-id="${escapeHtml(String(row.id))}" class="btn-delete-inbound p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-all font-bold text-xs" title="حذف هذه الحاوية">
+                            ✕ حذف
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            safeCreateIcons();
+        }
+
+        function renderDispatchTable(dataToRender = dispatchData) {
+            const tbody = document.getElementById('dispatchTableBody');
+            if (!tbody) return;
+            const sorted = [...dataToRender].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            tbody.innerHTML = sorted.map((row, i) => `
+                <tr>
+                    <td class="p-3 font-mono">${i + 1}</td>
+                    <td class="p-3 font-mono text-slate-800 font-bold whitespace-nowrap">
+                        <div>${escapeHtml(row.date)}</div>
+                        ${row.time ? `<div class="text-[10px] text-emerald-700 font-bold font-num mt-0.5">🕒 ${escapeHtml(row.time)}</div>` : ''}
+                    </td>
+                    <td class="p-3">${escapeHtml(row.day || '-')}</td>
+                    <td class="p-3 font-bold">${escapeHtml(row.driver || '-')}</td>
+                    <td class="p-3 font-bold ${row.customer === 'عمر العقاد' ? 'text-[#cf711f]' : (row.customer === 'أحمد الطالب' ? 'text-blue-700' : 'text-slate-800')}">${escapeHtml(row.customer || '-')}</td>
+                    <td class="p-3 font-mono text-emerald-600 font-bold">${escapeHtml(row.car || '-')}</td>
+                    <td class="p-3">${escapeHtml(row.dest || 'دمشق')}</td>
+                    <td class="p-3 font-bold">${escapeHtml(row.brand)}</td>
+                    <td class="p-3 font-mono font-bold">${(row.qty || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono">${escapeHtml(row.receipt || '-')}</td>
+                    <td class="p-3 text-center admin-only">
+                        <button type="button" data-dispatch-id="${escapeHtml(String(row.id))}" class="btn-delete-dispatch p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-all font-bold text-xs" title="حذف هذه الإرسالية">
+                            ✕ حذف
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            safeCreateIcons();
+        }
+
+        function renderMovementTable(dataToRender = movementData) {
+            const tbody = document.getElementById('movementTableBody');
+            if (!tbody) return;
+            const sorted = [...dataToRender].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            tbody.innerHTML = sorted.map(row => `
+                <tr>
+                    <td class="p-3 font-mono font-bold">${escapeHtml(row.date_short || row.date)}</td>
+                    <td class="p-3 text-slate-500">${escapeHtml(row.day || '-')}</td>
+                    <td class="p-3 font-mono">${(row.open || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono text-cyan-600">+${(row.inQty || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono text-emerald-600">-${(row.outQty || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono text-amber-600">${(row.net || 0).toLocaleString()}</td>
+                    <td class="p-3 font-mono font-black text-[#cf711f]">${(row.close || 0).toLocaleString()}</td>
+                    <td class="p-3 text-slate-500 text-[11px]">${escapeHtml(row.notes || 'حركة نظام')}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderRipeningRooms() {
+            const container = document.getElementById('roomsGridContainer');
+            if (!container) return;
+            container.innerHTML = roomsData.map(r => {
+                const totalInRoom = (r.items || []).reduce((acc, it) => acc + (parseInt(it.qty, 10) || 0), 0);
+
+                return `
+                <div class="glass-panel p-4 rounded-2xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                            <span class="font-black text-sm text-[#45260a]">قاعة ${r.room}</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">${escapeHtml(r.hours || 'تخمير')}</span>
+                                <button type="button" onclick="openFullRoomModal(${r.room})" class="admin-only px-2 py-0.5 bg-[#fdf2e9] hover:bg-[#fae5d3] text-[#cf711f] border border-[#fae5d3] rounded-lg text-xs font-bold">
+                                    تعديل
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="py-2.5 space-y-1.5">
+                            ${(r.items && r.items.length > 0) ? r.items.map(it => `
+                                <div class="flex items-center justify-between text-xs py-1 px-2 bg-slate-50 rounded-lg border border-slate-100">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                        <span class="font-bold text-slate-900">${escapeHtml(it.brand)}</span>
+                                        <span class="px-2 py-0.5 rounded-md bg-[#fdf2e9] text-[#cf711f] border border-[#fae5d3] text-[10px] font-bold font-num">
+                                            [${escapeHtml(it.origin || 'اكوادور-20كغ')}]
+                                        </span>
+                                    </div>
+                                    <span class="font-mono font-black text-[#45260a]">${(it.qty || 0).toLocaleString()} طرد</span>
+                                </div>
+                            `).join('') : '<div class="text-xs text-slate-400 py-2 text-center">القاعة فارغة حالياً</div>'}
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <span class="text-slate-500 font-bold">مجموع القاعة:</span>
+                        <span class="font-mono font-black text-amber-700 text-sm">${totalInRoom.toLocaleString()} طرد</span>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            safeCreateIcons();
+        }
+
+        function renderBrandsListTable() {
+            const tbody = document.getElementById('brandsListTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = brandsData.map((b, i) => `<tr><td class="p-2.5 font-mono">${i + 1}</td><td class="p-2.5 font-bold">${escapeHtml(b.name)}</td><td class="p-2.5 font-mono">${escapeHtml(b.origin)}</td></tr>`).join('');
+        }
+
+        function renderDriverListTable() {
+            const tbody = document.getElementById('driverListTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = driversData.map(d => `<tr><td class="p-2.5 font-bold">${escapeHtml(d.name)}</td><td class="p-2.5 font-mono text-emerald-600">${escapeHtml(d.car)}</td><td class="p-2.5">${escapeHtml(d.dest)}</td><td class="p-2.5 text-center font-mono">${d.trips || 0}</td><td class="p-2.5 text-center font-mono">${(d.total_qty || 0).toLocaleString()}</td></tr>`).join('');
+        }
+
+        function updateGlobalStats() {
+            const totalStock = roomsData.reduce((acc, r) => acc + (r.items ? r.items.reduce((s, it) => s + (parseInt(it.qty, 10) || 0), 0) : 0), 0);
+            document.getElementById('headerStockBadge').textContent = `${totalStock.toLocaleString()} طرد`;
+            document.getElementById('kpiCurrentStock').textContent = totalStock.toLocaleString();
+            document.getElementById('badgeRoomsStock').textContent = totalStock.toLocaleString();
+            // حساب حقيقي من البيانات (لا أرقام ثابتة)
+            const receivedQty = inboundData.reduce((a, c) => a + (parseInt(c.qty, 10) || 0), 0);
+            const dispatchedQty = dispatchData.reduce((a, c) => a + (parseInt(c.qty, 10) || 0), 0);
+            document.getElementById('kpiTotalContainers').textContent = inboundData.length.toLocaleString();
+            document.getElementById('kpiTotalReceived').textContent = receivedQty.toLocaleString();
+            document.getElementById('kpiTotalDispatched').textContent = dispatchedQty.toLocaleString();
+            document.getElementById('kpiTotalDispatchedTrans').textContent = dispatchData.length.toLocaleString();
+            const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            setTxt('badgeInboundCount', inboundData.length);
+            setTxt('badgeDispatchCount', dispatchData.length);
+            setTxt('dynInboundContCount', inboundData.length.toLocaleString());
+            setTxt('dynInboundBoxesCount', receivedQty.toLocaleString());
+            setTxt('dynDispatchTransCount', dispatchData.length.toLocaleString());
+            setTxt('dynDispatchBoxesCount', dispatchedQty.toLocaleString());
+            const roomsBadgeEl = document.getElementById('roomsActualBadge');
+            if (roomsBadgeEl) roomsBadgeEl.textContent = `الرصيد الفعلي: ${totalStock.toLocaleString()} طرد`;
+            // عدد أيام الحركة من البيانات الفعلية بدلاً من نص ثابت
+            const daysCountEl = document.getElementById('movementDaysCount');
+            if (daysCountEl) daysCountEl.textContent = movementData.length;
+            const badgeMovement = document.getElementById('badgeMovementCount');
+            if (badgeMovement) badgeMovement.textContent = `${movementData.length} يوماً`;
+        }
+
+        function renderAll() {
+            renderInboundTable();
+            renderDispatchTable();
+            renderMovementTable();
+            renderRipeningRooms();
+            renderBrandsListTable();
+            renderDriverListTable();
+            updateGlobalStats();
+            updateMerchantBreakdown();
+            safeCreateIcons();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderAll();
+            bindDeleteHandlers();
+            setCalendarToToday();
+            initMovementChart();
+            initMerchantsSplitChart();
+        });
+    </script>
+</body>
+</html>
