@@ -458,6 +458,12 @@
         <section id="tab-movement" class="hidden space-y-6">
             <div class="glass-panel p-5 rounded-2xl border border-slate-200">
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-cyan-500"></i> حركة مستودع نجها الشاملة (<span id="movementDaysCount">37</span> يوماً)</h2>
+                <div class="admin-only mt-2">
+                    <button type="button" onclick="syncNovemberMovement()" class="px-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> تحديث حركة نوفمبر سحابياً (1..6/11)
+                    </button>
+                    <p class="text-[10px] text-slate-400 mt-1">اضغطه مرة واحدة إذا ظهرت أرقام قديمة للشهر 11 (يعيد كتابة أيام 1..6/11 بالقيم المصحّحة: خارج 3/11 = 4,186 — غلق 6/11 = 23,530)</p>
+                </div>
             </div>
             <!-- Movement Filter Bar -->
             <div class="glass-panel p-4 rounded-2xl border border-slate-200 bg-white/80 flex flex-wrap items-center justify-between gap-3">
@@ -508,7 +514,7 @@
             <div class="glass-panel p-5 rounded-2xl border border-slate-200 flex flex-wrap justify-between items-center gap-3">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="camera" class="w-5 h-5 text-purple-600"></i> معرض وتقارير الفحص (<span id="inspectionHeaderCount" class="font-num">0</span> حاوية)</h2>
-                    <p id="inspectionHeaderSub" class="text-xs text-slate-500 mt-1">إجمالي <span id="inspectionHeaderPhotos" class="font-bold text-purple-600 font-num">0</span> صورة توثيقية في المعارض</p>
+                    <p id="inspectionHeaderSub" class="text-xs text-slate-500 mt-1">إجمالي <span id="inspectionHeaderPhotos" class="font-bold text-purple-600 font-num">0</span> صورة/ملف توثيقي في المعارض</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <button type="button" onclick="openNewInspectionModal()" class="admin-only px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold flex items-center gap-2">
@@ -677,27 +683,17 @@
                             <select id="inspPack" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-slate-900"></select>
                         </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-3">
+                    <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[10px] text-slate-500 font-bold mb-1">الحرارة (°C)</label>
                             <input type="number" step="0.1" min="0" max="30" id="inspTemp" placeholder="13.8" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-mono font-bold text-slate-900 text-center">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-slate-500 font-bold mb-1">مرحلة اللون</label>
-                            <select id="inspColorStage" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-slate-900">
-                                <option value="أخضر">أخضر</option>
-                                <option value="نصف أصفر">نصف أصفر</option>
-                                <option value="أصفر">أصفر</option>
-                                <option value="أصفر مُعمّر" selected>أصفر مُعمّر</option>
-                                <option value="أصفر متبقع">أصفر متبقع</option>
-                            </select>
                         </div>
                         <div>
                             <label class="block text-[10px] text-slate-500 font-bold mb-1">قوام اللب</label>
                             <select id="inspPulp" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-slate-900">
                                 <option value="صلب">صلب</option>
                                 <option value="متوسط" selected>متوسط</option>
-                                <option value="لطيف">لطيف</option>
+                                
                             </select>
                         </div>
                     </div>
@@ -715,9 +711,14 @@
                         <textarea id="inspNotes" rows="2" placeholder="مثال: عيوب سحب جلدية في الصفوف السفلية — مناسب للصرف الفوري" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900"></textarea>
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-500 font-bold mb-1">صور توثيقية (تضغط تلقائياً — حتى 8 صور للتقرير)</label>
+                        <label class="block text-[10px] text-slate-500 font-bold mb-1">صور توثيقية (تُضغط تلقائياً — بلا حد على العدد)</label>
                         <input type="file" id="inspPhotoInput" accept="image/*" multiple onchange="handleInspectionPhotos(this.files)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-700">
                         <div id="stagedPhotosPreview" class="grid grid-cols-4 gap-2 mt-2"></div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-500 font-bold mb-1">ملفات الداتا لوغر (PDF / Excel / CSV / صور — ترفع كما ديرها)</label>
+                        <input type="file" id="inspLoggerInput" multiple accept=".pdf,.xls,.xlsx,.csv,image/*" onchange="handleLoggerFiles(this.files)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-700">
+                        <div id="stagedLoggerPreview" class="mt-2 space-y-1.5"></div>
                     </div>
                     <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
                         <button type="button" onclick="closeNewInspectionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold">إلغاء</button>
@@ -873,7 +874,7 @@
 
     <!-- JavaScript Complete Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-11-07-v63d-nov-insp";
+        const APP_DATA_VERSION = "2026-11-07-v63e-nov-sync-logger";
 
         function safeCreateIcons() {
             try {
@@ -1709,7 +1710,8 @@ let currentLightboxPhotoIdx = 0;
 let stagedInspectionPhotos = [];
 let inspectionBindDone = false;
 const INSPECTIONS_KEY = 'najha_inspections_data';
-const MAX_INSPECTION_PHOTOS = 8;
+let stagedLoggerFiles = [];
+// بلا حد على عدد الصور — الحماية على الحجم الكلي عند الحفظ (حد Firestore 1MB)
 
 // ---- التخزين المحلي (مفتاح سابق التوافق مع النسخة v19 حتى لا تُفقد التقارير القديمة) ----
 function loadInspectionsLocal() {
@@ -1773,11 +1775,9 @@ function compressInspectionImage(file) {
 async function handleInspectionPhotos(fileList) {
     const files = Array.from(fileList || []);
     if (!files.length) return;
-    const room = MAX_INSPECTION_PHOTOS - stagedInspectionPhotos.length;
-    if (room <= 0) { showToast(`الحد الأقصى ${MAX_INSPECTION_PHOTOS} صور للتقرير الواحد`, false); return; }
-    if (files.length > room) showToast(`سيُضاف ${room} صور فقط (الحد ${MAX_INSPECTION_PHOTOS})`, false);
+    if (!files.length) return;
     showToast('جارٍ ضغط الصور...', true);
-    for (const f of files.slice(0, room)) {
+    for (const f of files) {
         try {
             const url = await compressInspectionImage(f);
             stagedInspectionPhotos.push({
@@ -1791,6 +1791,60 @@ async function handleInspectionPhotos(fileList) {
 function removeStagedPhoto(idx) {
     stagedInspectionPhotos.splice(idx, 1);
     renderStagedPhotosPreview();
+}
+
+// ---- ملفات الداتا لوغر: PDF/Excel/CSV تُقرأ كما هي (base64)، الصور تُضغط ----
+const LOGGER_MAX_FILE_CHARS = 700000; // حماية من حد المستند السحابي 1MB
+function readLoggerFileRaw(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result);
+        reader.onerror = () => reject(new Error('file read'));
+        reader.readAsDataURL(file);
+    });
+}
+async function handleLoggerFiles(fileList) {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+    showToast('جارٍ إدراج ملفات الداتا لوغر...', true);
+    for (const f of files) {
+        try {
+            if (f.type && f.type.startsWith('image/')) {
+                const url = await compressInspectionImage(f);
+                stagedLoggerFiles.push({ id: 'l' + Date.now() + Math.random().toString(36).slice(2, 7), name: f.name, tag: 'داتا لوغر', url });
+            } else {
+                const url = await readLoggerFileRaw(f);
+                if (url.length > LOGGER_MAX_FILE_CHARS) {
+                    showToast(`الملف «${f.name}» أكبر من الحد المسموح (حد المستند السحابي) — قُفّز`, false);
+                    continue;
+                }
+                stagedLoggerFiles.push({ id: 'l' + Date.now() + Math.random().toString(36).slice(2, 7), name: f.name, tag: 'داتا لوغر', url });
+            }
+        } catch (e) { showToast('تعذّر قراءة أحد ملفات الداتا لوغر', false); }
+    }
+    renderStagedLoggerPreview();
+}
+function removeStagedLogger(idx) {
+    stagedLoggerFiles.splice(idx, 1);
+    renderStagedLoggerPreview();
+}
+function formatBytes(n) {
+    if (!n) return '';
+    const kb = Math.round(n / 1024);
+    return kb >= 1024 ? (kb / 1024).toFixed(1) + ' MB' : kb + ' KB';
+}
+function renderStagedLoggerPreview() {
+    const div = document.getElementById('stagedLoggerPreview');
+    if (!div) return;
+    div.innerHTML = stagedLoggerFiles.map((p, i) => `
+        <div class="flex justify-between items-center bg-white border border-slate-200 rounded-xl px-2 py-1.5">
+            <div class="flex items-center gap-2 min-w-0">
+                <i data-lucide="file-box" class="w-3.5 h-3.5 text-cyan-600 shrink-0"></i>
+                <span class="text-[11px] font-bold text-slate-700 truncate">${escapeHtml(p.name || 'داتا لوغر')}</span>
+            </div>
+            <button type="button" onclick="removeStagedLogger(${i})" class="p-1 rounded-lg bg-slate-100 hover:bg-red-100 text-red-600 text-[10px] font-bold justify-self-end shrink-0">إزالة ✕</button>
+        </div>`).join('');
+    safeCreateIcons();
 }
 function renderStagedPhotosPreview() {
     const div = document.getElementById('stagedPhotosPreview');
@@ -1810,7 +1864,9 @@ function openNewInspectionModalFor(contId) {
         return;
     }
     stagedInspectionPhotos = [];
+    stagedLoggerFiles = [];
     renderStagedPhotosPreview();
+    renderStagedLoggerPreview();
     const brandSel = document.getElementById('inspBrand');
     brandSel.innerHTML = '<option value="">— اختر الماركة —</option>' +
         brandsData.map(b => `<option value="${escapeHtml(String(b.name))}">${escapeHtml(String(b.name))}</option>`).join('');
@@ -1825,8 +1881,9 @@ function openNewInspectionModalFor(contId) {
             brandSel.value = rec.brand || '';
             packSel.value = rec.pack || '';
             document.getElementById('inspTemp').value = rec.temp ?? '';
-            document.getElementById('inspColorStage').value = rec.colorStage || 'أصفر مُعمّر';
             document.getElementById('inspPulp').value = rec.pulp || 'متوسط';
+            const recLogger = Array.from(rec.loggerFiles || []).map((p, i) => ({ id: p.id || 'l' + i, name: p.name || 'داتا لوغر', tag: p.tag || 'داتا لوغر', url: p.url || '' }));
+            stagedLoggerFiles = recLogger;
             document.getElementById('inspYellow').value = rec.yellow ?? '';
             document.getElementById('inspSecond').value = rec.second ?? '';
             document.getElementById('inspSoft').value = rec.soft ?? '';
@@ -1850,6 +1907,7 @@ function openNewInspectionModal() { openNewInspectionModalFor(null); }
 function closeNewInspectionModal() {
     document.getElementById('newInspectionModal')?.classList.add('hidden');
     stagedInspectionPhotos = [];
+    stagedLoggerFiles = [];
 }
 
 // ---- الحفظ (سحابي + محلي) ----
@@ -1868,7 +1926,6 @@ async function handleSaveInspection(event) {
         brand: document.getElementById('inspBrand').value || '',
         pack: document.getElementById('inspPack').value || '',
         temp: parseFloat(document.getElementById('inspTemp').value) || null,
-        colorStage: document.getElementById('inspColorStage').value || '',
         pulp: document.getElementById('inspPulp').value || '',
         yellow: parseInt(document.getElementById('inspYellow').value, 10) || 0,
         second: parseInt(document.getElementById('inspSecond').value, 10) || 0,
@@ -1876,12 +1933,13 @@ async function handleSaveInspection(event) {
         damage: parseInt(document.getElementById('inspDamage').value, 10) || 0,
         notes: document.getElementById('inspNotes').value.trim(),
         photos: stagedInspectionPhotos.map(p => ({ id: p.id, title: p.title || '', tag: p.tag || 'صورة حية', url: p.url })),
+        loggerFiles: stagedLoggerFiles.map(p => ({ id: p.id, name: p.name || 'داتا لوغر', tag: p.tag || 'داتا لوغر', url: p.url })),
         savedAt: new Date().toISOString()
     };
-    // حماية حد المستند السحابي (1MB) — نرفض قبل 950 ألف حرف
+    // حماية حد المستند السحابي (1MB) — نرفض قبل 950 ألف حرف (صور + داتا لوغر)
     const size = JSON.stringify(rec).length;
     if (size > 950000) {
-        showToast(`حجم التقرير مع الصور كبير جداً (>${Math.round(size / 1000)} ألف حرف) — قلّص عدد الصور`, false);
+        showToast(`حجم التقرير (الصور + الداتا لوغر) أكبر من حد السحابة (~${Math.round(size / 1000)} ألف حرف) — احذف بقات أو ملفاً من التقرير`, false);
         return;
     }
     const btn = document.getElementById('btnSaveInspection');
@@ -1975,13 +2033,14 @@ function renderInspectionGallery() {
                 ${thumb ? `<button type="button" data-insp-open="${escapeHtml(String(r.id))}" data-insp-photo="0" class="shrink-0 w-16 h-16 rounded-xl overflow-hidden border border-slate-200 hover:border-purple-400 transition-all"><img src="${thumb}" alt="صورة الحاوية" class="w-full h-full object-cover"></button>`
                     : `<button type="button" data-insp-open="${escapeHtml(String(r.id))}" data-insp-photo="0" class="shrink-0 w-16 h-16 rounded-xl bg-purple-500/10 border border-purple-200 flex items-center justify-center"><i data-lucide="camera" class="w-5 h-5 text-purple-400"></i></button>`}
                 <div class="text-[11px] text-slate-600 font-semibold leading-5">
-                    <span>الحرارة: <b class="font-mono">${r.temp != null ? r.temp + '°' : '—'}</b> · اللون: <b>${escapeHtml(r.colorStage || '—')}</b></span>
+                    <span>الحرارة: <b class="font-mono">${r.temp != null ? r.temp + '°' : '—'}</b>${r.colorStage ? ` · اللون: <b>${escapeHtml(r.colorStage)}</b>` : ''}</span>
                     <span class="block text-slate-400">عيوب: ${escapeHtml(defects)}</span>
+                    ${(r.loggerFiles || []).length ? `<span class="block mt-1">${r.loggerFiles.map((lf, j) => `<a href="${inspectionPhotoUrl(lf)}" download="${escapeHtml(lf.name || 'داتا لوغر')}" class="inline-block mr-1 px-2 py-0.5 rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200 text-[10px] font-bold">⇓ داتا لوغر ${j + 1}</a>`).join('')}</span>` : ''}
                 </div>
             </div>
             ${r.notes ? `<p class="text-[11px] text-slate-500 leading-5 border-r-2 border-purple-300 pr-2">${escapeHtml(r.notes)}</p>` : ''}
             <div class="flex justify-between items-center">
-                <span class="text-[10px] font-bold text-slate-400 font-mono">${photos.length} صورة</span>
+                <span class="text-[10px] font-bold text-slate-400 font-mono">${photos.length} صورة${(r.loggerFiles || []).length ? ` · ${r.loggerFiles.length} ملف لوغر` : ''}</span>
                 <div class="flex gap-1.5">
                     <button type="button" data-insp-open="${escapeHtml(String(r.id))}" data-insp-photo="${photos.length > 0 ? 0 : -1}" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-[11px] font-bold">المعرض</button>
                     <button type="button" onclick="openNewInspectionModalFor('${escapeHtml(String(r.id))}')" class="admin-only px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 text-[11px] font-bold">تعديل</button>
@@ -2052,6 +2111,28 @@ function bindInspectionHandlers() {
 }
 // ================= END INSPECTION =================
 
+// ==== مزامنة حركة نوفمبر (إصلاح سجلات سحابية قديمة: 3/11 = 4,186 — غلق 6/11 = 23,530) ====
+async function syncNovemberMovement() {
+    if (!auth?.currentUser) {
+        showToast('يرجى تسجيل الدخول كمسؤول أولاً', false);
+        openLoginModal();
+        return;
+    }
+    if (!confirm('سيتم إعادة كتابة أيام حركة نوفمبر (1..6/11) في السحابة بالقيم المصحّحة: خارج 3/11 = 4,186 وغلق 6/11 = 23,530 مع تصحيح البيانات. متابعة؟')) return;
+    const novSeed = (SEED_DATA.movement || []).filter(m => String(m.date).startsWith('2026-11')).map(m => Object.assign({}, m));
+    if (!novSeed.length) { showToast('لا توجد سجلات نوفمبر مصحّحة في الملف', false); return; }
+    const success = await runAtomicWarehouseUpdate((state) => {
+        if (!Array.isArray(state.movementData)) state.movementData = [];
+        state.movementData = state.movementData.filter(m => !String(m.date).startsWith('2026-11')).concat(novSeed);
+        return state;
+    });
+    if (success) {
+        // السحابة مسجّلة: نتخلص من أي صفوف نوفمبر محلية مخالفة ثم نعيد العرض من الدمج
+        showToast('تم تحديث حركة نوفمبر سحابياً — الأرقام المصحّحة لحظياً', true);
+    } else {
+        showToast('فشل التحديث السحابي — حاول مجدداً', false);
+    }
+}
 // ================= ROOM EDITING MODAL (MULTI-BRAND & ORIGIN LOGIC) =================
         let activeFullRoomNum = null;
         let modalRoomItems = [];
@@ -2593,7 +2674,7 @@ function bindInspectionHandlers() {
             if (badgeMovement) badgeMovement.textContent = `${movementData.length} يوماً`;
             // عُدّاد تقارير الفحص (حسب البيانات الفعلية لا نص ثابت)
             const inspCount = inspectionsData.length;
-            const inspPhotos = inspectionsData.reduce((a, r) => a + ((r.photos || []).length), 0);
+            const inspPhotos = inspectionsData.reduce((a, r) => a + ((r.photos || []).length), 0) + inspectionsData.reduce((a, r) => a + ((r.loggerFiles || []).length), 0);
             setTxt('badgeInspectionCount', inspCount > 0 ? `${inspCount} تقرير` : 'فارغ');
             setTxt('inspectionHeaderCount', inspCount);
             setTxt('inspectionHeaderPhotos', inspPhotos);
