@@ -874,7 +874,7 @@
 
     <!-- JavaScript Complete Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-11-07-v63e-nov-sync-logger";
+        const APP_DATA_VERSION = "2026-11-07-v63f-rooms-611";
 
         function safeCreateIcons() {
             try {
@@ -1160,12 +1160,12 @@
         ];
 
         let roomsData = [
-            { room: 7, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1200 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 2850 }] },
-            { room: 8, status: "storage", temp: 13.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2196 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1200 }] },
-            { room: 9, status: "ripening", temp: 17.0, hours: "تخمير 48 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 3140 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 750 }] },
-            { room: 10, status: "ripening", temp: 17.0, hours: "تخمير 24 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2196 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1200 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 800 }] },
-            { room: 11, status: "cooled", temp: 11.0, hours: "مبردة جاهزة (صرف)", items: [{ brand: "بانا كولد", origin: "اكوادور-20كغ", qty: 200 }, { brand: "روزيتا", origin: "اكوادور-20كغ", qty: 1098 }] },
-            { room: 12, status: "cooled", temp: 13.0, hours: "مبردة جاهزة (صرف)", items: [{ brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2196 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 1600 }] }
+            { room: 7, status: "storage", temp: 12.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 2400 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 1890 }] },
+            { room: 8, status: "storage", temp: 12.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2520 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1432 }] },
+            { room: 9, status: "ripening", temp: 12.0, hours: "تخمير 96 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2755 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 700 }] },
+            { room: 10, status: "ripening", temp: 14.0, hours: "تخمير 72 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2070 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1196 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 802 }] },
+            { room: 11, status: "ripening", temp: 17.0, hours: "تخمير 48 ساعة", items: [{ brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 3250 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 599 }] },
+            { room: 12, status: "ripening", temp: 18.0, hours: "تخمير 24 ساعة", items: [{ brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 2384 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 1532 }] }
         ];
 
         let driversData = [
@@ -1254,18 +1254,18 @@
         let roomsMigrationDone = false;
         function migrateRoomsIfNeeded(docData) {
             if (roomsMigrationDone || !auth.currentUser) return;
-            if (docData && Number(docData.roomsSeedV || 0) >= 3) { roomsMigrationDone = true; return; }
+            if (docData && Number(docData.roomsSeedV || 0) >= 4) { roomsMigrationDone = true; return; }
             roomsMigrationDone = true; // منع تكرار المحاولة
             db.runTransaction(async (tx) => {
                 const ds = await tx.get(WAREHOUSE_DOC_REF);
                 const st = ds.exists ? ds.data() : {};
-                if (Number(st.roomsSeedV || 0) >= 3) return; // مسؤول آخر قام بها
+                if (Number(st.roomsSeedV || 0) >= 4) return; // مسؤول آخر قام بها
                 st.roomsData = roomsData; // أرقام المستخدم الصحيحة المضمنة في هذه النسخة
-                st.roomsSeedV = 2;
+                st.roomsSeedV = 4; // الختم الذي يسمح بتبني نسخة السحابة في الشرط (كان 2 — عطّل التعديلات)
                 st.lastUpdated = firebase.firestore.FieldValue.serverTimestamp();
                 st.updatedBy = auth.currentUser.email;
                 tx.set(WAREHOUSE_DOC_REF, st);
-            }).then(() => showToast('تم تثبيت بذرة القاعات (حالة 5/11 — 20,630 طرد) في السحابة'))
+            }).then(() => showToast('تم تثبيت بذرة القاعات (حالة 6/11 — 23,530 طرد) في السحابة'))
               .catch(err => console.warn('rooms migration skipped:', err));
         }
 
@@ -1277,7 +1277,7 @@
                 if (Array.isArray(data.dispatchData)) dispatchData = unionByKey(data.dispatchData, SEED_DATA.dispatch, it => `${String(it.id)}|${it.date}|${it.qty}|${it.receipt}`);
                 if (Array.isArray(data.movementData)) movementData = unionByKey(data.movementData, SEED_DATA.movement, it => it.date);
                 // القاعات: بذرة المستخدم الصحيحة تبقى معتمدة حتى يثبت التثبيت السحابي (roomsSeedV)
-                if (Array.isArray(data.roomsData) && data.roomsData.length && Number(data.roomsSeedV || 0) >= 3) roomsData = data.roomsData;
+                if (Array.isArray(data.roomsData) && data.roomsData.length && Number(data.roomsSeedV || 0) >= 4) roomsData = data.roomsData;
                 migrateRoomsIfNeeded(data);
                 if (Array.isArray(data.driversData)) driversData = data.driversData;
                 if (Array.isArray(data.brandsData)) brandsData = data.brandsData;
@@ -1623,6 +1623,7 @@
 
                     // Deduct from room: مطابقة (ماركة + منشأ) ورفض الصرف الفائض بدل تجاهله صامتاً
                     if (state.roomsData) {
+                        state.roomsSeedV = 4;
                         const targetRoom = state.roomsData.find(r => r.room == roomVal);
                         if (targetRoom && targetRoom.items) {
                             const itemMatch = targetRoom.items.find(it =>
@@ -2246,6 +2247,7 @@ async function syncNovemberMovement() {
 
             const success = await runAtomicWarehouseUpdate((state) => {
                 if (!state.roomsData) state.roomsData = roomsData;
+                state.roomsSeedV = 4; // إعلان أن القاعات السحابية هي المرجع (شرط >= 3 في البناء)
                 const rObj = state.roomsData.find(r => r.room === roomNum);
                 if (rObj) {
                     rObj.status = newStatus;
