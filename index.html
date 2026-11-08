@@ -639,6 +639,7 @@
                                 <option value="كوستا سول">كوستا سول</option>
                                 <option value="بانا غولد">بانا غولد</option>
                                 <option value="بانا كولد">بانا كولد</option>
+                                <option value="ريفا">ريفا</option>
                             </select>
                         </div>
                         <div>
@@ -954,7 +955,7 @@
 
     <!-- JavaScript Complete Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-11-08-v63i-room-transfer";
+        const APP_DATA_VERSION = "2026-11-09-v63j-nov8-rebuild";
 
         function safeCreateIcons() {
             try {
@@ -1048,7 +1049,11 @@
             {"id": "5445938", "date": "2026-11-06", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "22225", "driver": "احمد الأحمد", "country": "كوستاريكا", "temp": 14.6, "pack": "كوستريكا-19كغ"},
             {"id": "8386496", "date": "2026-11-06", "port": "المرفأ", "brand": "ديلمونتي", "qty": 1200, "car": "8262781", "driver": "محمد سمو", "country": "كوستاريكا", "temp": 14.9, "pack": "كوستريكا-19كغ"},
             {"id": "174871", "date": "2026-11-07", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8289112", "driver": "عبد القادر خاروف", "country": "الإكوادور", "temp": 14.0, "pack": "اكوادور-20كغ"},
-            {"id": "147872", "date": "2026-11-07", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8156884", "driver": "أحمد القش", "country": "الإكوادور", "temp": 13.0, "pack": "اكوادور-20كغ"}
+            {"id": "147872", "date": "2026-11-07", "port": "باب الهوى", "brand": "روزيتا", "qty": 1098, "car": "8156884", "driver": "أحمد القش", "country": "الإكوادور", "temp": 13.0, "pack": "اكوادور-20كغ"},
+            {"id": "5274820", "date": "2026-11-08", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1595, "car": "8162294", "driver": "نافع المحمد", "country": "الهند", "temp": 14.0, "pack": "هندي-14كغ"},
+            {"id": "5273823", "date": "2026-11-08", "port": "المرفأ", "brand": "ريفا", "qty": 2532, "car": "022211", "driver": "احمد العبود", "country": "الهند", "temp": 13.8, "pack": "هندي-7كغ"},
+            {"id": "5421561", "date": "2026-11-08", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1606, "car": "705029", "driver": "نبيل حمدو", "country": "الهند", "temp": 13.5, "pack": "هندي-14كغ"},
+            {"id": "9225481", "date": "2026-11-08", "port": "المرفأ", "brand": "اكسترا بان", "qty": 1540, "car": "8192508", "driver": "بلال العويد", "country": "الهند", "temp": 14.1, "pack": "هندي-14كغ"}
         ];
 
         let dispatchData = [
@@ -1210,7 +1215,23 @@
             {"id": 9332, "date": "2026-11-07", "time": "16:00:00", "day": "السبت", "receipt": "1598", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 209, "pack": "كوستريكا-19كغ"},
             {"id": 9333, "date": "2026-11-07", "time": "16:00:00", "day": "السبت", "receipt": "1598", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "عمر العقاد", "brand": "روزيتا", "qty": 15, "pack": "اكوادور-20كغ"},
             {"id": 9334, "date": "2026-11-07", "time": "16:00:00", "day": "السبت", "receipt": "1598", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 1, "pack": "كوستريكا-19كغ"},
-            {"id": 9335, "date": "2026-11-07", "time": "16:00:00", "day": "السبت", "receipt": "1599", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 295, "pack": "كوستريكا-19كغ"}
+            {"id": 9335, "date": "2026-11-07", "time": "16:00:00", "day": "السبت", "receipt": "1599", "driver": "أبو محمود", "car": "513321", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 295, "pack": "كوستريكا-19كغ"},
+            {"date": "2026-11-08", "time": "08:00:00", "day": "الأحد", "receipt": "1601", "driver": "عدي", "car": "623423", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 465, "pack": "كوستريكا-19كغ", "id": 9336},
+            {"date": "2026-11-08", "time": "08:00:00", "day": "الأحد", "receipt": "1602", "driver": "رائد", "car": "63898", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 464, "pack": "كوستريكا-19كغ", "id": 9337},
+            {"date": "2026-11-08", "time": "10:00:00", "day": "الأحد", "receipt": "1603", "driver": "أبو عدي", "car": "584193", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 194, "pack": "كوستريكا-19كغ", "id": 9338},
+            {"date": "2026-11-08", "time": "10:00:00", "day": "الأحد", "receipt": "1603", "driver": "أبو عدي", "car": "584193", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "اكسترا بان", "qty": 352, "pack": "هندي-14كغ", "id": 9339},
+            {"date": "2026-11-08", "time": "10:00:00", "day": "الأحد", "receipt": "1604", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 190, "pack": "كوستريكا-19كغ", "id": 9340},
+            {"date": "2026-11-08", "time": "10:00:00", "day": "الأحد", "receipt": "1604", "driver": "علي حمود", "car": "83581", "dest": "دمشق", "customer": "عمر العقاد", "brand": "اكسترا بان", "qty": 450, "pack": "هندي-14كغ", "id": 9341},
+            {"date": "2026-11-08", "time": "12:00:00", "day": "الأحد", "receipt": "1605", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 240, "pack": "كوستريكا-19كغ", "id": 9342},
+            {"date": "2026-11-08", "time": "12:00:00", "day": "الأحد", "receipt": "1605", "driver": "أبو حسين", "car": "46078", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 144, "pack": "كوستريكا-19كغ", "id": 9343},
+            {"date": "2026-11-08", "time": "13:00:00", "day": "الأحد", "receipt": "1606", "driver": "فادي", "car": "624756", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 351, "pack": "كوستريكا-19كغ", "id": 9344},
+            {"date": "2026-11-08", "time": "13:00:00", "day": "الأحد", "receipt": "1606", "driver": "فادي", "car": "624756", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 114, "pack": "كوستريكا-19كغ", "id": 9345},
+            {"date": "2026-11-08", "time": "16:00:00", "day": "الأحد", "receipt": "1607", "driver": "محمد", "car": "585855", "dest": "دمشق", "customer": "عمر العقاد", "brand": "ديلمونتي", "qty": 518, "pack": "كوستريكا-19كغ", "id": 9346},
+            {"date": "2026-11-08", "time": "16:00:00", "day": "الأحد", "receipt": "1607", "driver": "محمد", "car": "585855", "dest": "دمشق", "customer": "عمر العقاد", "brand": "كوستا سول", "qty": 2, "pack": "كوستريكا-19كغ", "id": 9347},
+            {"date": "2026-11-08", "time": "17:00:00", "day": "الأحد", "receipt": "1608", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "ديلمونتي", "qty": 422, "pack": "كوستريكا-19كغ", "id": 9348},
+            {"date": "2026-11-08", "time": "17:00:00", "day": "الأحد", "receipt": "1608", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "اكسترا بان", "qty": 41, "pack": "هندي-14كغ", "id": 9349},
+            {"date": "2026-11-08", "time": "17:00:00", "day": "الأحد", "receipt": "1608", "driver": "فارس", "car": "582658", "dest": "دمشق", "customer": "أحمد الطالب", "brand": "كوستا سول", "qty": 1, "pack": "كوستريكا-19كغ", "id": 9350},
+            {"date": "2026-11-08", "time": "", "day": "الأحد", "receipt": "1609", "driver": "", "car": "", "dest": "دمشق", "customer": "تلف", "brand": "ريفا", "qty": 2, "pack": "هندي-14كغ", "id": 9351}
         ];
 
         let movementData = [
@@ -1251,14 +1272,15 @@
             {"date": "2026-11-04", "date_short": "4/11", "day": "الأربعاء", "open": 19697, "inQty": 4656, "outQty": 3540, "net": 1116, "close": 20813, "notes": "استلام 4 حاويات (4,656 كرتونة) وتوزيع 3,540 طرد"},
             {"date": "2026-11-05", "date_short": "5/11", "day": "الخميس", "open": 20813, "inQty": 4860, "outQty": 1647, "net": 3213, "close": 24026, "notes": "استلام 4 حاويات (4,860 كرتونة) وتوزيع 1,647 طرد"},
             {"date": "2026-11-06", "date_short": "6/11", "day": "الجمعة", "open": 24026, "inQty": 3600, "outQty": 4096, "net": -496, "close": 23530, "notes": "استلام 3 حاويات (3,600 كرتونة) وتوزيع 4,096 طرد"},
-            {"date": "2026-11-07", "date_short": "7/11", "day": "السبت", "open": 23530, "inQty": 2196, "outQty": 3614, "net": -1418, "close": 22112, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 3,614 طرد"}
+            {"date": "2026-11-07", "date_short": "7/11", "day": "السبت", "open": 23530, "inQty": 2196, "outQty": 3614, "net": -1418, "close": 22112, "notes": "استلام 2 حاويتين (2,196 كرتونة) وتوزيع 3,614 طرد"},
+            {"date": "2026-11-08", "date_short": "8/11", "day": "الأحد", "open": 22112, "inQty": 7273, "outQty": 3950, "net": 3323, "close": 25435, "notes": "استلام 4 حاويات (7,273 كرتونة) وتوزيع 3,950 طرد"}
         ];
 
         let roomsData = [
-            { room: 7, status: "storage", temp: 12.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 2400 }] },
-            { room: 8, status: "storage", temp: 12.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 2520 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1432 }] },
+            { room: 7, status: "storage", temp: 12.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "اكسترا بان", origin: "هندي-14كغ", qty: 4684 }] },
+            { room: 8, status: "storage", temp: 12.0, hours: "تخزين تبريد (موز أخضر)", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 1361 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 2680 }] },
             { room: 9, status: "ripening", temp: 18.0, hours: "تخمير 24 ساعة", items: [{ brand: "اكسترا بان", origin: "هندي-14كغ", qty: 1890 }, { brand: "روزيتا", origin: "اكوادور-20كغ", qty: 2181 }] },
-            { room: 10, status: "ripening", temp: 12.0, hours: "تخمير 96 ساعة", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 1926 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1196 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 802 }] },
+            { room: 10, status: "ripening", temp: 18.0, hours: "تخمير", items: [{ brand: "كوستا سول", origin: "كوستريكا-19كغ", qty: 1154 }, { brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 1174 }, { brand: "ريفا", origin: "هندي-7كغ", qty: 2531 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 16 }] },
             { room: 11, status: "ripening", temp: 14.0, hours: "تخمير 72 ساعة", items: [{ brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 3250 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 599 }] },
             { room: 12, status: "ripening", temp: 18.0, hours: "تخمير 48 ساعة", items: [{ brand: "ديلمونتي", origin: "كوستريكا-19كغ", qty: 2384 }, { brand: "اكسترا بان", origin: "هندي-14كغ", qty: 1532 }] }
         ];
@@ -1277,10 +1299,11 @@
             {"name": "كوستا سول", "origin": "كوستريكا-19كغ"},
             {"name": "اكسترا", "origin": "كوستريكا-19كغ"},
             {"name": "بانا غولد", "origin": "اكوادور-20كغ"},
-            {"name": "بانا كولد", "origin": "اكوادور-20كغ"}
+            {"name": "بانا كولد", "origin": "اكوادور-20كغ"},
+            {"name": "ريفا", "origin": "هندي-7كغ"}
         ];
 
-        let originsList = ["اكوادور-20كغ", "كوستريكا-19كغ", "هندي-14كغ", "اكوادور-13.5كغ", "كوستريكا-20كغ", "كوستريكا-13كغ"];
+        let originsList = ["اكوادور-20كغ", "كوستريكا-19كغ", "هندي-14كغ", "هندي-7كغ", "اكوادور-13.5كغ", "كوستريكا-20كغ", "كوستريكا-13كغ"];
 
         // سجل عمليات النقل بين القاعات (يُحفظ ضمن نفس وثيقة السحابة)
         let roomTransfers = [];
@@ -1352,19 +1375,57 @@
         let roomsMigrationDone = false;
         function migrateRoomsIfNeeded(docData) {
             if (roomsMigrationDone || !auth.currentUser) return;
-            if (docData && Number(docData.roomsSeedV || 0) >= 5) { roomsMigrationDone = true; return; }
+            if (docData && Number(docData.roomsSeedV || 0) >= 6) { roomsMigrationDone = true; return; }
             roomsMigrationDone = true; // منع تكرار المحاولة
             db.runTransaction(async (tx) => {
                 const ds = await tx.get(WAREHOUSE_DOC_REF);
                 const st = ds.exists ? ds.data() : {};
-                if (Number(st.roomsSeedV || 0) >= 5) return; // مسؤول آخر قام بها
+                if (Number(st.roomsSeedV || 0) >= 6) return; // مسؤول آخر قام بها
                 st.roomsData = roomsData; // أرقام المستخدم الصحيحة المضمنة في هذه النسخة
-                st.roomsSeedV = 5; // الختم الذي يسمح بتبني نسخة السحابة في الشرط (كان 2 — عطّل التعديلات)
+                st.roomsSeedV = 6; // الختم الذي يسمح بتبني نسخة السحابة في الشرط (كان 2 — عطّل التعديلات)
                 st.lastUpdated = firebase.firestore.FieldValue.serverTimestamp();
                 st.updatedBy = auth.currentUser.email;
                 tx.set(WAREHOUSE_DOC_REF, st);
-            }).then(() => showToast('تم تثبيت بذرة القاعات (حالة 7/11 — 22,112 طرد) في السحابة'))
+            }).then(() => showToast('تم تثبيت بذرة القاعات (حالة 8/11 — 25,436 طرد) في السحابة'))
               .catch(err => console.warn('rooms migration skipped:', err));
+        }
+
+        // ================= تنظيف بيانات 8/11 التجريبية (لمرة واحدة) =================
+        // بيانات تجريبية أدخلها المسؤول من الموقع يوم 8/11 — تُحذف من السحابة والبيانات
+        // الرسمية لتلك الليلة تأتي من البذور المضمنة (توزيع8.xlsx وجدول الاستلام).
+        let nov8CleanupBusy = false;
+        function cleanupExperimental8Nov(data) {
+            if (nov8CleanupBusy || data.nov8CleanupDone) return;
+            if (!auth || !auth.currentUser) return;
+            nov8CleanupBusy = true;
+            db.runTransaction(async (tx) => {
+                const d = await tx.get(WAREHOUSE_DOC_REF);
+                if (!d.exists) { return { cleanStamp: true }; }
+                const st = d.data();
+                let changed = false;
+                ['dispatchData', 'inboundData', 'movementData'].forEach(k => {
+                    if (Array.isArray(st[k])) {
+                        const f = st[k].filter(r => r && r.date !== '2026-11-08');
+                        if (f.length !== st[k].length) { st[k] = f; changed = true; }
+                    }
+                });
+                if (Array.isArray(st.roomTransfers)) {
+                    const f = st.roomTransfers.filter(t => t && t.date !== '2026-11-08');
+                    if (f.length !== st.roomTransfers.length) { st.roomTransfers = f; changed = true; }
+                }
+                if (!changed) {
+                    tx.set(WAREHOUSE_DOC_REF, Object.assign({}, st, { nov8CleanupDone: true }));
+                    return { cleanStamp: true };
+                }
+                st.nov8CleanupDone = true;
+                st.lastUpdated = firebase.firestore.FieldValue.serverTimestamp();
+                st.updatedBy = auth.currentUser.email;
+                tx.set(WAREHOUSE_DOC_REF, st);
+                return { cleanStamp: true };
+            }).then(() => {
+                showToast('تم حذف بيانات 8/11 التجريبية من السحابة — تم اعتماد بيانات اليوم الرسمية');
+                console.log('nov8 cleanup: done');
+            }).catch(err => console.warn('nov8 cleanup skipped:', err));
         }
 
         WAREHOUSE_DOC_REF.onSnapshot((doc) => {
@@ -1375,8 +1436,9 @@
                 if (Array.isArray(data.dispatchData)) dispatchData = unionByKey(data.dispatchData, SEED_DATA.dispatch, it => `${String(it.id)}|${it.date}|${it.qty}|${it.receipt}`);
                 if (Array.isArray(data.movementData)) movementData = unionByKey(data.movementData, SEED_DATA.movement, it => it.date);
                 // القاعات: بذرة المستخدم الصحيحة تبقى معتمدة حتى يثبت التثبيت السحابي (roomsSeedV)
-                if (Array.isArray(data.roomsData) && data.roomsData.length && Number(data.roomsSeedV || 0) >= 5) roomsData = data.roomsData;
+                if (Array.isArray(data.roomsData) && data.roomsData.length && Number(data.roomsSeedV || 0) >= 6) roomsData = data.roomsData;
                 migrateRoomsIfNeeded(data);
+                cleanupExperimental8Nov(data);
                 if (Array.isArray(data.driversData)) driversData = data.driversData;
                 if (Array.isArray(data.brandsData)) brandsData = data.brandsData;
                 if (Array.isArray(data.roomTransfers)) roomTransfers = data.roomTransfers;
@@ -1811,7 +1873,7 @@
 
                     // Deduct from room: مطابقة (ماركة + منشأ) ورفض الصرف الفائض بدل تجاهله صامتاً
                     if (state.roomsData) {
-                        state.roomsSeedV = 5;
+                        state.roomsSeedV = 6;
                         const targetRoom = state.roomsData.find(r => r.room == roomVal);
                         if (targetRoom && targetRoom.items) {
                             const itemMatch = targetRoom.items.find(it =>
@@ -2414,7 +2476,7 @@ async function submitRoomTransfer(e) {
     const success = await runAtomicWarehouseUpdate((state) => {
         if (!state.roomsData) state.roomsData = roomsData;
         if (!state.roomTransfers) state.roomTransfers = roomTransfers || [];
-        state.roomsSeedV = 5;
+        state.roomsSeedV = 6;
         const sRoom = state.roomsData.find(r => r.room === from);
         const dRoom = state.roomsData.find(r => r.room === to);
         if (!sRoom || !dRoom) throw { code: 'ROOM_SHORTAGE', message: 'مرفوض: إحدى القاعتين غير موجودة في البيانات' };
@@ -2491,7 +2553,7 @@ async function applyRoomEthylene(roomNum, iso) {
     }
     const success = await runAtomicWarehouseUpdate((state) => {
         if (!state.roomsData) state.roomsData = roomsData;
-        state.roomsSeedV = 5;
+        state.roomsSeedV = 6;
         const rObj = state.roomsData.find(r => r.room === roomNum);
         if (rObj) {
             if (iso) rObj.ethyleneStart = iso;
@@ -2692,7 +2754,7 @@ updateRoomsCalendar();
 
             const success = await runAtomicWarehouseUpdate((state) => {
                 if (!state.roomsData) state.roomsData = roomsData;
-                state.roomsSeedV = 5; // إعلان أن القاعات السحابية هي المرجع (شرط >= 3 في البناء)
+                state.roomsSeedV = 6; // إعلان أن القاعات السحابية هي المرجع (شرط >= 3 في البناء)
                 const rObj = state.roomsData.find(r => r.room === roomNum);
                 if (rObj) {
                     rObj.status = newStatus;
