@@ -406,7 +406,7 @@
                     <table class="w-full min-w-[1150px] text-right text-xs">
                         <thead class="bg-white text-slate-600 font-bold border-b border-slate-200 sticky top-0">
                             <tr>
-                                <th class="p-3">#</th><th class="p-3">رقم الحاوية</th><th class="p-3">تاريخ الوصول</th><th class="p-3">المنفذ</th><th class="p-3">الماركة</th><th class="p-3">المنشأ</th><th class="p-3">العدد (كرتونة)</th><th class="p-3">رقم السيارة</th><th class="p-3">السائق الناقل</th><th class="p-3 text-center">الحرارة</th><th class="p-3 text-center admin-only">إجراءات</th>
+                                <th class="p-3">#</th><th class="p-3">رقم الحاوية</th><th class="p-3">تاريخ الوصول</th><th class="p-3">المنفذ</th><th class="p-3">الماركة</th><th class="p-3">المنشأ</th><th class="p-3">العدد (كرتونة)</th><th class="p-3">رقم السيارة</th><th class="p-3">السائق الناقل</th><th class="p-3 text-center">القاعة</th><th class="p-3 text-center">الحرارة</th><th class="p-3 text-center admin-only">إجراءات</th>
                             </tr>
                         </thead>
                         <tbody id="inboundTableBody" class="divide-y divide-slate-100"></tbody>
@@ -509,10 +509,22 @@
                         <i data-lucide="printer" class="w-4 h-4"></i>
                         <span>طباعة / تصدير PDF</span>
                     </button>
+                    <button type="button" onclick="openRoomTransferModal()" class="admin-only px-4 py-2 bg-gradient-to-r from-cyan-600 to-sky-500 hover:from-cyan-500 hover:to-sky-400 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md transition-all">
+                        <i data-lucide="arrow-right-left" class="w-4 h-4"></i>
+                        <span>نقل بين القاعات</span>
+                    </button>
                     <span id="roomsActualBadge" class="px-3 py-1.5 bg-amber-50 text-amber-800 rounded-xl text-xs font-bold border border-amber-200 font-num">الرصيد الفعلي: — طرد</span>
                 </div>
             </div>
             <div id="roomsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+            <div class="glass-panel p-5 rounded-2xl border border-slate-200">
+                <div class="flex flex-wrap justify-between items-center gap-2 mb-3 pb-2 border-b border-slate-100">
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2"><i data-lucide="arrow-right-left" class="w-4 h-4 text-cyan-600"></i> سجل عمليات النقل بين القاعات (الإجمالي: <span id="roomTransfersCount" class="font-num">0</span>)</h3>
+                    <span class="text-[10px] text-slate-500">يُعرض آخر 30 عملية — السجل محفوظ في السحابة</span>
+                </div>
+                <div id="roomTransfersBody" class="space-y-1.5 max-h-72 overflow-y-auto"></div>
+            </div>
         </section>
 
         <!-- 6. INSPECTION -->
@@ -634,8 +646,22 @@
                             <input type="number" id="mFormQty" required min="1" placeholder="مثال: 440" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono text-center focus:border-amber-500">
                         </div>
                         <div>
-                            <label class="block text-slate-700 font-semibold mb-1">الوجهة *</label>
+                            <label class="block text-slate-700 font-semibold mb-1" id="lblDest">الوجهة *</label>
                             <input type="text" id="mFormDest" value="دمشق" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold">
+                            <datalist id="portOptions">
+                                <option value="باب الهوى"></option>
+                                <option value="المرفأ"></option>
+                                <option value="الراعي"></option>
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 hidden" id="wrapperInboundRoom">
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">قاعة الوضع (موضع الحاوية) *</label>
+                            <select id="mFormInboundRoom" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-amber-500">
+                                <option value="">-- اختر القاعة --</option>
+                            </select>
                         </div>
                     </div>
 
@@ -655,6 +681,54 @@
                         <div class="flex gap-2">
                             <button type="button" onclick="closeAdminActionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold">إلغاء</button>
                             <button type="submit" id="btnSubmitAdminData" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all">حفظ وتأكيد</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Room Transfer Modal -->
+        <div id="roomTransferModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-3">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 space-y-4">
+                <div class="flex justify-between items-center pb-3 border-b border-slate-200">
+                    <h3 class="font-black text-slate-900 flex items-center gap-2"><i data-lucide="arrow-right-left" class="w-5 h-5 text-cyan-600"></i> نقل كراتين بين القاعات</h3>
+                    <button type="button" onclick="closeRoomTransferModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold">✕</button>
+                </div>
+                <form id="roomTransferForm" onsubmit="return submitRoomTransfer(event)">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">من قاعة (المصدر) *</label>
+                            <select id="trFromRoom" onchange="onTransferSourceChange()" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-cyan-500">
+                                <option value="">-- اختر القاعة المصدر --</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">إلى قاعة (الهدف) *</label>
+                            <select id="trToRoom" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-cyan-500">
+                                <option value="">-- اختر القاعة الهدف --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">الماركة / المنشأ *</label>
+                        <select id="trItem" onchange="onTransferItemChange()" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:border-cyan-500">
+                            <option value="">-- حدد القاعة المصدر أولاً --</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1">الكمية (طرد) *</label>
+                            <input type="number" id="trQty" required min="1" placeholder="مثال: 500" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold font-mono text-center focus:border-cyan-500">
+                        </div>
+                        <div class="flex items-end">
+                            <div id="trAvailHint" class="w-full bg-cyan-50 border border-cyan-200 rounded-xl px-3 py-2 text-xs font-bold text-cyan-800 text-center">المتوفر: —</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-200">
+                        <span class="text-[11px] text-slate-500">خصم وإضافة في عملية واحدة ذرّية — رفض فوري إذا لم يكفِ رصيد المصدر.</span>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="closeRoomTransferModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold">إلغاء</button>
+                            <button type="submit" id="btnSubmitRoomTransfer" class="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-xl shadow-md transition-all">تنفيذ النقل</button>
                         </div>
                     </div>
                 </form>
@@ -880,7 +954,7 @@
 
     <!-- JavaScript Complete Engine -->
     <script>
-        const APP_DATA_VERSION = "2026-11-08-v63g-nov7-ethylene";
+        const APP_DATA_VERSION = "2026-11-08-v63i-room-transfer";
 
         function safeCreateIcons() {
             try {
@@ -1208,6 +1282,9 @@
 
         let originsList = ["اكوادور-20كغ", "كوستريكا-19كغ", "هندي-14كغ", "اكوادور-13.5كغ", "كوستريكا-20كغ", "كوستريكا-13كغ"];
 
+        // سجل عمليات النقل بين القاعات (يُحفظ ضمن نفس وثيقة السحابة)
+        let roomTransfers = [];
+
         const SEED_DATA = { inbound: inboundData.slice(), dispatch: dispatchData.slice(), movement: movementData.slice() };
 
         function unionByKey(remote, seed, keyFn) {
@@ -1302,6 +1379,7 @@
                 migrateRoomsIfNeeded(data);
                 if (Array.isArray(data.driversData)) driversData = data.driversData;
                 if (Array.isArray(data.brandsData)) brandsData = data.brandsData;
+                if (Array.isArray(data.roomTransfers)) roomTransfers = data.roomTransfers;
                 renderAll();
             }
         }, (error) => {
@@ -1534,6 +1612,7 @@
             document.getElementById('lblFormId').textContent = 'رقم الإيصال / الفاتورة *';
             document.getElementById('wrapperTimeInput')?.classList.remove('hidden');
             document.getElementById('wrapperMerchantAndRoom')?.classList.remove('hidden');
+            restoreDispatchFormFields();
 
             const now = new Date();
             const timeString = now.toTimeString().split(' ')[0];
@@ -1549,6 +1628,76 @@
             }
 
             document.getElementById('adminActionModal')?.classList.remove('hidden');
+        }
+
+        function populateInboundRoomDropdown() {
+            const sel = document.getElementById('mFormInboundRoom');
+            if (!sel) return;
+            const src = (typeof roomsData !== 'undefined' && Array.isArray(roomsData) && roomsData.length) ? roomsData : [];
+            sel.innerHTML = '<option value="">-- اختر القاعة --</option>' + src.map(r =>
+                `<option value="${r.room}">قاعة ${r.room}${r.status === 'ripening' ? ' (تخمير)' : ' (تخزين)'}</option>`).join('');
+        }
+
+        function applyInboundFormFields() {
+            // المنفذ بدل الوجهة + تعبئة يدوية للسائق/السيارة + قاعة الوضع
+            const lblDest = document.getElementById('lblDest');
+            const destInput = document.getElementById('mFormDest');
+            if (lblDest) lblDest.textContent = 'المنفذ *';
+            if (destInput) {
+                destInput.value = '';
+                destInput.required = true;
+                destInput.placeholder = 'باب الهوى / المرفأ / الراعي';
+                destInput.setAttribute('list', 'portOptions');
+            }
+            // السائق: إخفاء قائمة الأسطول وإظهار الخانة اليدوية فارغة
+            const lblDrv = document.getElementById('lblDriverSelect');
+            const drvSel = document.getElementById('mFormDriverSelect');
+            const drvCustom = document.getElementById('mFormDriverCustom');
+            if (lblDrv) lblDrv.textContent = 'اسم السائق *';
+            if (drvSel) drvSel.classList.add('hidden');
+            if (drvCustom) {
+                drvCustom.classList.remove('hidden');
+                drvCustom.required = true;
+                drvCustom.value = '';
+                drvCustom.placeholder = 'اكتب اسم السائق';
+            }
+            const carInput = document.getElementById('mFormCar');
+            if (carInput) {
+                carInput.value = '';
+                carInput.placeholder = 'اكتب رقم السيارة';
+            }
+            // قاعة الوضع
+            populateInboundRoomDropdown();
+            const roomSel = document.getElementById('mFormInboundRoom');
+            if (roomSel) roomSel.value = '';
+            document.getElementById('wrapperInboundRoom')?.classList.remove('hidden');
+        }
+
+        function restoreDispatchFormFields() {
+            // إرجاع النموذج إلى شكل التوزيع (الوجهة + أسطول السائقين)
+            const lblDest = document.getElementById('lblDest');
+            const destInput = document.getElementById('mFormDest');
+            if (lblDest) lblDest.textContent = 'الوجهة *';
+            if (destInput) {
+                destInput.value = 'دمشق';
+                destInput.required = false;
+                destInput.removeAttribute('list');
+                destInput.placeholder = '';
+            }
+            const lblDrv = document.getElementById('lblDriverSelect');
+            const drvSel = document.getElementById('mFormDriverSelect');
+            const drvCustom = document.getElementById('mFormDriverCustom');
+            if (lblDrv) lblDrv.textContent = 'السائق الناقل *';
+            if (drvSel) drvSel.classList.remove('hidden');
+            if (drvCustom) {
+                drvCustom.classList.add('hidden');
+                drvCustom.classList.remove('required');
+                drvCustom.required = false;
+                drvCustom.value = '';
+            }
+            const carInput = document.getElementById('mFormCar');
+            if (carInput) carInput.placeholder = 'رقم اللوحة يظهر تلقائياً';
+            document.getElementById('wrapperInboundRoom')?.classList.add('hidden');
         }
 
         function toggleInboundForm() {
@@ -1568,6 +1717,7 @@
             document.getElementById('mFormDate').value = now.toISOString().split('T')[0];
             populateDriverDropdown();
             populateOriginDropdown();
+            applyInboundFormFields();
 
             document.getElementById('adminActionModal')?.classList.remove('hidden');
         }
@@ -1587,7 +1737,8 @@
             const originVal = document.getElementById('mFormOrigin')?.value || '';
             const tempVal = parseFloat(document.getElementById('mFormTemp')?.value) || 13.5;
             const carVal = document.getElementById('mFormCar').value.trim();
-            const destVal = document.getElementById('mFormDest').value.trim() || 'دمشق';
+            const destVal = document.getElementById('mFormDest').value.trim();
+            const inbRoomVal = document.getElementById('mFormInboundRoom')?.value || '';
             const roomVal = document.getElementById('mFormSourceRoom')?.value || '8';
 
             const merchantSelect = document.getElementById('mFormMerchantSelect').value;
@@ -1596,9 +1747,24 @@
                 : merchantSelect;
 
             const driverSelect = document.getElementById('mFormDriverSelect').value;
-            const driverVal = driverSelect === 'custom' 
-                ? document.getElementById('mFormDriverCustom').value.trim() 
-                : driverSelect;
+            const driverVal = type === 'inbound'
+                ? document.getElementById('mFormDriverCustom').value.trim()
+                : (driverSelect === 'custom'
+                    ? document.getElementById('mFormDriverCustom').value.trim()
+                    : driverSelect);
+
+            if (type === 'inbound' && !destVal) {
+                showToast("يرجى تحديد المنفذ (باب الهوى / المرفأ / الراعي)", false);
+                return;
+            }
+            if (type === 'dispatch' && !destVal) {
+                showToast("يرجى تحديد الوجهة", false);
+                return;
+            }
+            if (type === 'inbound' && !inbRoomVal) {
+                showToast("يرجى تحديد رقم القاعة التي وُضعت فيها الحاوية", false);
+                return;
+            }
 
             if (!driverVal) {
                 showToast("يرجى اختيار اسم السائق", false);
@@ -1615,7 +1781,8 @@
                     state.inboundData.unshift({
                         id: idVal,
                         date: dateVal,
-                        port: "باب الهوى",
+                        port: destVal,
+                        room: inbRoomVal,
                         brand: brandVal,
                         qty: qtyVal,
                         car: carVal || "-",
@@ -2155,6 +2322,161 @@ async function syncNovemberMovement() {
         showToast('فشل التحديث السحابي — حاول مجدداً', false);
     }
 }
+// ================= نقل الكراتين بين القاعات =================
+function findRoomItem(roomObj, brandVal, originVal) {
+    const items = (roomObj && roomObj.items) ? roomObj.items : [];
+    return items.findIndex(it => it.brand === brandVal && ((it.origin || '') === (originVal || '')));
+}
+
+function openRoomTransferModal() {
+    if (!auth.currentUser) { showToast('يتطلب تسجيل الدخول كمسؤول أولاً', false); openLoginModal(); return; }
+    const opts = (roomsData || []).map(r =>
+        `<option value="${r.room}">قاعة ${r.room}${r.status === 'ripening' ? ' (تخمير)' : ' (تخزين)'}</option>`).join('');
+    document.getElementById('trFromRoom').innerHTML = '<option value="">-- اختر القاعة المصدر --</option>' + opts;
+    document.getElementById('trToRoom').innerHTML = '<option value="">-- اختر القاعة الهدف --</option>' + opts;
+    document.getElementById('trItem').innerHTML = '<option value="">-- حدد القاعة المصدر أولاً --</option>';
+    document.getElementById('trQty').value = '';
+    document.getElementById('trAvailHint').textContent = 'المتوفر: —';
+    document.getElementById('roomTransferModal')?.classList.remove('hidden');
+    safeCreateIcons();
+}
+
+function closeRoomTransferModal() {
+    document.getElementById('roomTransferModal')?.classList.add('hidden');
+}
+
+function onTransferSourceChange() {
+    const fromSel = document.getElementById('trFromRoom');
+    const itemSel = document.getElementById('trItem');
+    const hint = document.getElementById('trAvailHint');
+    if (!fromSel || !itemSel || !hint) return;
+    itemSel.value = '';
+    hint.textContent = 'المتوفر: —';
+    if (!fromSel.value) {
+        itemSel.innerHTML = '<option value="">-- حدد القاعة المصدر أولاً --</option>';
+        return;
+    }
+    const roomObj = roomsData.find(r => r.room == fromSel.value);
+    const items = (roomObj && roomObj.items) ? roomObj.items : [];
+    if (!items.length) {
+        itemSel.innerHTML = '<option value="">— لا يوجد رصيد في هذه القاعة حالياً —</option>';
+        return;
+    }
+    itemSel.innerHTML = '<option value="">-- اختر الماركة / المنشأ --</option>' + items.map(it =>
+        `<option value="${escapeHtml(it.brand + '||' + (it.origin || ''))}">${escapeHtml(it.brand)} — ${escapeHtml(it.origin || 'بدون منشأ')} (المتوفر ${(parseInt(it.qty, 10) || 0).toLocaleString()} طرد)</option>`).join('');
+}
+
+function onTransferItemChange() {
+    const fromSel = document.getElementById('trFromRoom');
+    const raw = document.getElementById('trItem').value;
+    const hint = document.getElementById('trAvailHint');
+    hint.textContent = 'المتوفر: —';
+    if (!fromSel.value || !raw) return;
+    const roomObj = roomsData.find(r => r.room == fromSel.value);
+    const idx = findRoomItem(roomObj, ...raw.split('||'));
+    const avail = (idx >= 0 && roomObj) ? (parseInt(roomObj.items[idx].qty, 10) || 0) : 0;
+    hint.textContent = `المتوفر: ${avail.toLocaleString()} طرد`;
+}
+
+async function submitRoomTransfer(e) {
+    e.preventDefault();
+    const from = parseInt(document.getElementById('trFromRoom').value, 10);
+    const to = parseInt(document.getElementById('trToRoom').value, 10);
+    const raw = document.getElementById('trItem').value;
+    const qtyVal = parseInt(document.getElementById('trQty').value, 10) || 0;
+    if (!raw) { showToast('يرجى اختيار الماركة / المنشأ', false); return false; }
+    if (!from || !to) { showToast('يرجى تحديد القاعتين', false); return false; }
+    if (from === to) { showToast('مرفوض: لا يمكن النقل من القاعة إلى نفسها', false); return false; }
+    if (qtyVal < 1) { showToast('يرجى إدخال كمية صحيحة (طرد واحد على الأقل)', false); return false; }
+    const [brandVal, originVal] = raw.split('||');
+
+    // تحقق مبكر ظاهري (الحماية النهائية داخل المعاملة الذرّية)
+    const roomObj = roomsData.find(r => r.room === from);
+    const idx0 = findRoomItem(roomObj, brandVal, originVal);
+    const avail0 = (idx0 >= 0 && roomObj) ? (parseInt(roomObj.items[idx0].qty, 10) || 0) : 0;
+    if (avail0 < qtyVal) {
+        showToast(`الرفض: رصيد القاعة ${from} من ${brandVal}${originVal ? ' - ' + originVal : ''} = ${avail0} طرد فقط، والمطلوب ${qtyVal}`, false);
+        return false;
+    }
+
+    const btn = document.getElementById('btnSubmitRoomTransfer');
+    btn.disabled = true;
+    btn.textContent = 'جارٍ التنفيذ...';
+    const now = new Date();
+    const rec = {
+        date: now.toISOString().split('T')[0],
+        time: now.toTimeString().split(' ')[0],
+        fromRoom: from, toRoom: to,
+        brand: brandVal, origin: originVal || '',
+        qty: qtyVal, by: auth.currentUser.email || ''
+    };
+
+    const success = await runAtomicWarehouseUpdate((state) => {
+        if (!state.roomsData) state.roomsData = roomsData;
+        if (!state.roomTransfers) state.roomTransfers = roomTransfers || [];
+        state.roomsSeedV = 5;
+        const sRoom = state.roomsData.find(r => r.room === from);
+        const dRoom = state.roomsData.find(r => r.room === to);
+        if (!sRoom || !dRoom) throw { code: 'ROOM_SHORTAGE', message: 'مرفوض: إحدى القاعتين غير موجودة في البيانات' };
+        const srcItems = sRoom.items || [];
+        const idx = srcItems.findIndex(it => it.brand === brandVal && ((it.origin || '') === (originVal || '')));
+        const srcQty = idx >= 0 ? (parseInt(srcItems[idx].qty, 10) || 0) : 0;
+        if (idx < 0 || srcQty < qtyVal) {
+            throw { code: 'ROOM_SHORTAGE', message: `الرفض: رصيد القاعة ${from} من ${brandVal}${originVal ? ' - ' + originVal : ''} = ${srcQty} طرد فقط، والمطلوب ${qtyVal}` };
+        }
+        // خصم من المصدر
+        srcItems[idx].qty -= qtyVal;
+        if (srcItems[idx].qty <= 0) srcItems.splice(idx, 1);
+        sRoom.items = srcItems;
+        // إضافة للهدف (دمج إذا نفس الماركة/المنشأ موجود)
+        const dstItems = dRoom.items || [];
+        const di = dstItems.findIndex(it => it.brand === brandVal && ((it.origin || '') === (originVal || '')));
+        if (di >= 0) dstItems[di].qty = (parseInt(dstItems[di].qty, 10) || 0) + qtyVal;
+        else dstItems.push({ brand: brandVal, origin: originVal || '', qty: qtyVal });
+        dRoom.items = dstItems;
+        state.roomTransfers.unshift(rec);
+        return state;
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'تنفيذ النقل';
+
+    if (success) {
+        closeRoomTransferModal();
+        // تحديث محلي فوري للسجل (القاعات يتم تحديثها عبر onSnapshot)
+        roomTransfers = roomTransfers.slice();
+        roomTransfers.unshift(rec);
+        renderRoomTransfers();
+        showToast(`تم نقل ${qtyVal.toLocaleString()} طرد من قاعة ${from} إلى قاعة ${to}`);
+    }
+    return false;
+}
+
+function renderRoomTransfers() {
+    const body = document.getElementById('roomTransfersBody');
+    if (!body) return;
+    const list = (roomTransfers || []).slice(0, 30);
+    const cnt = document.getElementById('roomTransfersCount');
+    if (cnt) cnt.textContent = (roomTransfers || []).length;
+    if (!list.length) {
+        body.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا عمليات نقل بعد — استخدم زر «نقل بين القاعات» أعلى القسم</p>';
+        safeCreateIcons();
+        return;
+    }
+    body.innerHTML = list.map(t => `
+        <div class="flex flex-wrap justify-between items-center text-xs bg-slate-50 rounded-lg px-2.5 py-1.5 border border-slate-100">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded-lg bg-cyan-100 text-cyan-800 font-bold">${t.qty.toLocaleString()} طرد</span>
+                <span class="font-bold text-[#45260a]">من قاعة ${t.fromRoom} ← قاعة ${t.toRoom}</span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-500">
+                <span class="font-bold text-slate-700">${escapeHtml(t.brand)}${t.origin ? ' — ' + escapeHtml(t.origin) : ''}</span>
+                <span class="font-mono">${escapeHtml(t.date + ' ' + (t.time || ''))}</span>
+            </div>
+        </div>`).join('');
+    safeCreateIcons();
+}
+
 // ================= مؤقت الإيثيلين + التقويم الحي (القاعات) =================
 function roomEthyleneTarget(r) {
     const m = /(\d+)\s*ساعة/.exec((r && r.hours) || '');
@@ -2656,6 +2978,7 @@ updateRoomsCalendar();
                     <td class="p-3 font-mono font-bold text-[#45260a]">${(row.qty || 0).toLocaleString()}</td>
                     <td class="p-3 font-mono text-emerald-600">${escapeHtml(row.car || '-')}</td>
                     <td class="p-3">${escapeHtml(row.driver || '-')}</td>
+                    <td class="p-3 text-center font-bold text-[#45260a]">${row.room ? 'قاعة ' + escapeHtml(String(row.room)) : '—'}</td>
                     <td class="p-3 text-center font-mono">${escapeHtml(row.temp || 13.5)}°C</td>
                     <td class="p-3 text-center admin-only">
                         <button type="button" data-inbound-id="${escapeHtml(String(row.id))}" class="btn-delete-inbound p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-all font-bold text-xs" title="حذف هذه الحاوية">
@@ -2836,6 +3159,7 @@ updateRoomsCalendar();
             renderDispatchTable();
             renderMovementTable();
             renderRipeningRooms();
+            renderRoomTransfers();
             renderBrandsListTable();
             renderDriverListTable();
             renderInspectionGallery();
